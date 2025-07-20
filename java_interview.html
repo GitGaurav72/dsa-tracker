@@ -1,0 +1,2976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Java Interview Questions</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --info-color: #3498db;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .qa-section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .question-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .question-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-header {
+            padding: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .question-header:hover {
+            background-color: #34495e;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            transform: rotate(180deg);
+        }
+
+        .answer-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            background-color: white;
+        }
+
+        .answer-content.show {
+            padding: 20px;
+            max-height: 5000px;
+        }
+
+      .answer-content pre {
+    background-color: #282c34; /* Dark background like VS Code */
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 15px 0;
+    border-left: 4px solid #58a6ff; /* GitHub blue accent */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+}
+
+.answer-content pre::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: #58a6ff;
+    color: white;
+    padding: 2px 10px;
+    font-size: 0.8em;
+    border-bottom-left-radius: 4px;
+}
+
+.answer-content code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    font-size: 0.9rem;
+    color: #abb2bf; /* Light gray text */
+    line-height: 1.5;
+    display: block;
+}
+
+/* Syntax highlighting colors */
+.answer-content code .keyword {
+    color: #c678dd; /* Purple for keywords */
+}
+
+.answer-content code .type {
+    color: #e5c07b; /* Yellow for types */
+}
+
+.answer-content code .string {
+    color: #98c379; /* Green for strings */
+}
+
+.answer-content code .comment {
+    color: #5c6370; /* Gray for comments */
+    font-style: italic;
+}
+
+.answer-content code .number {
+    color: #d19a66; /* Orange for numbers */
+}
+
+.answer-content code .annotation {
+    color: #56b6c2; /* Cyan for annotations */
+}
+
+/* Line numbers */
+.answer-content pre.line-numbers {
+    counter-reset: line;
+}
+
+.answer-content pre.line-numbers code {
+    position: relative;
+    padding-left: 3.5em;
+}
+
+.answer-content pre.line-numbers code .line::before {
+    counter-increment: line;
+    content: counter(line);
+    position: absolute;
+    left: 0;
+    width: 2.5em;
+    padding-right: 0.5em;
+    text-align: right;
+    color: #5c6370; /* Gray for line numbers */
+    border-right: 1px solid #5c6370;
+    margin-right: 0.5em;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .answer-content pre {
+        padding: 12px;
+        font-size: 0.85rem;
+    }
+    
+    .answer-content code {
+        font-size: 0.85rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Java Interview Questions</h1>
+            <p class="subtitle">Comprehensive guide to Java concepts and collections framework</p>
+        </header>
+
+        <div class="qa-section">
+            <h2 class="section-title">Core Java Concepts</h2>
+            
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">1. Explain the OOP principles in Java and provide examples.</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>1. Encapsulation</strong></p>
+                    <p><strong>Definition:</strong> Encapsulation is the bundling of data (fields) and methods that operate on the data into a single unit called a class. It also restricts direct access to some of the object's components, which is typically achieved through the use of <strong>private</strong> fields and <strong>public</strong> getter/setter methods.</p>
+                    
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">public class Student {
+    private String name; // Private variable (data hiding)
+    private int age;
+
+    // Public getter for name
+    public String getName() {
+        return name;
+    }
+
+    // Public setter for name
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Public getter for age
+    public int getAge() {
+        return age;
+    }
+
+    // Public setter for age
+    public void setAge(int age) {
+        this.age = age;
+    }
+}</code></pre>
+                    <p>Here, the Student class hides the fields name and age and only exposes them via public methods.</p>
+
+                    <p><strong>2. Inheritance</strong></p>
+                    <p><strong>Definition:</strong> Inheritance allows a class (subclass or child) to acquire the properties and behaviors (methods) of another class (superclass or parent). It promotes code reusability.</p>
+                    
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">// Parent class
+public class Animal {
+    public void eat() {
+        System.out.println("This animal eats food.");
+    }
+}
+
+// Child class
+public class Dog extends Animal {
+    public void bark() {
+        System.out.println("The dog barks.");
+    }
+}
+
+// Main
+public class Main {
+    public static void main(String[] args) {
+        Dog dog = new Dog();
+        dog.eat(); // Inherited method
+        dog.bark(); // Dog's own method
+    }
+}</code></pre>
+                    <p>The Dog class inherits the eat() method from the Animal class.</p>
+
+                    <p><strong>3. Polymorphism</strong></p>
+                    <p><strong>Definition:</strong> Polymorphism means "many forms." It allows an object to take many forms by allowing one interface to be used for a general class of actions.</p>
+                    <p>Polymorphism is of two types:</p>
+                    
+                    <p><strong>a. Compile-time polymorphism (Method Overloading)</strong></p>
+                    <pre><code class="language-java">public class MathUtils {
+    // Method to add two integers
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    // Overloaded method to add three integers
+    public int add(int a, int b, int c) {
+        return a + b + c;
+    }
+}</code></pre>
+
+                    <p><strong>b. Run-time polymorphism (Method Overriding)</strong></p>
+                    <pre><code class="language-java">class Animal {
+    public void makeSound() {
+        System.out.println("Animal sound");
+    }
+}
+
+class Cat extends Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Meow");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal myAnimal = new Cat();
+        myAnimal.makeSound(); // Output: Meow
+    }
+}</code></pre>
+
+                    <p><strong>4. Abstraction</strong></p>
+                    <p><strong>Definition:</strong> Abstraction is the process of hiding complex implementation details and showing only the essential features of the object.</p>
+                    <p>It is achieved using <strong>abstract classes</strong> and <strong>interfaces</strong>.</p>
+                    
+                    <p><strong>Example using Abstract Class</strong></p>
+                    <pre><code class="language-java">abstract class Vehicle {
+    abstract void start(); // Abstract method (no body)
+}
+
+class Car extends Vehicle {
+    @Override
+    void start() {
+        System.out.println("Car starts with a key.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Vehicle myCar = new Car();
+        myCar.start(); // Output: Car starts with a key.
+    }
+}</code></pre>
+
+                    <p><strong>Example using Interface</strong></p>
+                    <pre><code class="language-java">interface Animal {
+    void makeSound();
+}
+
+class Dog implements Animal {
+    @Override
+    public void makeSound() {
+        System.out.println("Woof!");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal myDog = new Dog();
+        myDog.makeSound(); // Output: Woof!
+    }
+}</code></pre>
+
+                    <p><strong>Summary</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Encapsulation</strong>: Hides data and provides controlled access.</p>
+                    <p><span class="success-badge">✅</span> <strong>Inheritance</strong>: Enables classes to share code.</p>
+                    <p><span class="success-badge">✅</span> <strong>Polymorphism</strong>: One interface, many implementations.</p>
+                    <p><span class="success-badge">✅</span> <strong>Abstraction</strong>: Hides details, shows only relevant parts.</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">2. What is the difference between final, finally, and finalize() in Java?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>1. final</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>What it is:</strong><br>
+                    A <strong>keyword</strong> in Java.</p>
+                    
+                    <p><span class="success-badge">✅</span> <strong>Usage:</strong></p>
+                    <ul>
+                        <li>To <strong>prevent modification</strong> of classes, methods, or variables.</li>
+                    </ul>
+                    
+                    <p><span class="success-badge">✅</span> <strong>Examples:</strong></p>
+                    <ul>
+                        <li><strong>Final variable:</strong> Cannot be reassigned.</li>
+                    </ul>
+                    <pre><code class="language-java">final int MAX_AGE = 100;
+// MAX_AGE = 120; // Error!</code></pre>
+
+                    <ul>
+                        <li><strong>Final method:</strong> Cannot be overridden.</li>
+                    </ul>
+                    <pre><code class="language-java">class Animal {
+    final void makeSound() {
+        System.out.println("Animal sound");
+    }
+}
+
+class Dog extends Animal {
+    // void makeSound() { } // Error!
+}</code></pre>
+
+                    <ul>
+                        <li><strong>Final class:</strong> Cannot be extended.</li>
+                    </ul>
+                    <pre><code class="language-java">final class Constants { }
+// class MyConstants extends Constants {} // Error!</code></pre>
+
+                    <p><strong>2. finally</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>What it is:</strong><br>
+                    A <strong>block</strong> in Java (part of exception handling).</p>
+                    
+                    <p><span class="success-badge">✅</span> <strong>Usage:</strong></p>
+                    <ul>
+                        <li>Used to execute <strong>important code</strong> such as cleanup, regardless of whether an exception was thrown.</li>
+                    </ul>
+                    
+                    <p><span class="success-badge">✅</span> <strong>Example:</strong></p>
+                    <pre><code class="language-java">try {
+    int data = 10 / 0; // Exception occurs here
+} catch (ArithmeticException e) {
+    System.out.println("Exception caught: " + e);
+} finally {
+    System.out.println("Finally block executed.");
+}</code></pre>
+                    
+                    <p><span class="success-badge">✅</span> <strong>Output:</strong></p>
+                    <pre><code class="language-java">Exception caught: java.lang.ArithmeticException: / by zero
+Finally block executed.</code></pre>
+                    
+                    <p><span class="success-badge">✅</span> <strong>Key point:</strong><br>
+                    The finally block <strong>always executes</strong>, even if there is a return statement or exception.</p>
+
+                    <p><strong>3. finalize()</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>What it is:</strong><br>
+                    A <strong>method</strong> in Java.</p>
+                    
+                    <p><span class="success-badge">✅</span> <strong>Usage:</strong></p>
+                    <ul>
+                        <li>Called by the <strong>garbage collector</strong> on an object <strong>before</strong> destroying it, to perform cleanup.</li>
+                    </ul>
+                    
+                    <p><span class="success-badge">✅</span> <strong>Example:</strong></p>
+                    <pre><code class="language-java">protected void finalize() throws Throwable {
+    System.out.println("Object is being garbage collected.");
+}</code></pre>
+                    
+                    <p><span class="success-badge">✅</span> <strong>Key point:</strong></p>
+                    <ul>
+                        <li>You <strong>rarely override</strong> finalize() in modern Java.</li>
+                        <li>The finalize() method is part of the Object class.</li>
+                        <li>It's generally <strong>deprecated</strong> (since Java 9) in favor of other resource management mechanisms like try-with-resources.</li>
+                    </ul>
+
+                    <p><strong>Summary Table</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Concept</strong></th>
+                            <th><strong>Type</strong></th>
+                            <th><strong>Purpose</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>final</strong></td>
+                            <td>Keyword</td>
+                            <td>Prevent modification (variables, methods, classes)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>finally</strong></td>
+                            <td>Block</td>
+                            <td>Execute code regardless of exceptions</td>
+                        </tr>
+                        <tr>
+                            <td><strong>finalize()</strong></td>
+                            <td>Method</td>
+                            <td>Cleanup before object is garbage collected</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">3. How does Java achieve platform independence?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p>Java achieves platform independence through its <strong>Java Virtual Machine (JVM)</strong> architecture and the way it compiles code into an intermediate form called <strong>bytecode</strong>.</p>
+                    
+                    <p><strong>1️⃣ Source Code Compilation to Bytecode</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Java source code</strong> (written in .java files) is compiled using the Java compiler (javac).<br>
+                    <span class="success-badge">✅</span> The compiler doesn't produce native machine code directly.<br>
+                    <span class="success-badge">✅</span> Instead, it generates <strong>bytecode</strong> (stored in .class files).</p>
+                    
+                    <p><span class="info-badge">🔹</span> <strong>Example:</strong></p>
+                    <pre><code class="language-java">// HelloWorld.java
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, World!");
+    }
+}</code></pre>
+                    
+                    <p><span class="info-badge">🔹</span> <strong>Compile:</strong></p>
+                    <pre><code class="language-java">javac HelloWorld.java</code></pre>
+                    
+                    <p><span class="info-badge">🔹</span> <strong>Output:</strong></p>
+                    <pre><code class="language-java">HelloWorld.class // Contains bytecode</code></pre>
+
+                    <p><strong>2️⃣ Bytecode and the JVM</strong></p>
+                    <p><span class="success-badge">✅</span> Bytecode is <strong>platform-independent</strong> because it's not tied to any specific hardware or operating system.<br>
+                    <span class="success-badge">✅</span> To run bytecode, Java uses a <strong>Java Virtual Machine (JVM)</strong>.<br>
+                    <span class="success-badge">✅</span> The JVM acts as an <strong>interpreter</strong> or <strong>Just-In-Time (JIT) compiler</strong> for the bytecode, translating it to <strong>native machine code</strong> at runtime.</p>
+                    
+                    <p><span class="info-badge">🔹</span> Each platform (Windows, Linux, macOS, etc.) has its own <strong>JVM implementation</strong>.<br>
+                    <span class="info-badge">🔹</span> But the <strong>bytecode remains the same</strong>, no matter the platform.</p>
+
+                    <p><strong>3️⃣ How this enables platform independence</strong></p>
+                    <p><span class="success-badge">✅</span> Java's motto:</p>
+                    <p><strong>"Write once, run anywhere"</strong></p>
+                    <p><span class="success-badge">✅</span> Once you have bytecode, you can run it on any device that has a JVM installed.</p>
+                    <p><span class="success-badge">✅</span> JVM abstracts away the platform-specific details, making sure your Java program runs consistently on <strong>any platform</strong>.</p>
+
+                    <p><strong>🔥 Diagram:</strong></p>
+                    <p>Your Java Source Code</p>
+                    <p>|</p>
+                    <p>(javac)</p>
+                    <p>↓</p>
+                    <p>Platform-independent Bytecode (.class)</p>
+                    <p>|</p>
+                    <p>(JVM)</p>
+                    <p>↓</p>
+                    <p>Native Machine Code on the specific platform</p>
+
+                    <p><strong>🔑 Key takeaway:</strong></p>
+                    <p><strong>Platform independence in Java = Bytecode + JVM</strong></p>
+                    <ul>
+                        <li>Bytecode is universal.</li>
+                        <li>JVM is platform-specific, bridging your universal bytecode to the native hardware.</li>
+                    </ul>
+                    <p>This approach is what makes Java applications <strong>portable</strong> across different operating systems and devices!</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">4. What is the difference between HashMap and Hashtable?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 1️⃣ Synchronized vs Non-Synchronized</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>HashMap</strong></th>
+                            <th><strong>Hashtable</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>Synchronization</strong></td>
+                            <td><strong>Not synchronized</strong> -- Not thread-safe by default</td>
+                            <td><strong>Synchronized</strong> -- Thread-safe</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Multithreading</strong></td>
+                            <td>Must handle thread-safety manually if needed</td>
+                            <td>Handles thread-safety internally</td>
+                        </tr>
+                    </table>
+
+                    <p><span class="success-badge">✅</span> <strong>Key Point:</strong></p>
+                    <ul>
+                        <li>If you need a <strong>thread-safe</strong> map, Hashtable is ready for you (but slower)</li>
+                        <li>For <strong>single-threaded</strong> or <strong>manually-synchronized</strong> code, HashMap is better (faster)</li>
+                    </ul>
+
+                    <p><strong>🌟 2️⃣ Null Keys and Values</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>HashMap</strong></th>
+                            <th><strong>Hashtable</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>Null keys</strong></td>
+                            <td><strong>Allowed</strong> (1 null key)</td>
+                            <td><strong>Not allowed</strong> -- will throw NullPointerException</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Null values</strong></td>
+                            <td><strong>Allowed</strong></td>
+                            <td><strong>Not allowed</strong> -- will throw NullPointerException</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 3️⃣ Performance</strong></p>
+                    <ul>
+                        <li>HashMap is generally <strong>faster</strong> because it doesn't have synchronized methods</li>
+                        <li>Hashtable is <strong>slower</strong> due to synchronized methods</li>
+                    </ul>
+
+                    <p><strong>🌟 4️⃣ Legacy vs Modern</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>HashMap</strong></th>
+                            <th><strong>Hashtable</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>Introduced in</strong></td>
+                            <td>Java 1.2 (part of Collections framework)</td>
+                            <td>Java 1.0 (older)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Preferred use</strong></td>
+                            <td>Modern Java code</td>
+                            <td>Legacy code</td>
+                        </tr>
+                    </table>
+
+                    <p><span class="success-badge">✅</span> In modern Java, you'd typically use:</p>
+                    <ul>
+                        <li>HashMap for <strong>non-thread-safe</strong> usage</li>
+                        <li>ConcurrentHashMap for <strong>thread-safe</strong> usage (preferred over Hashtable)</li>
+                    </ul>
+
+                    <p><strong>🌟 5️⃣ Example Code</strong></p>
+                    <p><strong>🔹 HashMap</strong></p>
+                    <pre><code class="language-java">import java.util.*;
+
+public class HashMapExample {
+    public static void main(String[] args) {
+        HashMap&lt;String, Integer&gt; map = new HashMap&lt;&gt;();
+        map.put("A", 1);
+        map.put(null, 2); // allowed
+        map.put("B", null); // allowed
+        System.out.println(map);
+    }
+}</code></pre>
+
+                    <p><strong>🔹 Hashtable</strong></p>
+                    <pre><code class="language-java">import java.util.*;
+
+public class HashtableExample {
+    public static void main(String[] args) {
+        Hashtable&lt;String, Integer&gt; table = new Hashtable&lt;&gt;();
+        table.put("A", 1);
+        // table.put(null, 2); // throws NullPointerException
+        // table.put("B", null); // throws NullPointerException
+        System.out.println(table);
+    }
+}</code></pre>
+
+                    <p><strong>🚀 Summary Table</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>HashMap</strong></th>
+                            <th><strong>Hashtable</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Thread safety</td>
+                            <td>Not synchronized (not thread-safe)</td>
+                            <td>Synchronized (thread-safe)</td>
+                        </tr>
+                        <tr>
+                            <td>Null keys/values</td>
+                            <td>Allowed</td>
+                            <td>Not allowed</td>
+                        </tr>
+                        <tr>
+                            <td>Performance</td>
+                            <td>Faster</td>
+                            <td>Slower</td>
+                        </tr>
+                        <tr>
+                            <td>Legacy/modern</td>
+                            <td>Modern (Java 1.2)</td>
+                            <td>Legacy (Java 1.0)</td>
+                        </tr>
+                        <tr>
+                            <td>Alternative in Java 5+</td>
+                            <td>Use ConcurrentHashMap for threadsafe maps</td>
+                            <td>Use ConcurrentHashMap</td>
+                        </tr>
+                    </table>
+
+                    <p><span class="success-badge">✅</span> <strong>Modern best practice:</strong></p>
+                    <ul>
+                        <li>Use HashMap for <strong>non-concurrent</strong> needs</li>
+                        <li>Use ConcurrentHashMap for <strong>concurrent</strong> needs</li>
+                        <li>Hashtable is mostly <strong>obsolete</strong> for new code</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">5. Explain the concept of immutability in Java with an example.</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 What is Immutability?</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Definition:</strong><br>
+                    An object is <strong>immutable</strong> if <strong>its state (data) cannot be changed</strong> after it is created.</p>
+                    
+                    <p><span class="success-badge">✅</span> <strong>Key characteristics of an immutable object:</strong></p>
+                    <ul>
+                        <li>All fields are <strong>final</strong> and <strong>private</strong></li>
+                        <li>No setter methods (only getters)</li>
+                        <li>The class itself is often declared as <strong>final</strong> (to prevent subclassing and modification)</li>
+                        <li>If the object contains mutable objects, those are <strong>defensively copied</strong></li>
+                    </ul>
+
+                    <p><strong>🌟 Why is immutability useful?</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Advantages:</strong></p>
+                    <ul>
+                        <li><strong>Thread safety</strong>: Immutable objects can be safely shared between threads without synchronization</li>
+                        <li><strong>Cacheable & reusable</strong>: Once created, they don't change, so they can be cached and reused</li>
+                        <li><strong>Safe design</strong>: Avoids unintended side effects</li>
+                    </ul>
+
+                    <p><strong>🌟 Example: Immutable Person class</strong></p>
+                    <p>Here's a simple example of an immutable class in Java:</p>
+                    <pre><code class="language-java">public final class Person {
+    private final String name;
+    private final int age;
+
+    // Constructor
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getter methods only
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    // No setter methods
+
+    // toString for display
+    @Override
+    public String toString() {
+        return "Person{name='" + name + "', age=" + age + "}";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Person p = new Person("Alice", 30);
+        System.out.println(p);
+        // p.age = 35; // Compilation error - fields are final
+        // p.setName("Bob"); // Compilation error - no setter
+    }
+}</code></pre>
+
+                    <p><strong>🌟 Key Points in the Example:</strong></p>
+                    <p><span class="info-badge">🔹</span> <strong>final class Person</strong>: Can't be subclassed</p>
+                    <p><span class="info-badge">🔹</span> <strong>private final String name</strong>: Once assigned in the constructor, can't be changed</p>
+                    <p><span class="info-badge">🔹</span> <strong>No setters</strong> → no way to modify name or age</p>
+                    <p><span class="info-badge">🔹</span> The object's state remains constant after construction</p>
+
+                    <p><strong>🌟 Dealing with mutable objects</strong></p>
+                    <p>If your immutable object has <strong>mutable fields</strong> (like a List or Date), you must make <strong>defensive copies</strong></p>
+                    
+                    <p><span class="info-badge">🔹</span> <strong>Example:</strong></p>
+                    <pre><code class="language-java">import java.util.Date;
+
+public final class ImmutableEmployee {
+    private final String name;
+    private final Date hireDate;
+
+    public ImmutableEmployee(String name, Date hireDate) {
+        this.name = name;
+        this.hireDate = new Date(hireDate.getTime()); // defensive copy
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Date getHireDate() {
+        return new Date(hireDate.getTime()); // defensive copy
+    }
+}</code></pre>
+
+                    <p><strong>🚀 Summary</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Immutability = no change after creation</strong></p>
+                    <p><span class="success-badge">✅</span> Helps with thread safety, reliability, and caching</p>
+                    <p><span class="success-badge">✅</span> Common examples in Java:</p>
+                    <ul>
+                        <li>String</li>
+                        <li>Wrapper classes (Integer, Double, etc.)</li>
+                        <li>LocalDate, LocalTime, LocalDateTime from java.time package</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">6. How does garbage collection work in Java?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 What is garbage collection?</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Garbage Collection (GC)</strong> is a process in Java that <strong>automatically reclaims memory</strong> by removing objects that are <strong>no longer reachable</strong> by the program</p>
+                    <p><span class="success-badge">✅</span> It's part of the <strong>Java Virtual Machine (JVM)</strong> and helps to avoid memory leaks</p>
+
+                    <p><strong>🌟 How does it work?</strong></p>
+                    <p><strong>1️⃣ Heap Memory</strong></p>
+                    <ul>
+                        <li>JVM allocates memory for objects in an area called the <strong>heap</strong></li>
+                        <li>As your program runs, objects are created on the heap</li>
+                        <li>If an object is <strong>no longer referenced</strong>, it becomes <strong>eligible for garbage collection</strong></li>
+                    </ul>
+
+                    <p><strong>2️⃣ Identifying unreachable objects</strong></p>
+                    <ul>
+                        <li>The JVM uses a technique called <strong>reachability analysis</strong></li>
+                        <li>Starting from <strong>GC roots</strong> (e.g., active threads, static variables, local variables on the stack), it marks all <strong>reachable objects</strong></li>
+                        <li>Objects <strong>not marked</strong> are <strong>unreachable</strong></li>
+                    </ul>
+
+                    <p><strong>3️⃣ Collecting garbage</strong></p>
+                    <ul>
+                        <li>JVM's <strong>Garbage Collector (GC)</strong> removes unreachable objects and <strong>frees up heap space</strong></li>
+                    </ul>
+
+                    <p><strong>4️⃣ Finalization</strong></p>
+                    <ul>
+                        <li>Before an object is removed, the GC may call the object's finalize() method <strong>once</strong> (deprecated in Java 9+)</li>
+                        <li><strong>Modern Java</strong> uses other resource management patterns (like try-with-resources) instead</li>
+                    </ul>
+
+                    <p><strong>🌟 Garbage collection algorithms</strong></p>
+                    <p>Java provides different <strong>GC algorithms</strong>:</p>
+                    <p><span class="info-badge">🔹</span> <strong>Serial GC</strong>:</p>
+                    <ul>
+                        <li>Uses a single thread for collection</li>
+                        <li>Suitable for small applications</li>
+                    </ul>
+
+                    <p><span class="info-badge">🔹</span> <strong>Parallel GC</strong>:</p>
+                    <ul>
+                        <li>Uses multiple threads for faster garbage collection</li>
+                        <li>Default in many JVMs</li>
+                    </ul>
+
+                    <p><span class="info-badge">🔹</span> <strong>CMS (Concurrent Mark-Sweep)</strong>:</p>
+                    <ul>
+                        <li>Reduces <strong>stop-the-world</strong> pauses by doing GC concurrently with the app</li>
+                        <li>Deprecated in Java 9+</li>
+                    </ul>
+
+                    <p><span class="info-badge">🔹</span> <strong>G1 GC</strong>:</p>
+                    <ul>
+                        <li>Splits the heap into <strong>regions</strong> for more efficient GC</li>
+                        <li>Targets predictable pause times</li>
+                    </ul>
+
+                    <p><span class="info-badge">🔹</span> <strong>ZGC / Shenandoah</strong>:</p>
+                    <ul>
+                        <li><strong>Low-latency</strong> GCs for very large heaps</li>
+                    </ul>
+
+                    <p><strong>🌟 Types of garbage collection in Java</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Minor GC</strong></p>
+                    <ul>
+                        <li>Collects <strong>young generation</strong> (new objects)</li>
+                        <li>Fast and frequent</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>Major GC / Full GC</strong></p>
+                    <ul>
+                        <li>Collects <strong>old generation</strong> (long-lived objects)</li>
+                        <li>Slower and less frequent</li>
+                    </ul>
+
+                    <p><strong>🌟 Example</strong></p>
+                    <pre><code class="language-java">public class Example {
+    public static void main(String[] args) {
+        Example obj = new Example();
+        obj = null; // Now eligible for GC
+        System.gc(); // Request GC (but not guaranteed)
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        System.out.println("Object is garbage collected.");
+    }
+}</code></pre>
+
+                    <p><strong>🌟 Key Takeaways</strong></p>
+                    <p><span class="success-badge">✅</span> Java uses <strong>automatic garbage collection</strong> → you <strong>don't</strong> manually free memory</p>
+                    <p><span class="success-badge">✅</span> It <strong>improves program safety</strong> and <strong>reduces memory leaks</strong></p>
+                    <p><span class="success-badge">✅</span> GC <strong>doesn't guarantee immediate collection</strong> (you can request it, but JVM decides when to actually do it)</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">7. What is the difference between checked and unchecked exceptions?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 1️⃣ Definitions</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Checked Exceptions</strong></p>
+                    <ul>
+                        <li>Exceptions that <strong>must be handled explicitly</strong> in your code (via try-catch or throws)</li>
+                        <li>The <strong>compiler checks</strong> that you've dealt with them</li>
+                        <li>Typically used for <strong>recoverable conditions</strong> (e.g., file not found, database error)</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>Unchecked Exceptions</strong></p>
+                    <ul>
+                        <li>Exceptions that <strong>do not need to be handled</strong> explicitly</li>
+                        <li>These are typically <strong>programming errors</strong> (e.g., logic bugs, null pointer dereferences)</li>
+                        <li>The <strong>compiler does not check</strong> for them</li>
+                    </ul>
+
+                    <p><strong>🌟 2️⃣ Hierarchy</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Exception Type</strong></th>
+                            <th><strong>Inheritance</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>Checked Exception</strong></td>
+                            <td>Inherits from Exception <strong>but not</strong> RuntimeException</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Unchecked Exception</strong></td>
+                            <td>Inherits from RuntimeException</td>
+                        </tr>
+                    </table>
+
+                    <p><span class="info-badge">🔹</span> <strong>Checked Exception Example:</strong></p>
+                    <pre><code class="language-java">import java.io.*;
+
+public class CheckedExample {
+    public static void main(String[] args) {
+        try {
+            FileReader fr = new FileReader("file.txt");
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found!");
+        }
+    }
+}</code></pre>
+                    <p><strong>Note:</strong> FileNotFoundException is a checked exception</p>
+
+                    <p><span class="info-badge">🔹</span> <strong>Unchecked Exception Example:</strong></p>
+                    <pre><code class="language-java">public class UncheckedExample {
+    public static void main(String[] args) {
+        int[] numbers = {1, 2, 3};
+        System.out.println(numbers[5]); // Throws ArrayIndexOutOfBoundsException
+    }
+}</code></pre>
+                    <p><strong>Note:</strong> ArrayIndexOutOfBoundsException is an unchecked exception</p>
+
+                    <p><strong>🌟 3️⃣ Table of Differences</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>Checked Exceptions</strong></th>
+                            <th><strong>Unchecked Exceptions</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Inherits from</td>
+                            <td>Exception (not RuntimeException)</td>
+                            <td>RuntimeException</td>
+                        </tr>
+                        <tr>
+                            <td>Compiler checks</td>
+                            <td>✅ Yes -- compiler forces handling</td>
+                            <td>❌ No -- compiler does not enforce</td>
+                        </tr>
+                        <tr>
+                            <td>Handling</td>
+                            <td>Must handle (try-catch or throws)</td>
+                            <td>Optional -- runtime error if unhandled</td>
+                        </tr>
+                        <tr>
+                            <td>Examples</td>
+                            <td>IOException, SQLException, FileNotFoundException</td>
+                            <td>NullPointerException, ArrayIndexOutOfBoundsException, ArithmeticException</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 4️⃣ Summary</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Checked exceptions:</strong></p>
+                    <ul>
+                        <li>Compile-time checked</li>
+                        <li>Indicate <strong>recoverable conditions</strong></li>
+                        <li>Forces you to handle them</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>Unchecked exceptions:</strong></p>
+                    <ul>
+                        <li>Runtime only</li>
+                        <li>Indicate <strong>programming bugs</strong></li>
+                        <li>Handling is optional but can avoid runtime crashes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">8. Explain the use of transient and volatile keywords.</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 1️⃣ The transient keyword</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Purpose:</strong></p>
+                    <ul>
+                        <li>Marks a field to be <strong>ignored during serialization</strong></li>
+                        <li>When an object is serialized (converted to a byte stream), transient fields <strong>are not saved</strong></li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>Use case:</strong></p>
+                    <ul>
+                        <li>When you have fields that <strong>should not be persisted</strong>, e.g., sensitive data like passwords, or data that can be recalculated</li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">import java.io.*;
+
+class User implements Serializable {
+    private String username;
+    private transient String password; // won't be serialized
+
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public String toString() {
+        return "User{username=" + username + ", password=" + password + "}";
+    }
+}
+
+public class TransientExample {
+    public static void main(String[] args) throws Exception {
+        User user = new User("Alice", "secret123");
+        
+        // Serialize
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("user.ser"));
+        out.writeObject(user);
+        out.close();
+        
+        // Deserialize
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream("user.ser"));
+        User deserializedUser = (User) in.readObject();
+        in.close();
+        
+        System.out.println("Before serialization: " + user);
+        System.out.println("After deserialization: " + deserializedUser);
+    }
+}</code></pre>
+
+                    <p><strong>Output:</strong></p>
+                    <pre><code class="language-java">Before serialization: User{username=Alice, password=secret123}
+After deserialization: User{username=Alice, password=null}</code></pre>
+
+                    <p><strong>🌟 2️⃣ The volatile keyword</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Purpose:</strong></p>
+                    <ul>
+                        <li>Ensures <strong>visibility</strong> of changes to variables across threads</li>
+                        <li>Marks a variable so that <strong>reads/writes go directly to main memory</strong> (not cached in CPU registers or thread caches)</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>Use case:</strong></p>
+                    <ul>
+                        <li>Used in <strong>multithreaded programming</strong> when a variable can be changed by one thread and must be immediately visible to others</li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">public class VolatileExample {
+    private volatile boolean flag = false;
+
+    public void writer() {
+        flag = true; // write to volatile variable
+    }
+
+    public void reader() {
+        if (flag) {
+            System.out.println("Flag is true!");
+        }
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        VolatileExample example = new VolatileExample();
+        
+        Thread writerThread = new Thread(() -> {
+            try { Thread.sleep(1000); } catch (InterruptedException e) {}
+            example.writer();
+            System.out.println("Writer thread updated flag.");
+        });
+        
+        Thread readerThread = new Thread(() -> {
+            while (!example.flag) {
+                // busy wait until flag becomes true
+            }
+            example.reader();
+        });
+        
+        readerThread.start();
+        writerThread.start();
+        
+        writerThread.join();
+        readerThread.join();
+    }
+}</code></pre>
+
+                    <p><strong>Explanation:</strong></p>
+                    <ul>
+                        <li>Without volatile, the reader thread might never see the update to flag due to caching</li>
+                        <li>volatile guarantees visibility of the latest value to all threads</li>
+                    </ul>
+
+                    <p><strong>🌟 Summary Table</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Keyword</strong></th>
+                            <th><strong>Purpose</strong></th>
+                            <th><strong>Typical Use Case</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>transient</strong></td>
+                            <td>Skip a field during serialization</td>
+                            <td>Sensitive or non-persistent data in Serializable classes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>volatile</strong></td>
+                            <td>Ensure visibility of variable changes across threads</td>
+                            <td>Flags or variables shared and updated by multiple threads</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">9. What is the difference between String, StringBuilder, and StringBuffer?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 1️⃣ String</strong></p>
+                    <ul>
+                        <li><strong>Immutable</strong>: Once created, a String object's value <strong>cannot be changed</strong></li>
+                        <li>Every time you modify a string (e.g., concatenate), a <strong>new String object</strong> is created</li>
+                        <li>Used when the string value is <strong>constant or rarely changed</strong></li>
+                        <li><strong>Thread-safe</strong> due to immutability (no synchronization needed)</li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">String s = "Hello";
+s = s + " World"; // Creates a new String object</code></pre>
+
+                    <p><strong>🌟 2️⃣ StringBuilder</strong></p>
+                    <ul>
+                        <li><strong>Mutable</strong>: You can change the content without creating new objects</li>
+                        <li>Provides methods like .append(), .insert(), .delete() to efficiently modify strings</li>
+                        <li><strong>Not synchronized</strong> → <strong>not thread-safe</strong></li>
+                        <li>Faster than StringBuffer for single-threaded operations</li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">StringBuilder sb = new StringBuilder("Hello");
+sb.append(" World");
+System.out.println(sb.toString()); // Prints "Hello World"</code></pre>
+
+                    <p><strong>🌟 3️⃣ StringBuffer</strong></p>
+                    <ul>
+                        <li>Also <strong>mutable</strong> like StringBuilder</li>
+                        <li>Provides similar methods for modifying strings</li>
+                        <li><strong>Synchronized</strong> → <strong>thread-safe</strong></li>
+                        <li>Slower than StringBuilder due to synchronization overhead</li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">StringBuffer sbuf = new StringBuffer("Hello");
+sbuf.append(" World");
+System.out.println(sbuf.toString()); // Prints "Hello World"</code></pre>
+
+                    <p><strong>🌟 Summary Table</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>String</strong></th>
+                            <th><strong>StringBuilder</strong></th>
+                            <th><strong>StringBuffer</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Mutability</td>
+                            <td>Immutable</td>
+                            <td>Mutable</td>
+                            <td>Mutable</td>
+                        </tr>
+                        <tr>
+                            <td>Thread Safety</td>
+                            <td>Thread-safe (immutable)</td>
+                            <td>Not thread-safe</td>
+                            <td>Thread-safe (synchronized)</td>
+                        </tr>
+                        <tr>
+                            <td>Performance</td>
+                            <td>Slow for modifications</td>
+                            <td>Faster (single-thread)</td>
+                            <td>Slower (multi-thread)</td>
+                        </tr>
+                        <tr>
+                            <td>Usage Scenario</td>
+                            <td>Constant strings</td>
+                            <td>Single-threaded string modifications</td>
+                            <td>Multi-threaded string modifications</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 When to use what?</strong></p>
+                    <ul>
+                        <li>Use <strong>String</strong> when the value won't change or changes are infrequent</li>
+                        <li>Use <strong>StringBuilder</strong> for <strong>fast, single-threaded</strong> string manipulations</li>
+                        <li>Use <strong>StringBuffer</strong> if you <strong>need thread safety</strong> for string modifications</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">10. How does Java handle memory management?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 Java Memory Management Overview</strong></p>
+                    <p>Java manages memory automatically through the <strong>Java Virtual Machine (JVM)</strong>. This process includes:</p>
+                    <ul>
+                        <li><strong>Allocating memory</strong> for objects and variables</li>
+                        <li><strong>Reclaiming unused memory</strong> via garbage collection</li>
+                        <li>Managing different areas of memory within the JVM</li>
+                    </ul>
+
+                    <p><strong>🌟 Key Memory Areas in JVM</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Memory Area</strong></th>
+                            <th><strong>Purpose</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>Heap</strong></td>
+                            <td>Stores all <strong>objects</strong> and <strong>arrays</strong> created during runtime. Shared among all threads</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Stack</strong></td>
+                            <td>Stores <strong>method calls</strong>, <strong>local variables</strong>, and <strong>references</strong>. Each thread has its own stack</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Method Area (PermGen/Metaspace)</strong></td>
+                            <td>Stores class-level data like class definitions, method metadata, static variables</td>
+                        </tr>
+                        <tr>
+                            <td><strong>PC Registers</strong></td>
+                            <td>Keeps track of the address of the current JVM instruction being executed per thread</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Native Method Stack</strong></td>
+                            <td>Stores native code (e.g., JNI calls)</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 How Memory Is Managed</strong></p>
+                    <p><strong>1️⃣ Object Allocation</strong></p>
+                    <ul>
+                        <li>Objects are created in the <strong>heap memory</strong> using new</li>
+                        <li>Local variables and references are stored on the <strong>stack</strong></li>
+                    </ul>
+
+                    <p><strong>2️⃣ Garbage Collection</strong></p>
+                    <ul>
+                        <li>JVM automatically removes <strong>objects that are no longer reachable</strong> from the program</li>
+                        <li>This frees heap memory and prevents memory leaks</li>
+                        <li>Different garbage collectors exist (Serial, Parallel, G1, etc.) tuned for various scenarios</li>
+                    </ul>
+
+                    <p><strong>3️⃣ Stack Management</strong></p>
+                    <ul>
+                        <li>Each thread gets its own <strong>stack memory</strong></li>
+                        <li>Method calls push frames onto the stack; returns pop frames off</li>
+                        <li>Stack memory is automatically reclaimed when methods finish execution</li>
+                    </ul>
+
+                    <p><strong>🌟 Example</strong></p>
+                    <pre><code class="language-java">public class MemoryExample {
+    public static void main(String[] args) {
+        // 'a' and 'b' stored in stack
+        int a = 5;
+        int b = 10;
+        
+        // 'obj' reference stored in stack, object itself in heap
+        MyObject obj = new MyObject();
+        
+        // Object eligible for GC after going out of scope or set to null
+        obj = null;
+    }
+}
+
+class MyObject {
+    int x = 100;
+}</code></pre>
+
+                    <p><strong>🌟 Summary</strong></p>
+                    <ul>
+                        <li><strong>Heap</strong>: Dynamic memory for objects, managed by JVM's garbage collector</li>
+                        <li><strong>Stack</strong>: Stores local variables and function call frames; managed automatically</li>
+                        <li><strong>Garbage Collection</strong>: Automatically reclaims unused memory — no manual freeing like in C/C++</li>
+                        <li><strong>Memory areas like Method Area</strong> hold metadata and class info</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="qa-section">
+            <h2 class="section-title">Collections Framework</h2>
+            
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">1. What are the main interfaces in the Java Collections Framework?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p>The <strong>Java Collections Framework (JCF)</strong> provides a set of <strong>interfaces</strong> and <strong>classes</strong> to store and manipulate groups of objects.</p>
+                    <p>Here's a summary of the <strong>main interfaces</strong>:</p>
+                    
+                    <p><strong>🌟 1️⃣ Collection Interface</strong></p>
+                    <ul>
+                        <li><strong>Root interface</strong> for most collection classes</li>
+                        <li>Defines <strong>basic operations</strong> like add(), remove(), size(), iterator(), etc.</li>
+                    </ul>
+
+                    <p><strong>🌟 2️⃣ List Interface</strong></p>
+                    <ul>
+                        <li><strong>Ordered collection</strong> (sequence) of elements</li>
+                        <li>Allows <strong>duplicates</strong></li>
+                        <li>Elements are accessed by <strong>index</strong></li>
+                    </ul>
+                    <p><span class="success-badge">✅</span> <strong>Common implementations</strong>:</p>
+                    <ul>
+                        <li>ArrayList</li>
+                        <li>LinkedList</li>
+                        <li>Vector</li>
+                    </ul>
+
+                    <p><strong>🌟 3️⃣ Set Interface</strong></p>
+                    <ul>
+                        <li><strong>No duplicate elements</strong> allowed</li>
+                        <li><strong>Unordered</strong> collection</li>
+                    </ul>
+                    <p><span class="success-badge">✅</span> <strong>Common implementations</strong>:</p>
+                    <ul>
+                        <li>HashSet</li>
+                        <li>LinkedHashSet (maintains insertion order)</li>
+                        <li>TreeSet (sorted order)</li>
+                    </ul>
+
+                    <p><strong>🌟 4️⃣ Queue Interface</strong></p>
+                    <ul>
+                        <li><strong>Ordered collection</strong> for <strong>holding elements prior to processing</strong></li>
+                        <li>Follows <strong>FIFO</strong> (First In, First Out) principles (with some exceptions like PriorityQueue)</li>
+                    </ul>
+                    <p><span class="success-badge">✅</span> <strong>Common implementations</strong>:</p>
+                    <ul>
+                        <li>LinkedList (can be used as a queue)</li>
+                        <li>PriorityQueue</li>
+                        <li>ArrayDeque</li>
+                    </ul>
+
+                    <p><strong>🌟 5️⃣ Deque Interface (Double-Ended Queue)</strong></p>
+                    <ul>
+                        <li>Supports <strong>insertion and removal at both ends</strong></li>
+                        <li>Can be used as a <strong>stack</strong> (LIFO) or a <strong>queue</strong> (FIFO)</li>
+                    </ul>
+                    <p><span class="success-badge">✅</span> <strong>Common implementations</strong>:</p>
+                    <ul>
+                        <li>ArrayDeque</li>
+                        <li>LinkedList</li>
+                    </ul>
+
+                    <p><strong>🌟 6️⃣ Map Interface (Not a direct child of Collection)</strong></p>
+                    <ul>
+                        <li><strong>Key-value pairs</strong> (like a dictionary)</li>
+                        <li><strong>No duplicate keys</strong>, but <strong>duplicate values</strong> are allowed</li>
+                    </ul>
+                    <p><span class="success-badge">✅</span> <strong>Common implementations</strong>:</p>
+                    <ul>
+                        <li>HashMap</li>
+                        <li>LinkedHashMap (maintains insertion order)</li>
+                        <li>TreeMap (sorted order)</li>
+                        <li>Hashtable</li>
+                    </ul>
+
+                    <p><strong>🌟 Interface Hierarchy Diagram (simplified)</strong></p>
+                    <pre><code class="language-java">Iterable
+│
+Collection
+┌─────────┴─────────┐
+List                Set
+                    │
+                    SortedSet
+                    │
+Queue               NavigableSet
+│
+Deque
+
+Map
+│
+SortedMap
+│
+NavigableMap</code></pre>
+
+                    <p><strong>🌟 Summary Table</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Interface</strong></th>
+                            <th><strong>Key Features</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>Collection</strong></td>
+                            <td>Root of the collection hierarchy (except for Map)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>List</strong></td>
+                            <td>Ordered, allows duplicates, indexed</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Set</strong></td>
+                            <td>No duplicates, unordered (except for LinkedHashSet and TreeSet)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Queue</strong></td>
+                            <td>FIFO order, processing elements</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Deque</strong></td>
+                            <td>Double-ended queue, can be stack or queue</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Map</strong></td>
+                            <td>Key-value pairs, no duplicate keys</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">2. Explain the difference between ArrayList and LinkedList.</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 1️⃣ Basic Structure</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>ArrayList</strong></p>
+                    <ul>
+                        <li><strong>Backed by a dynamic array</strong></li>
+                        <li>Elements are stored <strong>contiguously in memory</strong></li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>LinkedList</strong></p>
+                    <ul>
+                        <li><strong>Doubly-linked list</strong> (each element points to previous and next)</li>
+                        <li>Elements are <strong>scattered in memory</strong></li>
+                    </ul>
+
+                    <p><strong>🌟 2️⃣ Memory Usage</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>ArrayList</strong></th>
+                            <th><strong>LinkedList</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Memory</td>
+                            <td>Stores <strong>only data</strong> in contiguous array</td>
+                            <td>Stores data plus <strong>pointers (next/prev)</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Overhead</td>
+                            <td>Less memory overhead</td>
+                            <td>More memory overhead for node pointers</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 3️⃣ Performance Comparison</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Operation</strong></th>
+                            <th><strong>ArrayList (Better for)</strong></th>
+                            <th><strong>LinkedList (Better for)</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>Access by index</strong></td>
+                            <td>Faster (O(1))</td>
+                            <td>Slower (O(n)) -- needs traversal</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Insertion/deletion at end</strong></td>
+                            <td>Efficient (O(1) in amortized)</td>
+                            <td>Efficient (O(1)) if at ends</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Insertion/deletion in middle</strong></td>
+                            <td>Slower (O(n) -- shifting required)</td>
+                            <td>Faster (O(1) if you have node reference)</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 4️⃣ Example</strong></p>
+                    <p><strong>ArrayList</strong></p>
+                    <pre><code class="language-java">List&lt;String&gt; arrayList = new ArrayList&lt;&gt;();
+arrayList.add("A");
+arrayList.add("B");
+System.out.println(arrayList.get(1)); // Fast access</code></pre>
+
+                    <p><strong>LinkedList</strong></p>
+                    <pre><code class="language-java">List&lt;String&gt; linkedList = new LinkedList&lt;&gt;();
+linkedList.add("A");
+linkedList.add("B");
+linkedList.add(1, "C"); // Efficient insertion at middle if iterator is used</code></pre>
+
+                    <p><strong>🌟 5️⃣ Use Cases</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Use ArrayList when:</strong></p>
+                    <ul>
+                        <li>You need <strong>fast random access</strong> by index</li>
+                        <li>There are <strong>fewer insertions/deletions</strong> in the middle</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>Use LinkedList when:</strong></p>
+                    <ul>
+                        <li>You need to <strong>frequently insert or delete elements</strong> in the middle or at the ends</li>
+                        <li>You don't need fast random access</li>
+                    </ul>
+
+                    <p><strong>🌟 Summary Table</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>ArrayList</strong></th>
+                            <th><strong>LinkedList</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Underlying data structure</td>
+                            <td>Dynamic array</td>
+                            <td>Doubly-linked list</td>
+                        </tr>
+                        <tr>
+                            <td>Access time</td>
+                            <td>Fast random access (O(1))</td>
+                            <td>Slow random access (O(n))</td>
+                        </tr>
+                        <tr>
+                            <td>Insert/delete ends</td>
+                            <td>Amortized O(1)</td>
+                            <td>O(1)</td>
+                        </tr>
+                        <tr>
+                            <td>Insert/delete middle</td>
+                            <td>Slow (O(n))</td>
+                            <td>Fast (O(1) if node ref is available)</td>
+                        </tr>
+                        <tr>
+                            <td>Memory overhead</td>
+                            <td>Low</td>
+                            <td>High (due to node pointers)</td>
+                        </tr>
+                        <tr>
+                            <td>Use case</td>
+                            <td>More reads and occasional writes</td>
+                            <td>Frequent writes/inserts at both ends</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">3. What is the difference between TreeSet and HashSet?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 1️⃣ Underlying Data Structure</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>HashSet</strong></th>
+                            <th><strong>TreeSet</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Structure</td>
+                            <td>Backed by a <strong>HashMap</strong></td>
+                            <td>Backed by a <strong>TreeMap</strong> (Red-Black Tree)</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 2️⃣ Order of Elements</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>HashSet</strong></p>
+                    <ul>
+                        <li><strong>No ordering</strong> of elements (unordered collection)</li>
+                        <li>Iteration order is <strong>not guaranteed</strong></li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>TreeSet</strong></p>
+                    <ul>
+                        <li><strong>Sorted order</strong> (ascending by default, or via custom comparator)</li>
+                        <li>Guarantees <strong>natural ordering</strong> or a <strong>custom comparator</strong></li>
+                    </ul>
+
+                    <p><strong>🌟 3️⃣ Performance</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Operation</strong></th>
+                            <th><strong>HashSet</strong></th>
+                            <th><strong>TreeSet</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Time Complexity</td>
+                            <td>O(1) for add, remove, contains</td>
+                            <td>O(log n) for add, remove, contains</td>
+                        </tr>
+                        <tr>
+                            <td>Speed</td>
+                            <td>Faster (no ordering maintenance)</td>
+                            <td>Slower (because it maintains order)</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 4️⃣ Null Elements</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>HashSet</strong></th>
+                            <th><strong>TreeSet</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Null Allowed</td>
+                            <td><strong>Yes</strong> (only one null element)</td>
+                            <td><strong>No</strong> (throws NullPointerException)</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 5️⃣ Example Usage</strong></p>
+                    <p><strong>HashSet</strong></p>
+                    <pre><code class="language-java">Set&lt;String&gt; hashSet = new HashSet&lt;&gt;();
+hashSet.add("Banana");
+hashSet.add("Apple");
+hashSet.add("Orange");
+System.out.println(hashSet); // e.g., [Orange, Banana, Apple] -- unordered</code></pre>
+
+                    <p><strong>TreeSet</strong></p>
+                    <pre><code class="language-java">Set&lt;String&gt; treeSet = new TreeSet&lt;&gt;();
+treeSet.add("Banana");
+treeSet.add("Apple");
+treeSet.add("Orange");
+System.out.println(treeSet); // [Apple, Banana, Orange] -- sorted</code></pre>
+
+                    <p><strong>🌟 Summary Table</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>HashSet</strong></th>
+                            <th><strong>TreeSet</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Order</td>
+                            <td>Unordered</td>
+                            <td>Sorted (natural/comparator)</td>
+                        </tr>
+                        <tr>
+                            <td>Performance</td>
+                            <td>Faster (O(1))</td>
+                            <td>Slower (O(log n))</td>
+                        </tr>
+                        <tr>
+                            <td>Null element</td>
+                            <td>Allowed</td>
+                            <td>Not allowed</td>
+                        </tr>
+                        <tr>
+                            <td>Backed by</td>
+                            <td>HashMap</td>
+                            <td>TreeMap</td>
+                        </tr>
+                        <tr>
+                            <td>When to use</td>
+                            <td>Fast lookups, no order needed</td>
+                            <td>When sorted order is important</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 When to Use Each?</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Use HashSet when:</strong></p>
+                    <ul>
+                        <li>You just need a <strong>collection of unique elements</strong> with <strong>fast access</strong></li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>Use TreeSet when:</strong></p>
+                    <ul>
+                        <li>You need the elements to be <strong>sorted</strong> automatically</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">4. How does HashMap work internally?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 Key Concepts</strong></p>
+                    <ul>
+                        <li><strong>HashMap</strong> stores <strong>key-value pairs</strong></li>
+                        <li>It uses an <strong>array of buckets</strong> (buckets = Node&lt;K,V&gt;[])</li>
+                        <li>Each bucket contains a <strong>linked list</strong> (or a balanced tree for performance in Java 8+)</li>
+                        <li><strong>Hashing</strong> is used to map keys to bucket indices</li>
+                    </ul>
+
+                    <p><strong>🌟 1️⃣ Basic Internal Structure</strong></p>
+                    <ul>
+                        <li><strong>Node&lt;K,V&gt;</strong>: The basic entry structure (key, value, hash, next)</li>
+                        <li><strong>Array of Node</strong>: Node&lt;K,V&gt;[] table;</li>
+                        <li>Each element in the array is a <strong>bucket</strong></li>
+                    </ul>
+
+                    <p><strong>🌟 2️⃣ How HashMap Stores Data</strong></p>
+                    <p><strong>🟢 Steps when adding (put()):</strong></p>
+                    <p><strong>1️⃣ Calculate Hash</strong></p>
+                    <ul>
+                        <li>Java calls hashCode() on the key</li>
+                        <li>Hash is <strong>processed further</strong> (with bit-wise operations) to reduce collisions:</li>
+                    </ul>
+                    <pre><code class="language-java">int hash = hash(key.hashCode());</code></pre>
+
+                    <p><strong>2️⃣ Determine Bucket Index</strong></p>
+                    <ul>
+                        <li>Uses the <strong>array length</strong> and hash:</li>
+                    </ul>
+                    <pre><code class="language-java">index = (n - 1) & hash;</code></pre>
+
+                    <p><strong>3️⃣ Check for Existing Bucket</strong></p>
+                    <ul>
+                        <li>If the bucket is <strong>empty</strong> → insert the new node</li>
+                        <li>If it's <strong>occupied</strong>:
+                            <ul>
+                                <li><strong>Traverse linked list</strong> or <strong>tree</strong> to see if the key exists</li>
+                                <li>If exists, <strong>replace value</strong></li>
+                                <li>If not, <strong>add new node</strong> to the linked list or tree</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>🌟 3️⃣ Handling Collisions</strong></p>
+                    <ul>
+                        <li>If multiple keys <strong>map to the same bucket index</strong> (collision):
+                            <ul>
+                                <li>Java initially uses a <strong>linked list</strong></li>
+                                <li>In <strong>Java 8+</strong>, if the linked list becomes <strong>too long (threshold 8)</strong>, it is converted to a <strong>balanced tree</strong> (TreeNode) for better performance (O(log n) instead of O(n))</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>🌟 4️⃣ Load Factor and Rehashing</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Load Factor</strong></p>
+                    <ul>
+                        <li>Default is 0.75</li>
+                        <li>When the number of entries <strong>exceeds (capacity * load factor)</strong>, the <strong>table is resized (doubled)</strong></li>
+                        <li>During resizing, <strong>rehashing</strong> occurs (keys are re-mapped to new buckets)</li>
+                    </ul>
+
+                    <p><strong>🌟 Example of How it Works</strong></p>
+                    <pre><code class="language-java">Map&lt;String, String&gt; map = new HashMap&lt;&gt;();
+map.put("A", "Apple");
+map.put("B", "Banana");
+map.put("C", "Cherry");</code></pre>
+                    <ul>
+                        <li>"A".hashCode() → hash → index → bucket[1] → store Node("A", "Apple")</li>
+                        <li>"B".hashCode() → index → bucket[3] → store Node("B", "Banana")</li>
+                        <li>If "C" collides with "A", "C" is added to the same bucket's linked list or tree</li>
+                    </ul>
+
+                    <p><strong>🌟 Summary Table</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Step</strong></th>
+                            <th><strong>Action</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>Hashing</strong></td>
+                            <td>Hashes key to generate hash</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Index</strong></td>
+                            <td>Computes index in Node[] using hash and array size</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Collision Handling</strong></td>
+                            <td>Uses linked list or tree in bucket if multiple keys map to same index</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Rehashing</strong></td>
+                            <td>Occurs when load factor is exceeded</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>O(1) average-case for get() and put()</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">5. What are Comparable and Comparator? How do they differ?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 Comparable</strong></p>
+                    <ul>
+                        <li>An <strong>interface</strong> in java.lang</li>
+                        <li><strong>Defines natural ordering</strong> of objects</li>
+                        <li>The class <strong>implements</strong> Comparable and <strong>overrides</strong>:</li>
+                    </ul>
+                    <pre><code class="language-java">public int compareTo(T o);</code></pre>
+
+                    <p><strong>Example</strong></p>
+                    <pre><code class="language-java">class Student implements Comparable&lt;Student&gt; {
+    int age;
+    
+    @Override
+    public int compareTo(Student other) {
+        return Integer.compare(this.age, other.age); // sort by age
+    }
+}</code></pre>
+
+                    <p><strong>Usage</strong>:</p>
+                    <ul>
+                        <li>Collections.sort(list);</li>
+                        <li>TreeSet or TreeMap uses it if no Comparator is provided</li>
+                    </ul>
+
+                    <p><strong>🌟 Comparator</strong></p>
+                    <ul>
+                        <li>An <strong>interface</strong> in java.util</li>
+                        <li>Used to define <strong>custom ordering</strong> <strong>outside the class</strong></li>
+                        <li>Implements:</li>
+                    </ul>
+                    <pre><code class="language-java">public int compare(T o1, T o2);</code></pre>
+
+                    <p><strong>Example</strong></p>
+                    <pre><code class="language-java">Comparator&lt;Student&gt; byName = (s1, s2) -> s1.name.compareTo(s2.name);
+Collections.sort(students, byName);</code></pre>
+
+                    <p><strong>🌟 Key Differences</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>Comparable</strong></th>
+                            <th><strong>Comparator</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td>In the <strong>class itself</strong></td>
+                            <td><strong>Separate class</strong> or lambda expression</td>
+                        </tr>
+                        <tr>
+                            <td>Method</td>
+                            <td>compareTo(T o)</td>
+                            <td>compare(T o1, T o2)</td>
+                        </tr>
+                        <tr>
+                            <td>Use case</td>
+                            <td><strong>Natural order</strong></td>
+                            <td><strong>Custom, multiple sorting logic</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Example</td>
+                            <td>String, Integer implement Comparable</td>
+                            <td>Collections.sort with custom Comparator</td>
+                        </tr>
+                        <tr>
+                            <td>Multiple orderings</td>
+                            <td>One natural ordering</td>
+                            <td>Can define multiple comparators</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 When to Use</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Comparable</strong>:</p>
+                    <ul>
+                        <li>When there is a <strong>single, natural ordering</strong> (e.g., String, Integer, Date)</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>Comparator</strong>:</p>
+                    <ul>
+                        <li>When you need <strong>multiple sorting strategies</strong></li>
+                        <li>For external classes you <strong>can't modify</strong></li>
+                    </ul>
+
+                    <p><strong>🌟 Example with Both</strong></p>
+                    <pre><code class="language-java">class Student implements Comparable&lt;Student&gt; {
+    int age;
+    String name;
+    
+    @Override
+    public int compareTo(Student other) {
+        return Integer.compare(this.age, other.age); // natural order: by age
+    }
+}
+
+Comparator&lt;Student&gt; byName = (s1, s2) -> s1.name.compareTo(s2.name);
+
+List&lt;Student&gt; list = ...;
+Collections.sort(list); // uses compareTo (by age)
+Collections.sort(list, byName); // uses Comparator (by name)</code></pre>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">6. What is the difference between Iterator and ListIterator?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 Iterator</strong></p>
+                    <ul>
+                        <li><strong>Defined in</strong>: java.util.Iterator&lt;E&gt;</li>
+                        <li><strong>Works with</strong>: Any <strong>Collection</strong> (List, Set, Queue, etc.)</li>
+                        <li><strong>Traversal</strong>: Only <strong>forward</strong> direction</li>
+                    </ul>
+
+                    <p><strong>✅ Main Methods:</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Method</strong></th>
+                            <th><strong>Purpose</strong></th>
+                        </tr>
+                        <tr>
+                            <td>hasNext()</td>
+                            <td>Checks if there's another element</td>
+                        </tr>
+                        <tr>
+                            <td>next()</td>
+                            <td>Retrieves the next element</td>
+                        </tr>
+                        <tr>
+                            <td>remove()</td>
+                            <td>Removes the current element (optional)</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>❌ Limitations:</strong></p>
+                    <ul>
+                        <li>Can't go <strong>backward</strong></li>
+                        <li>Can't <strong>modify</strong> (replace/add) elements directly</li>
+                    </ul>
+
+                    <p><strong>🌟 ListIterator</strong></p>
+                    <ul>
+                        <li><strong>Defined in</strong>: java.util.ListIterator&lt;E&gt;</li>
+                        <li><strong>Works only with</strong>: <strong>List</strong> (like ArrayList, LinkedList)</li>
+                        <li><strong>Traversal</strong>: Both <strong>forward and backward</strong></li>
+                    </ul>
+
+                    <p><strong>✅ Main Methods:</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Method</strong></th>
+                            <th><strong>Purpose</strong></th>
+                        </tr>
+                        <tr>
+                            <td>hasNext()</td>
+                            <td>Checks if there's a next element</td>
+                        </tr>
+                        <tr>
+                            <td>next()</td>
+                            <td>Retrieves the next element</td>
+                        </tr>
+                        <tr>
+                            <td>hasPrevious()</td>
+                            <td>Checks if there's a previous element</td>
+                        </tr>
+                        <tr>
+                            <td>previous()</td>
+                            <td>Retrieves the previous element</td>
+                        </tr>
+                        <tr>
+                            <td>nextIndex()</td>
+                            <td>Returns the index of next element</td>
+                        </tr>
+                        <tr>
+                            <td>previousIndex()</td>
+                            <td>Returns the index of previous element</td>
+                        </tr>
+                        <tr>
+                            <td>remove()</td>
+                            <td>Removes the current element</td>
+                        </tr>
+                        <tr>
+                            <td>set(E e)</td>
+                            <td>Replaces the current element with a new one</td>
+                        </tr>
+                        <tr>
+                            <td>add(E e)</td>
+                            <td>Inserts a new element at the current position</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 Key Differences</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>Iterator</strong></th>
+                            <th><strong>ListIterator</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Traversal direction</td>
+                            <td>Forward only</td>
+                            <td>Forward <strong>and backward</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Applicable to</td>
+                            <td>All collections</td>
+                            <td>Only <strong>List</strong> implementations</td>
+                        </tr>
+                        <tr>
+                            <td>Add/Set</td>
+                            <td>❌ No</td>
+                            <td>✅ Yes (add(), set())</td>
+                        </tr>
+                        <tr>
+                            <td>Index info</td>
+                            <td>❌ No index methods</td>
+                            <td>✅ nextIndex(), previousIndex()</td>
+                        </tr>
+                        <tr>
+                            <td>Replacement ability</td>
+                            <td>❌ No direct replace</td>
+                            <td>✅ set(E e)</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 Example Code</strong></p>
+                    <p><strong>✅ Iterator</strong></p>
+                    <pre><code class="language-java">List&lt;String&gt; list = List.of("A", "B", "C");
+Iterator&lt;String&gt; iterator = list.iterator();
+while (iterator.hasNext()) {
+    System.out.println(iterator.next());
+}</code></pre>
+
+                    <p><strong>✅ ListIterator</strong></p>
+                    <pre><code class="language-java">List&lt;String&gt; list = List.of("A", "B", "C");
+ListIterator&lt;String&gt; listIterator = list.listIterator(list.size());
+while (listIterator.hasPrevious()) {
+    System.out.println(listIterator.previous()); // prints C, B, A
+}</code></pre>
+
+                    <p><strong>🌟 When to Use</strong></p>
+                    <p><span class="success-badge">✅</span> Use <strong>Iterator</strong>:</p>
+                    <ul>
+                        <li>For <strong>general traversal</strong> of any collection</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> Use <strong>ListIterator</strong>:</p>
+                    <ul>
+                        <li>When you need <strong>bidirectional traversal</strong> or <strong>element modification</strong> in a <strong>List</strong></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">7. Explain ConcurrentHashMap and its advantages over HashMap.</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 What is ConcurrentHashMap?</strong></p>
+                    <ul>
+                        <li>A <strong>thread-safe</strong> implementation of the Map interface</li>
+                        <li>Part of the java.util.concurrent package</li>
+                        <li>Allows <strong>concurrent access</strong> to its elements <strong>without</strong> explicit synchronization</li>
+                    </ul>
+
+                    <p><strong>🌟 Why Not Just Use HashMap?</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>HashMap</strong> is <strong>not thread-safe</strong></p>
+                    <ul>
+                        <li>In <strong>multi-threaded</strong> scenarios, concurrent modification can lead to <strong>data inconsistency</strong> and even <strong>infinite loops</strong></li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>ConcurrentHashMap</strong> solves this by allowing <strong>safe concurrent access</strong> by multiple threads</p>
+
+                    <p><strong>🌟 How ConcurrentHashMap Works Internally</strong></p>
+                    <p><strong>🔹 Old (Java 7)</strong></p>
+                    <ul>
+                        <li>Used <strong>Segment-based locking</strong></li>
+                        <li>The map was divided into <strong>16 segments</strong> (by default)</li>
+                        <li>Each segment was a <strong>separate lock</strong> (like a mini HashMap), so <strong>multiple threads</strong> could write to different segments <strong>concurrently</strong></li>
+                    </ul>
+
+                    <p><strong>🔹 Current (Java 8 and later)</strong></p>
+                    <ul>
+                        <li><strong>No segments</strong>!</li>
+                        <li>Uses <strong>lock stripping</strong> with <strong>bucket-level locks</strong> (synchronized blocks on <strong>specific nodes</strong>)</li>
+                        <li>Operations use a <strong>fine-grained locking</strong> approach:
+                            <ul>
+                                <li><strong>Read operations</strong>: No lock (completely non-blocking via volatile reads)</li>
+                                <li><strong>Write operations</strong>: Only lock the <strong>bucket</strong> (not the entire map)</li>
+                            </ul>
+                        </li>
+                        <li>Also uses <strong>CAS (Compare-And-Swap)</strong> and <strong>node-level locking</strong> for <strong>better performance</strong></li>
+                    </ul>
+
+                    <p><strong>🌟 Key Advantages over HashMap</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>HashMap</strong></th>
+                            <th><strong>ConcurrentHashMap</strong></th>
+                        </tr>
+                        <tr>
+                            <td><strong>Thread-safety</strong></td>
+                            <td>❌ No (must use external sync)</td>
+                            <td>✅ Yes (built-in fine-grained locking)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Concurrent reads</strong></td>
+                            <td>❌ Risky</td>
+                            <td>✅ Lock-free reads, faster for concurrent read-heavy ops</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Concurrent writes</strong></td>
+                            <td>❌ Corruption</td>
+                            <td>✅ Limited locking, safe concurrent writes</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Performance</strong></td>
+                            <td>Fast in single-threaded only</td>
+                            <td>Fast even in multi-threaded (better scalability)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Null keys/values</strong></td>
+                            <td>✅ Allowed</td>
+                            <td>❌ Not allowed (null key/values prohibited)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Lock granularity</strong></td>
+                            <td>Whole map if using external lock</td>
+                            <td>Bucket-level or finer (Node-level)</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 Example</strong></p>
+                    <pre><code class="language-java">Map&lt;String, Integer&gt; map = new ConcurrentHashMap&lt;&gt;();
+map.put("A", 1);
+map.put("B", 2);
+map.computeIfAbsent("C", key -> 3); // Safe concurrent modification
+System.out.println(map.get("A"));</code></pre>
+
+                    <p><strong>🌟 When to Use ConcurrentHashMap</strong></p>
+                    <p><span class="success-badge">✅</span> <strong>Ideal in concurrent scenarios</strong>:</p>
+                    <ul>
+                        <li>Web servers</li>
+                        <li>Multi-threaded caching</li>
+                        <li>Multi-threaded data processing</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> If you <strong>don't need thread-safety</strong>, use HashMap (less overhead)</p>
+
+                    <p><strong>🌟 Important Notes</strong></p>
+                    <p><span class="warning-badge">🔴</span> <strong>Null keys/values are not allowed</strong></p>
+                    <ul>
+                        <li>Because they can create <strong>ambiguous behavior</strong> in concurrent scenarios (e.g., map.get(key) returning null: is it absent, or value = null?)</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> <strong>Performance</strong></p>
+                    <ul>
+                        <li>Read-heavy: Excellent performance due to <strong>lock-free reads</strong></li>
+                        <li>Write-heavy: Better than synchronized HashMap, but some locking overhead</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">8. How do you remove duplicates from a List in Java?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 Approach 1: Using a Set</strong></p>
+                    <p>A Set automatically eliminates duplicates</p>
+                    <pre><code class="language-java">List&lt;String&gt; listWithDuplicates = Arrays.asList("A", "B", "A", "C", "B");
+Set&lt;String&gt; set = new LinkedHashSet&lt;&gt;(listWithDuplicates); // preserves insertion order
+List&lt;String&gt; listWithoutDuplicates = new ArrayList&lt;&gt;(set);
+
+System.out.println(listWithoutDuplicates); // [A, B, C]</code></pre>
+
+                    <p><span class="success-badge">✅</span> Best for quick deduplication</p>
+                    <p><span class="success-badge">✅</span> Preserves order if using LinkedHashSet</p>
+                    <p><span class="success-badge">✅</span> If order doesn't matter, use HashSet</p>
+
+                    <p><strong>🌟 Approach 2: Using Java 8 Streams</strong></p>
+                    <p>The distinct() method in streams removes duplicates</p>
+                    <pre><code class="language-java">List&lt;String&gt; list = Arrays.asList("A", "B", "A", "C", "B");
+List&lt;String&gt; result = list.stream()
+                          .distinct()
+                          .collect(Collectors.toList());
+
+System.out.println(result); // [A, B, C]</code></pre>
+
+                    <p><span class="success-badge">✅</span> Concise and functional</p>
+                    <p><span class="success-badge">✅</span> Preserves order</p>
+                    <p><span class="success-badge">✅</span> Available from Java 8 onward</p>
+
+                    <p><strong>🌟 Approach 3: Using a Loop + Set (Manual)</strong></p>
+                    <p>For older Java versions:</p>
+                    <pre><code class="language-java">List&lt;String&gt; list = Arrays.asList("A", "B", "A", "C", "B");
+List&lt;String&gt; result = new ArrayList&lt;&gt;();
+Set&lt;String&gt; seen = new HashSet&lt;&gt;();
+
+for (String item : list) {
+    if (seen.add(item)) { // add() returns false if already present
+        result.add(item);
+    }
+}
+
+System.out.println(result); // [A, B, C]</code></pre>
+
+                    <p><strong>🌟 Summary Table</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Approach</strong></th>
+                            <th><strong>Preserves order?</strong></th>
+                            <th><strong>Java Version</strong></th>
+                            <th><strong>Comment</strong></th>
+                        </tr>
+                        <tr>
+                            <td>LinkedHashSet</td>
+                            <td>✅ Yes</td>
+                            <td>Java 5+</td>
+                            <td>Quick and easy</td>
+                        </tr>
+                        <tr>
+                            <td>Streams</td>
+                            <td>✅ Yes</td>
+                            <td>Java 8+</td>
+                            <td>Functional and modern</td>
+                        </tr>
+                        <tr>
+                            <td>Loop + Set</td>
+                            <td>✅ Yes</td>
+                            <td>Any Java version</td>
+                            <td>Good for manual control</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">9. Explain the concept of fail-fast and fail-safe iterators.</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 Fail-Fast Iterators</strong></p>
+                    <ul>
+                        <li>These iterators <strong>immediately throw a ConcurrentModificationException</strong> if the collection is <strong>structurally modified</strong> after the iterator is created (except by the iterator's own remove method)</li>
+                    </ul>
+
+                    <p><strong>✅ How it works</strong></p>
+                    <ul>
+                        <li>They track a <strong>modification count (modCount)</strong> in the collection</li>
+                        <li>When the iterator is created, it <strong>remembers</strong> the current modCount</li>
+                        <li>Each time you call next() or hasNext(), it <strong>checks</strong> if modCount has changed</li>
+                        <li>If yes ➜ <strong>throws ConcurrentModificationException</strong></li>
+                    </ul>
+
+                    <p><strong>✅ Example</strong></p>
+                    <pre><code class="language-java">List&lt;String&gt; list = new ArrayList&lt;&gt;(List.of("A", "B", "C"));
+Iterator&lt;String&gt; it = list.iterator();
+list.add("D"); // structural modification
+it.next(); // throws ConcurrentModificationException</code></pre>
+
+                    <p><span class="success-badge">✅</span> Common with:</p>
+                    <ul>
+                        <li>ArrayList</li>
+                        <li>HashMap</li>
+                        <li>HashSet</li>
+                    </ul>
+
+                    <p><strong>🌟 Fail-Safe Iterators</strong></p>
+                    <ul>
+                        <li>These iterators <strong>do not throw ConcurrentModificationException</strong> if the collection is modified during iteration</li>
+                        <li>They <strong>work on a copy</strong> of the collection's data</li>
+                    </ul>
+
+                    <p><strong>✅ How it works</strong></p>
+                    <ul>
+                        <li><strong>Snapshot</strong>: They iterate over a <strong>clone</strong> of the data, not the actual collection</li>
+                        <li>Modifications (add, remove) won't affect the iterator's snapshot</li>
+                    </ul>
+
+                    <p><strong>✅ Example</strong></p>
+                    <pre><code class="language-java">CopyOnWriteArrayList&lt;String&gt; list = new CopyOnWriteArrayList&lt;&gt;(List.of("A", "B", "C"));
+Iterator&lt;String&gt; it = list.iterator();
+list.add("D"); // no ConcurrentModificationException
+while (it.hasNext()) {
+    System.out.println(it.next()); // prints A, B, C
+}</code></pre>
+
+                    <p><span class="success-badge">✅</span> Common with:</p>
+                    <ul>
+                        <li>CopyOnWriteArrayList</li>
+                        <li>ConcurrentHashMap</li>
+                    </ul>
+
+                    <p><strong>🌟 Key Differences</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Feature</strong></th>
+                            <th><strong>Fail-Fast</strong></th>
+                            <th><strong>Fail-Safe</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Throws ConcurrentModificationException</td>
+                            <td>✅ Yes</td>
+                            <td>❌ No</td>
+                        </tr>
+                        <tr>
+                            <td>Underlying collection modified</td>
+                            <td>❌ Not allowed</td>
+                            <td>✅ Allowed (but changes not visible)</td>
+                        </tr>
+                        <tr>
+                            <td>Implementation mechanism</td>
+                            <td>modCount check</td>
+                            <td>Snapshot copy (or similar)</td>
+                        </tr>
+                        <tr>
+                            <td>Collections supporting</td>
+                            <td>ArrayList, HashMap</td>
+                            <td>ConcurrentHashMap, CopyOnWriteArrayList</td>
+                        </tr>
+                    </table>
+
+                    <p><span class="success-badge">✅</span> <strong>When to use?</strong></p>
+                    <ul>
+                        <li><strong>Fail-Fast</strong>: Good for <strong>single-threaded</strong> or safe multi-threaded cases</li>
+                        <li><strong>Fail-Safe</strong>: Good for <strong>concurrent</strong> scenarios like <strong>multi-threaded reads/writes</strong></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="qa-section">
+            <h2 class="section-title">Multithreading and Concurrency</h2>
+            
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">1. What is the difference between Thread and Runnable in Java?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 Thread</strong></p>
+                    <ul>
+                        <li><strong>Class</strong>: java.lang.Thread</li>
+                        <li>Represents a <strong>thread of execution</strong> in Java</li>
+                        <li>You can create a thread by:
+                            <ul>
+                                <li><strong>Extending</strong> the Thread class and overriding its run() method</li>
+                            </ul>
+                        </li>
+                        <li>When you call start(), the new thread begins execution and calls the run() method</li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">class MyThread extends Thread {
+    public void run() {
+        System.out.println("Thread running");
+    }
+}
+
+MyThread t = new MyThread();
+t.start(); // starts a new thread</code></pre>
+
+                    <p><strong>🌟 Runnable</strong></p>
+                    <ul>
+                        <li><strong>Interface</strong>: java.lang.Runnable</li>
+                        <li>Represents a <strong>task</strong> to be executed by a thread</li>
+                        <li>You <strong>implement</strong> the Runnable interface and override run() method</li>
+                        <li>You pass the Runnable object to a Thread constructor to run the task</li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">class MyRunnable implements Runnable {
+    public void run() {
+        System.out.println("Runnable running");
+    }
+}
+
+Thread t = new Thread(new MyRunnable());
+t.start();</code></pre>
+
+                    <p><strong>🌟 Key Differences</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Aspect</strong></th>
+                            <th><strong>Thread</strong></th>
+                            <th><strong>Runnable</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>Class</td>
+                            <td>Interface</td>
+                        </tr>
+                        <tr>
+                            <td>Usage</td>
+                            <td>You create a new thread by extending it</td>
+                            <td>Defines a task, passed to a Thread</td>
+                        </tr>
+                        <tr>
+                            <td>Inheritance</td>
+                            <td>Cannot extend any other class if extend Thread</td>
+                            <td>Can implement other interfaces/classes</td>
+                        </tr>
+                        <tr>
+                            <td>Resource sharing</td>
+                            <td>Less flexible (each thread object is separate)</td>
+                            <td>Runnable objects can be shared among multiple threads</td>
+                        </tr>
+                        <tr>
+                            <td>Design preference</td>
+                            <td>Less preferred (limits inheritance)</td>
+                            <td>Preferred way to implement threads</td>
+                        </tr>
+                    </table>
+
+                    <p><strong>🌟 When to use which?</strong></p>
+                    <p><span class="success-badge">✅</span> Use <strong>Runnable</strong> when:</p>
+                    <ul>
+                        <li>You want to separate task and thread execution</li>
+                        <li>You want to implement multiple inheritance (since Java doesn't support multiple inheritance of classes)</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> Use <strong>Thread</strong> when:</p>
+                    <ul>
+                        <li>You want to override other thread methods or add extra thread-specific behavior</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">2. Explain the lifecycle of a thread in Java.</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 Thread Lifecycle in Java</strong></p>
+                    <p>A thread in Java can be in one of the following states:</p>
+
+                    <p><strong>1️⃣ New</strong><br>
+                    <span class="success-badge">✅</span> A thread is created, but not yet started</p>
+                    <pre><code class="language-java">Thread t = new Thread(() -> System.out.println("Running"));</code></pre>
+
+                    <p><strong>2️⃣ Runnable (Ready-to-run)</strong><br>
+                    <span class="success-badge">✅</span> The thread has been <strong>started</strong> using start()<br>
+                    <span class="success-badge">✅</span> It's <strong>eligible</strong> to run but the CPU might not have chosen it yet</p>
+                    <pre><code class="language-java">t.start(); // now in Runnable state</code></pre>
+
+                    <p><strong>3️⃣ Running</strong><br>
+                    <span class="success-badge">✅</span> The thread is <strong>currently executing</strong></p>
+                    <p><span class="info-badge">💡</span> In Java, <strong>Runnable</strong> and <strong>Running</strong> are typically combined into <strong>Runnable</strong> (as they are both in the "ready/running" pool)</p>
+
+                    <p><strong>4️⃣ Blocked / Waiting / Sleeping</strong><br>
+                    <span class="success-badge">✅</span> The thread is <strong>not running</strong> because it's:</p>
+                    <ul>
+                        <li><strong>Waiting</strong> for another thread to perform an action (wait(), join(), or LockSupport.park())</li>
+                        <li><strong>Sleeping</strong> for a period (Thread.sleep())</li>
+                        <li><strong>Blocked</strong> on I/O or waiting to enter a synchronized block</li>
+                    </ul>
+
+                    <p><strong>5️⃣ Terminated (Dead)</strong><br>
+                    <span class="success-badge">✅</span> The thread's run() method has completed (either by <strong>normal completion</strong> or by throwing an uncaught exception)</p>
+
+                    <p><strong>🌟 Diagram of Thread Lifecycle</strong></p>
+                    <pre><code class="language-java">NEW
+|
+| start()
+▼
+RUNNABLE
+| ▲
+| | (CPU scheduler picks)
+▼ |
+RUNNING
+| ▲
+| | (time slice over, preempted)
+▼ |
+BLOCKED/WAITING/SLEEPING
+| ▲
+| | (notify(), sleep over, I/O done)
+▼ |
+TERMINATED</code></pre>
+
+                    <p><strong>🌟 Code Example</strong></p>
+                    <p>Here's how the states can change in practice:</p>
+                    <pre><code class="language-java">class MyThread extends Thread {
+    public void run() {
+        System.out.println("Thread is running");
+        try {
+            Thread.sleep(1000); // moves to Timed Waiting (sleep)
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Thread exiting");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        MyThread t = new MyThread(); // NEW
+        t.start(); // RUNNABLE
+        
+        // after start(), JVM scheduler may move it to RUNNING
+        // then it sleeps -> TIMED WAITING
+        // then runs again -> RUNNING
+        // then terminates -> TERMINATED
+    }
+}</code></pre>
+
+                    <p><span class="success-badge">✅</span> <strong>Summary Table of States</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>State</strong></th>
+                            <th><strong>When it occurs</strong></th>
+                        </tr>
+                        <tr>
+                            <td>New</td>
+                            <td>After creating thread object, before start()</td>
+                        </tr>
+                        <tr>
+                            <td>Runnable</td>
+                            <td>After start() called, waiting for CPU scheduling</td>
+                        </tr>
+                        <tr>
+                            <td>Running</td>
+                            <td>CPU picked the thread, executing run()</td>
+                        </tr>
+                        <tr>
+                            <td>Blocked/Waiting</td>
+                            <td>Waiting for a monitor lock / another thread / I/O</td>
+                        </tr>
+                        <tr>
+                            <td>Timed Waiting</td>
+                            <td>Sleeping (sleep()), waiting with timeout</td>
+                        </tr>
+                        <tr>
+                            <td>Terminated</td>
+                            <td>Run method finished / uncaught exception ends thread</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">3. What is a synchronized block, and when would you use it?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 What is a synchronized block?</strong></p>
+                    <p>A <strong>synchronized block</strong> in Java is used to <strong>lock an object</strong> (or this or a class object) to ensure that <strong>only one thread at a time</strong> can execute the block's code</p>
+                    <p>This prevents <strong>race conditions</strong> and ensures <strong>thread safety</strong></p>
+
+                    <p><strong>✅ Syntax</strong></p>
+                    <pre><code class="language-java">synchronized (lockObject) {
+    // Critical section code
+}</code></pre>
+
+                    <p><span class="success-badge">✅</span> lockObject can be:</p>
+                    <ul>
+                        <li>this (current object instance)</li>
+                        <li>A specific object</li>
+                        <li>A class object (ClassName.class for static-level locking)</li>
+                    </ul>
+
+                    <p><strong>🌟 Example</strong></p>
+                    <pre><code class="language-java">class Counter {
+    private int count = 0;
+    
+    public void increment() {
+        synchronized (this) {
+            count++;
+        }
+    }
+    
+    public int getCount() {
+        return count;
+    }
+}</code></pre>
+                    <p>In this example:</p>
+                    <ul>
+                        <li>The synchronized (this) block ensures that <strong>only one thread</strong> at a time can increment the count variable</li>
+                    </ul>
+
+                    <p><strong>🌟 When would you use it?</strong></p>
+                    <p><span class="success-badge">✅</span> When <strong>multiple threads</strong> access <strong>shared mutable data</strong> and you want to:</p>
+                    <ul>
+                        <li>Avoid <strong>race conditions</strong></li>
+                        <li>Ensure <strong>atomic operations</strong> (like increments or updates)</li>
+                        <li>Coordinate access to critical sections</li>
+                    </ul>
+
+                    <p><span class="success-badge">✅</span> Example scenario:</p>
+                    <ul>
+                        <li>A <strong>bank account</strong> class where multiple threads might withdraw or deposit money. Synchronizing ensures no two threads change the balance at the same time, preventing data corruption</li>
+                    </ul>
+
+                    <p><strong>🌟 Synchronized Block vs. Synchronized Method</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Synchronized Block</strong></th>
+                            <th><strong>Synchronized Method</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Synchronizes only the <strong>critical section</strong> of code</td>
+                            <td>Synchronizes the entire method</td>
+                        </tr>
+                        <tr>
+                            <td>More <strong>efficient</strong> (less code locked)</td>
+                            <td>Less control (whole method locked)</td>
+                        </tr>
+                        <tr>
+                            <td>Use when <strong>only part</strong> of the method needs thread-safety</td>
+                            <td>Use when <strong>entire method</strong> is critical</td>
+                        </tr>
+                    </table>
+
+                    <p><span class="info-badge">💡</span> <strong>Key Takeaway:</strong><br>
+                    Use synchronized blocks when you need to <strong>protect specific parts of code</strong> that access shared data and avoid performance impact of locking unnecessary code</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">4. Explain the difference between wait(), notify(), and notifyAll().</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>✅ 1️⃣ wait()</strong></p>
+                    <ul>
+                        <li><strong>Pauses the current thread</strong> and <strong>releases the lock</strong> on the object's monitor</li>
+                        <li>The thread <strong>waits</strong> until it is <strong>notified</strong> or <strong>interrupted</strong></li>
+                        <li>Must be called inside a synchronized block or method; otherwise, it throws IllegalMonitorStateException</li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">synchronized(lock) {
+    lock.wait(); // thread waits and releases the lock
+}</code></pre>
+
+                    <p><strong>✅ 2️⃣ notify()</strong></p>
+                    <ul>
+                        <li><strong>Wakes up one</strong> of the <strong>waiting threads</strong> (if any) on the same object's monitor</li>
+                        <li>The awakened thread <strong>doesn't immediately acquire the lock</strong>---it must wait until the current thread releases it</li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">synchronized(lock) {
+    lock.notify(); // wakes up one waiting thread
+}</code></pre>
+
+                    <p><strong>✅ 3️⃣ notifyAll()</strong></p>
+                    <ul>
+                        <li><strong>Wakes up all waiting threads</strong> on the same object's monitor</li>
+                        <li>Like notify(), these threads compete for the lock once it's released</li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">synchronized(lock) {
+    lock.notifyAll(); // wakes up all waiting threads
+}</code></pre>
+
+                    <p><strong>🌟 Key Differences</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Method</strong></th>
+                            <th><strong>Effect</strong></th>
+                            <th><strong>Who gets notified?</strong></th>
+                        </tr>
+                        <tr>
+                            <td>wait()</td>
+                            <td>Pauses current thread, releases lock</td>
+                            <td>N/A (it's the caller of wait that waits)</td>
+                        </tr>
+                        <tr>
+                            <td>notify()</td>
+                            <td>Wakes up <strong>one</strong> waiting thread</td>
+                            <td>Any one (random) waiting thread</td>
+                        </tr>
+                        <tr>
+                            <td>notifyAll()</td>
+                            <td>Wakes up <strong>all</strong> waiting threads</td>
+                            <td>All threads waiting on that object's monitor</td>
+                        </tr>
+                    </table>
+
+                    <p><span class="info-badge">💡</span> <strong>Why do we use them?</strong></p>
+                    <ul>
+                        <li>They're used for <strong>communication between threads</strong></li>
+                        <li>Example: <strong>Producer-Consumer problem</strong>---a producer thread can notify a waiting consumer thread that new data is available</li>
+                    </ul>
+
+                    <p><span class="warning-badge">⚠️</span> <strong>Important Points</strong></p>
+                    <p><span class="success-badge">✅</span> Must be called inside synchronized context<br>
+                    <span class="success-badge">✅</span> Only affects threads <strong>waiting on that same object's monitor</strong><br>
+                    <span class="success-badge">✅</span> Awakened threads must re-acquire the lock before proceeding</p>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">5. What are Callable and Future in Java?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>✅ Callable</strong></p>
+                    <ul>
+                        <li>Callable is an <strong>interface</strong> in java.util.concurrent</li>
+                        <li>Similar to Runnable, but:
+                            <ul>
+                                <li>It <strong>returns a result</strong></li>
+                                <li>It can <strong>throw checked exceptions</strong></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>Syntax:</strong></p>
+                    <pre><code class="language-java">public interface Callable&lt;V&gt; {
+    V call() throws Exception;
+}</code></pre>
+                    <ul>
+                        <li>V is the <strong>return type</strong></li>
+                    </ul>
+
+                    <p><strong>Example:</strong></p>
+                    <pre><code class="language-java">import java.util.concurrent.Callable;
+
+class MyTask implements Callable&lt;String&gt; {
+    @Override
+    public String call() {
+        return "Task done!";
+    }
+}</code></pre>
+
+                    <p><strong>✅ Future</strong></p>
+                    <ul>
+                        <li>Future is an <strong>interface</strong> in java.util.concurrent</li>
+                        <li>Represents the <strong>result of an asynchronous computation</strong></li>
+                        <li>Provides methods to:
+                            <ul>
+                                <li><strong>Retrieve the result</strong></li>
+                                <li><strong>Check if the task is done</strong></li>
+                                <li><strong>Cancel the task</strong></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>Key methods:</strong></p>
+                    <pre><code class="language-java">V get() throws InterruptedException, ExecutionException; // waits for the task to finish, returns the result
+boolean cancel(boolean mayInterruptIfRunning); // cancels the task
+boolean isDone(); // true if completed
+boolean isCancelled(); // true if cancelled</code></pre>
+
+                    <p><strong>🌟 How to use them together?</strong></p>
+                    <p><span class="success-badge">✅</span> Use an ExecutorService to <strong>submit</strong> a Callable task and get a Future:</p>
+                    <pre><code class="language-java">import java.util.concurrent.*;
+
+public class CallableExample {
+    public static void main(String[] args) throws Exception {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        
+        Callable&lt;String&gt; task = () -> {
+            Thread.sleep(1000); // simulate work
+            return "Hello from Callable!";
+        };
+        
+        Future&lt;String&gt; future = executor.submit(task);
+        
+        System.out.println("Task submitted, waiting for result...");
+        String result = future.get(); // blocks until result is available
+        System.out.println("Result: " + result);
+        
+        executor.shutdown();
+    }
+}</code></pre>
+
+                    <p><strong>✅ Key Differences: Callable vs Runnable</strong></p>
+                    <table>
+                        <tr>
+                            <th><strong>Aspect</strong></th>
+                            <th><strong>Runnable</strong></th>
+                            <th><strong>Callable</strong></th>
+                        </tr>
+                        <tr>
+                            <td>Return value</td>
+                            <td>No</td>
+                            <td>Yes (V return type)</td>
+                        </tr>
+                        <tr>
+                            <td>Checked exceptions</td>
+                            <td>Cannot throw</td>
+                            <td>Can throw checked exceptions</td>
+                        </tr>
+                        <tr>
+                            <td>Method to override</td>
+                            <td>run()</td>
+                            <td>call()</td>
+                        </tr>
+                        <tr>
+                            <td>Usage with Future</td>
+                            <td>No direct result access</td>
+                            <td>Submit to ExecutorService → get Future</td>
+                        </tr>
+                    </table>
+
+                    <p><span class="success-badge">✅</span> <strong>Summary</strong>:</p>
+                    <ul>
+                        <li>Callable: A task that returns a result and can throw exceptions</li>
+                        <li>Future: Represents the result of a Callable task and allows checking status, cancelling, and getting the result</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="question-card">
+                <div class="question-header">
+                    <div class="question-text">6. How does ExecutorService work?</div>
+                    <button class="toggle-btn">▼</button>
+                </div>
+                <div class="answer-content">
+                    <p><strong>🌟 What is ExecutorService?</strong></p>
+                    <ul>
+                        <li>An <strong>interface</strong> in java.util.concurrent that represents an asynchronous execution mechanism</li>
+                        <li>Provides a way to <strong>manage and control thread execution</strong></li>
+                        <li>Allows you to <strong>submit tasks</strong> for execution and <strong>manage thread pools</strong></li>
+                    </ul>
+
+                    <p><strong>🌟 Key Features</strong></p>
+                    <ul>
+                        <li><strong>Thread pool management</strong>: Reuses threads to avoid the overhead of thread creation</li>
+                        <li><strong>Task submission</strong>: Accepts Runnable and Callable tasks</li>
+                        <li><strong>Result retrieval</strong>: Returns Future objects for tracking task completion and results</li>
+                        <li><strong>Lifecycle control</strong>: Methods to shutdown or await termination</li>
+                    </ul>
+
+                    <p><strong>🌟 Creating an ExecutorService</strong></p>
+                    <p>Common ways to create an ExecutorService using Executors factory class:</p>
+                    <pre><code class="language-java">// Single thread executor
+ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
+
+// Fixed thread pool
+ExecutorService fixedThreadPool = Executors.newFixedThreadPool(4);
+
+// Cached thread pool (creates threads as needed)
+ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
+// Scheduled thread pool
+ScheduledExecutorService scheduledExecutor = Executors.newScheduledThreadPool(2);</code></pre>
+
+                    <p><strong>🌟 Submitting Tasks</strong></p>
+                    <p>You can submit tasks in several ways:</p>
+                    <pre><code class="language-java">// Submit a Runnable (no return value)
+executor.submit(() -> System.out.println("Task running"));
+
+// Submit a Callable (returns Future)
+Future&lt;String&gt; future = executor.submit(() -> {
+    Thread.sleep(1000);
+    return "Task result";
+});
+
+// Execute a collection of tasks
+List&lt;Callable&lt;String&gt;&gt; tasks = ...;
+List&lt;Future&lt;String&gt;&gt; futures = executor.invokeAll(tasks);</code></pre>
+
+                    <p><strong>🌟 Shutting Down</strong></p>
+                    <p>Important to shut down ExecutorService properly:</p>
+                    <pre><code class="language-java">// Graceful shutdown - completes submitted tasks but accepts no new tasks
+executor.shutdown();
+
+// Forceful shutdown - tries to stop executing tasks
+executor.shutdownNow();
+
+// Wait for termination
+executor.awaitTermination(1, TimeUnit.MINUTES);</code></pre>
+
+                    <p><strong>🌟 Example</strong></p>
+                    <pre><code class="language-java">import java.util.concurrent.*;
+
+public class ExecutorServiceExample {
+    public static void main(String[] args) throws Exception {
+        ExecutorService executor = Executors.newFixedThreadPool(3);
+        
+        // Submit tasks
+        Future&lt;String&gt; future1 = executor.submit(() -> "Task 1");
+        Future&lt;String&gt; future2 = executor.submit(() -> "Task 2");
+        
+        // Get results
+        System.out.println(future1.get());
+        System.out.println(future2.get());
+        
+        // Shutdown
+        executor.shutdown();
+    }
+}</code></pre>
+
+                    <p><strong>🌟 Benefits</strong></p>
+                    <ul>
+                        <li><strong>Thread reuse</strong>: Avoids overhead of creating new threads for each task</li>
+                        <li><strong>Resource management</strong>: Controls the number of concurrent threads</li>
+                        <li><strong>Task tracking</strong>: Future objects allow monitoring task progress and results</li>
+                        <li><strong>Error handling</strong>: Better control over task execution and exceptions</li>
+                    </ul>
+
+                    <p><strong>🌟 Common Implementations</strong></p>
+                    <ul>
+                        <li><strong>ThreadPoolExecutor</strong>: The standard implementation used by Executors factory methods</li>
+                        <li><strong>ScheduledThreadPoolExecutor</strong>: For scheduled task execution</li>
+                        <li><strong>ForkJoinPool</strong>: For divide-and-conquer algorithms (Java 7+)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2025 Java Interview Questions | Designed with ❤️ for developers</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleButtons = document.querySelectorAll('.toggle-btn');
+            
+            toggleButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const answerContent = this.parentElement.nextElementSibling;
+                    this.classList.toggle('active');
+                    answerContent.classList.toggle('show');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
