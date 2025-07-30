@@ -48,13 +48,14 @@
 
     @media screen and (max-width: 600px) {
       button {
-        width: 100px;
+        width: 90px;
         font-size: 14px;
       }
     }
   </style>
 </head>
 <body>
+
   <header>
     <h1>Microservice Architecture Book</h1>
   </header>
@@ -63,6 +64,9 @@
     <button id="prev">Previous</button>
     <span>Page <span id="page_num">1</span> / <span id="page_count">--</span></span>
     <button id="next">Next</button>
+    <br />
+    <button id="zoom_in">Zoom In</button>
+    <button id="zoom_out">Zoom Out</button>
   </div>
 
   <canvas id="pdf-render"></canvas>
@@ -71,7 +75,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 
   <script>
-    const url = 'MicroserviceArchitecture.pdf'; // File must be in the same folder
+    const url = 'MicroserviceArchitecture.pdf';
 
     let pdfDoc = null,
         pageNum = 1,
@@ -80,20 +84,15 @@
         canvas = document.getElementById('pdf-render'),
         ctx = canvas.getContext('2d');
 
-    // Auto scale based on screen width
-    function getScaleForScreen() {
-      const width = window.innerWidth;
-      if (width < 480) return 0.75;
-      else if (width < 768) return 1;
-      else return 1.5;
-    }
-
-    let scale = getScaleForScreen();
+    let scale = 1.5;
+    const scaleStep = 0.25;
+    const maxScale = 3.0;
+    const minScale = 0.5;
 
     function renderPage(num) {
       pageRendering = true;
-      pdfDoc.getPage(num).then(function (page) {
-        const viewport = page.getViewport({ scale });
+      pdfDoc.getPage(num).then(function(page) {
+        const viewport = page.getViewport({ scale: scale });
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
@@ -103,7 +102,7 @@
         };
         const renderTask = page.render(renderContext);
 
-        renderTask.promise.then(function () {
+        renderTask.promise.then(function() {
           pageRendering = false;
           if (pageNumPending !== null) {
             renderPage(pageNumPending);
@@ -125,23 +124,43 @@
       }
     }
 
-    document.getElementById('prev').addEventListener('click', () => {
+    function onPrevPage() {
       if (pageNum <= 1) return;
       pageNum--;
       queueRenderPage(pageNum);
-    });
+    }
 
-    document.getElementById('next').addEventListener('click', () => {
+    function onNextPage() {
       if (pageNum >= pdfDoc.numPages) return;
       pageNum++;
       queueRenderPage(pageNum);
-    });
+    }
 
-    pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
+    function onZoomIn() {
+      if (scale < maxScale) {
+        scale += scaleStep;
+        queueRenderPage(pageNum);
+      }
+    }
+
+    function onZoomOut() {
+      if (scale > minScale) {
+        scale -= scaleStep;
+        queueRenderPage(pageNum);
+      }
+    }
+
+    document.getElementById('prev').addEventListener('click', onPrevPage);
+    document.getElementById('next').addEventListener('click', onNextPage);
+    document.getElementById('zoom_in').addEventListener('click', onZoomIn);
+    document.getElementById('zoom_out').addEventListener('click', onZoomOut);
+
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
       pdfDoc = pdfDoc_;
       document.getElementById('page_count').textContent = pdfDoc.numPages;
       renderPage(pageNum);
     });
   </script>
+
 </body>
 </html>
