@@ -3,43 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PDF Viewer with Zoom</title>
+  <title>Responsive PDF Viewer</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       background: #f5f5f5;
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     header {
       background: #6200ee;
       color: white;
+      width: 100%;
       padding: 1rem;
+      text-align: center;
     }
 
     .controls {
-      margin: 10px;
-    }
-
-    #canvas-container {
-      display: inline-block;
-      overflow: auto;
-      margin: 1rem auto;
-      border: 1px solid #ccc;
-      background-color: white;
-      transform-origin: top center;
-      transition: transform 0.2s ease-in-out;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px;
     }
 
     canvas {
+      width: 100%;
+      height: auto;
       display: block;
     }
 
+    #canvas-container {
+      width: 90vw;
+      max-width: 800px;
+      overflow: auto;
+      background: white;
+      margin-bottom: 2rem;
+      border: 1px solid #ccc;
+      transition: transform 0.3s ease-in-out;
+      transform-origin: top center;
+    }
+
     button {
-      padding: 10px 20px;
-      font-size: 16px;
-      margin: 5px;
+      padding: 10px 16px;
+      font-size: 15px;
       border: none;
       background-color: #6200ee;
       color: white;
@@ -49,7 +59,28 @@
 
     button:disabled {
       background-color: #bbb;
-      cursor: not-allowed;
+    }
+
+    @media (max-width: 768px) {
+      button {
+        padding: 8px 14px;
+        font-size: 14px;
+      }
+
+      #canvas-container {
+        width: 95vw;
+      }
+    }
+
+    @media (max-width: 480px) {
+      button {
+        padding: 6px 10px;
+        font-size: 13px;
+      }
+
+      #canvas-container {
+        width: 98vw;
+      }
     }
   </style>
 </head>
@@ -63,7 +94,9 @@
     <button id="prev">Previous</button>
     <span>Page <span id="page_num">1</span> / <span id="page_count">--</span></span>
     <button id="next">Next</button>
-    <br />
+  </div>
+
+  <div class="controls">
     <button id="zoom_in">Zoom In</button>
     <button id="zoom_out">Zoom Out</button>
   </div>
@@ -74,19 +107,19 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
   <script>
-    const url = 'MicroserviceArchitecture.pdf';
+    const url = 'MicroserviceArchitecture.pdf'; // PDF must be in same folder
 
     let pdfDoc = null,
         pageNum = 1,
-        scale = 1.5, // initial PDF rendering scale
-        viewScale = 1, // CSS transform scale
+        baseScale = 1.5, // for rendering clarity
+        viewScale = 1,   // for zooming via CSS
         canvas = document.getElementById('pdf-render'),
         container = document.getElementById('canvas-container'),
         ctx = canvas.getContext('2d');
 
     function renderPage(num) {
-      pdfDoc.getPage(num).then(function (page) {
-        const viewport = page.getViewport({ scale: scale });
+      pdfDoc.getPage(num).then(page => {
+        const viewport = page.getViewport({ scale: baseScale });
         canvas.height = viewport.height;
         canvas.width = viewport.width;
 
@@ -120,7 +153,7 @@
     }
 
     function onZoomOut() {
-      if (viewScale > 0.2) {
+      if (viewScale > 0.3) {
         viewScale -= 0.1;
         applyZoom();
       }
@@ -135,7 +168,7 @@
     document.getElementById('zoom_in').addEventListener('click', onZoomIn);
     document.getElementById('zoom_out').addEventListener('click', onZoomOut);
 
-    pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
+    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
       pdfDoc = pdfDoc_;
       document.getElementById('page_count').textContent = pdfDoc.numPages;
       renderPage(pageNum);
