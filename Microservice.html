@@ -3,75 +3,108 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Responsive PDF Viewer</title>
+  <title>Quick Notes</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
+      margin: 0;
       background: #f5f5f5;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
 
     header {
       background: #6200ee;
       color: white;
-      width: 100%;
-      padding: 1rem;
       text-align: center;
+      padding: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .book-list, .pdf-viewer {
+      display: none;
+      padding: 1rem;
+    }
+
+    .book-list.active, .pdf-viewer.active {
+      display: block;
+    }
+
+    .book-item {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      color: #ffffff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1rem; /* Added spacing between items */
+    }
+
+    .book-item:last-child {
+      margin-bottom: 0; /* Remove margin from last item */
+    }
+
+    .book-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 15px rgba(99, 102, 241, 0.3);
+      background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
     }
 
     #canvas-container {
       width: 90vw;
       max-width: 800px;
+      margin: auto;
       background: white;
       border: 1px solid #ccc;
-      margin: 1rem auto 0 auto;
-      transition: transform 0.3s ease-in-out;
       transform-origin: top center;
+      transition: transform 0.3s ease-in-out;
     }
 
     canvas {
       width: 100%;
       height: auto;
-      display: block;
     }
 
     .controls-bottom {
       width: 90vw;
       max-width: 800px;
+      margin: 1rem auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 0.5rem auto 2rem auto;
       flex-wrap: wrap;
     }
 
-    .nav-buttons {
+    .nav-buttons, .zoom-controls {
       display: flex;
       gap: 10px;
+      align-items: center;
+    }
+
+    .nav-buttons button, .zoom-controls button {
+      padding: 10px 14px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .nav-buttons button {
+      background: #6200ee;
+      color: white;
+    }
+
+    .nav-buttons button:disabled {
+      background: #aaa;
     }
 
     .zoom-controls {
-      display: flex;
-      align-items: center;
-      gap: 0;
       border: 1px solid #ccc;
       border-radius: 5px;
       overflow: hidden;
-      box-shadow: 0 0 3px rgba(0,0,0,0.2);
     }
 
     .zoom-controls button {
       background: #eee;
-      border: none;
-      padding: 10px 14px;
-      font-size: 18px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .zoom-controls button:hover {
@@ -82,38 +115,61 @@
       border-right: 1px solid #ccc;
     }
 
-    .nav-buttons button {
-      padding: 10px 16px;
-      font-size: 15px;
-      background: #6200ee;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
+    .back-button {
+      display: flex;
+      align-items: center;
+      margin: 1rem auto;
+      width: 90vw;
+      max-width: 800px;
     }
 
-    .nav-buttons button:disabled {
-      background: #aaa;
+    .back-button button {
+      background: transparent;
+      border: none;
+      font-size: 18px;
+      color: #6200ee;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .back-button button:hover {
+      text-decoration: underline;
     }
 
     @media (max-width: 600px) {
       .controls-bottom {
         flex-direction: column;
-        align-items: stretch;
         gap: 10px;
       }
-
       .nav-buttons, .zoom-controls {
         justify-content: center;
+        width: 100%;
       }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h2>Microservice Architecture Book</h2>
-  </header>
+<header>📂 PDF Library</header>
+
+<!-- Book List View -->
+<div class="book-list active" id="book-list">
+  <div class="book-item" onclick="loadBook('Java programming notes.pdf')">Java programming notes</div>
+  <div class="book-item" onclick="loadBook('Java 8 interview questions.pdf')">Java 8 interview questions</div>
+  <div class="book-item" onclick="loadBook('Java Stream.pdf')">Java Stream</div>
+  <div class="book-item" onclick="loadBook('Spring boot interview.pdf')">Spring boot interview</div>
+  <div class="book-item" onclick="loadBook('Spring Bean Life Cycle.pdf')">Spring Bean Life Cycle</div>
+  <div class="book-item" onclick="loadBook('System design notes.pdf')">System design notes</div> 
+  <div class="book-item" onclick="loadBook('MicroserviceArchitecture.pdf')">Microservice Architecture</div>
+  <div class="book-item" onclick="loadBook('Top Jenkins Interview Questions.pdf')">Top Jenkins Interview Questions</div> 
+</div>
+
+<!-- PDF Viewer View -->
+<div class="pdf-viewer" id="pdf-viewer">
+  <div class="back-button">
+    <button onclick="goBack()">⬅ Back to Book List</button>
+  </div>
 
   <div id="canvas-container">
     <canvas id="pdf-render"></canvas>
@@ -131,75 +187,77 @@
       <button id="zoom_in">＋</button>
     </div>
   </div>
+</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
-  <script>
-    const url = 'MicroserviceArchitecture.pdf'; // Must be in same directory
+<!-- PDF.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
+<script>
+  let pdfDoc = null,
+      pageNum = 1,
+      baseScale = 1.5,
+      viewScale = 1,
+      canvas = document.getElementById('pdf-render'),
+      container = document.getElementById('canvas-container'),
+      ctx = canvas.getContext('2d');
 
-    let pdfDoc = null,
-        pageNum = 1,
-        baseScale = 1.5,
-        viewScale = 1,
-        canvas = document.getElementById('pdf-render'),
-        container = document.getElementById('canvas-container'),
-        ctx = canvas.getContext('2d');
+  function renderPage(num) {
+    pdfDoc.getPage(num).then(page => {
+      const viewport = page.getViewport({ scale: baseScale });
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+      page.render({ canvasContext: ctx, viewport: viewport });
+    });
+    document.getElementById('page_num').textContent = num;
+    document.getElementById('prev').disabled = (num <= 1);
+    document.getElementById('next').disabled = (num >= pdfDoc.numPages);
+  }
 
-    function renderPage(num) {
-      pdfDoc.getPage(num).then(page => {
-        const viewport = page.getViewport({ scale: baseScale });
-        canvas.height = viewport.height;
-        canvas.width = viewport.width;
+  function loadBook(file) {
+    document.getElementById('book-list').classList.remove('active');
+    document.getElementById('pdf-viewer').classList.add('active');
 
-        const renderContext = {
-          canvasContext: ctx,
-          viewport: viewport
-        };
-        page.render(renderContext);
-      });
+    viewScale = 1;
+    container.style.transform = `scale(${viewScale})`;
 
-      document.getElementById('page_num').textContent = num;
-      document.getElementById('prev').disabled = (num === 1);
-      document.getElementById('next').disabled = (num === pdfDoc.numPages);
-    }
+    pdfjsLib.getDocument(file).promise.then(function(pdf) {
+      pdfDoc = pdf;
+      document.getElementById('page_count').textContent = pdf.numPages;
+      pageNum = 1;
+      renderPage(pageNum);
+    });
+  }
 
-    function onPrevPage() {
-      if (pageNum <= 1) return;
+  function goBack() {
+    document.getElementById('book-list').classList.add('active');
+    document.getElementById('pdf-viewer').classList.remove('active');
+  }
+
+  document.getElementById('prev').addEventListener('click', () => {
+    if (pageNum > 1) {
       pageNum--;
       renderPage(pageNum);
     }
+  });
 
-    function onNextPage() {
-      if (pageNum >= pdfDoc.numPages) return;
+  document.getElementById('next').addEventListener('click', () => {
+    if (pageNum < pdfDoc.numPages) {
       pageNum++;
       renderPage(pageNum);
     }
+  });
 
-    function onZoomIn() {
-      viewScale += 0.1;
-      applyZoom();
-    }
+  document.getElementById('zoom_in').addEventListener('click', () => {
+    viewScale += 0.1;
+    container.style.transform = `scale(${viewScale})`;
+  });
 
-    function onZoomOut() {
-      if (viewScale > 0.3) {
-        viewScale -= 0.1;
-        applyZoom();
-      }
-    }
-
-    function applyZoom() {
+  document.getElementById('zoom_out').addEventListener('click', () => {
+    if (viewScale > 0.3) {
+      viewScale -= 0.1;
       container.style.transform = `scale(${viewScale})`;
     }
+  });
+</script>
 
-    document.getElementById('prev').addEventListener('click', onPrevPage);
-    document.getElementById('next').addEventListener('click', onNextPage);
-    document.getElementById('zoom_in').addEventListener('click', onZoomIn);
-    document.getElementById('zoom_out').addEventListener('click', onZoomOut);
-
-    pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
-      pdfDoc = pdfDoc_;
-      document.getElementById('page_count').textContent = pdfDoc.numPages;
-      renderPage(pageNum);
-    });
-  </script>
 </body>
 </html>
