@@ -34,10 +34,12 @@ Quick Notes is a modern, feature-rich PDF reader built with HTML, CSS, and JavaS
 ## 🖼️ Screenshots
 
 ### Light Theme
-![Light Theme](https://via.placeholder.com/600x400/ffffff/000000?text=Light+Theme+Demo)
+<img width="1918" height="956" alt="image" src="https://github.com/user-attachments/assets/9861d786-3727-4437-a7d8-9f2a012fdc0d" />
+
 
 ### Dark Theme with Night Sky
-![Dark Theme](https://via.placeholder.com/600x400/0a0e17/ffffff?text=Dark+Theme+with+Night+Sky)
+<img width="1915" height="957" alt="image" src="https://github.com/user-attachments/assets/a4932692-566b-45d4-8abb-6d1ef6979ee0" />
+
 
 ### PDF Viewer with Controls
 ![PDF Viewer](https://via.placeholder.com/600x400/2d2d2d/ffffff?text=PDF+Viewer+with+Slider)
