@@ -13,7 +13,7 @@
     
     :root {
       --primary-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      --dark-bg: linear-gradient(135deg, #232526 0%, #414345 100%);
+      --dark-bg: #0a0e17;
       --header-light: rgba(255, 255, 255, 0.2);
       --header-dark: rgba(0, 0, 0, 0.3);
       --text-light: #333;
@@ -38,6 +38,64 @@
     body.dark-mode {
       background: var(--dark-bg);
       color: var(--text-dark);
+      overflow: hidden;
+    }
+
+    /* Night sky effect for dark mode */
+    .night-sky {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    body.dark-mode .night-sky {
+      display: block;
+    }
+
+    .star {
+      position: absolute;
+      background-color: white;
+      border-radius: 50%;
+      animation: twinkle 5s infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+
+    .shooting-star {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0) 100%);
+      animation: shoot 3s infinite;
+      opacity: 0;
+    }
+
+    @keyframes shoot {
+      0% { 
+        transform: translateX(-100px) translateY(-100px) rotate(45deg);
+        opacity: 0;
+        width: 0;
+      }
+      5% { 
+        opacity: 1;
+        width: 100px;
+      }
+      10% {
+        width: 50px;
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateX(300px) translateY(300px) rotate(45deg);
+        opacity: 0;
+        width: 0;
+      }
     }
 
     body::before {
@@ -510,6 +568,74 @@
       background: rgba(0, 0, 0, 0.4);
     }
 
+    /* Page slider styles */
+    .page-slider-container {
+      width: 90vw;
+      max-width: 800px;
+      margin: 1rem auto;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .page-slider {
+      flex-grow: 1;
+      height: 5px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: #ddd;
+      outline: none;
+      border-radius: 5px;
+    }
+
+    .dark-mode .page-slider {
+      background: #444;
+    }
+
+    .page-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #6200ee;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .dark-mode .page-slider::-webkit-slider-thumb {
+      background: #a78bfa;
+    }
+
+    .page-slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #6200ee;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .dark-mode .page-slider::-moz-range-thumb {
+      background: #a78bfa;
+    }
+
+    .page-input {
+      width: 60px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .dark-mode .page-input {
+      background: #3a3a3a;
+      color: white;
+      border-color: #555;
+    }
+
     @media (max-width: 768px) {
       .book-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -552,6 +678,11 @@
       header {
         padding: 0.5rem;
       }
+
+      .page-slider-container {
+        flex-direction: column;
+        gap: 10px;
+      }
     }
 
     @media (max-width: 480px) {
@@ -585,6 +716,9 @@
   </style>
 </head>
 <body>
+
+<!-- Night sky with stars -->
+<div class="night-sky" id="night-sky"></div>
 
 <header>
   <div class="header-container">
@@ -670,6 +804,13 @@
       </div>
     </div>
 
+    <!-- Page slider -->
+    <div class="page-slider-container">
+      <input type="range" min="1" value="1" class="page-slider" id="page-slider">
+      <input type="number" min="1" value="1" class="page-input" id="page-input">
+      <span>of <span id="total-pages">--</span></span>
+    </div>
+
     <div class="controls-bottom">
       <div class="nav-buttons">
         <button id="prev"><i class="fas fa-chevron-left"></i> Previous</button>
@@ -688,7 +829,7 @@
 <footer>
   <div class="footer-content">
     <div class="copyright">
-      <i class="far fa-copyright"></i> 2025 Quick Notes. All Rights Reserved.
+      <i class="far fa-copyright"></i> 2023 Quick Notes. All Rights Reserved.
     </div>
     <div class="footer-buttons">
       <button onclick="showCopyrightInfo()">
@@ -776,6 +917,36 @@
     if (localStorage.getItem('theme') === 'dark') {
       enableDarkMode();
     }
+    
+    // Create night sky with stars
+    createNightSky();
+  }
+
+  // Create night sky with stars and shooting stars
+  function createNightSky() {
+    const nightSky = document.getElementById('night-sky');
+    
+    // Create stars
+    for (let i = 0; i < 150; i++) {
+      const star = document.createElement('div');
+      star.classList.add('star');
+      star.style.width = Math.random() * 3 + 'px';
+      star.style.height = star.style.width;
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 5 + 's';
+      nightSky.appendChild(star);
+    }
+    
+    // Create shooting stars
+    for (let i = 0; i < 5; i++) {
+      const shootingStar = document.createElement('div');
+      shootingStar.classList.add('shooting-star');
+      shootingStar.style.left = Math.random() * 20 + '%';
+      shootingStar.style.top = Math.random() * 20 + '%';
+      shootingStar.style.animationDelay = Math.random() * 10 + 's';
+      nightSky.appendChild(shootingStar);
+    }
   }
 
   // Simulate an IP address for demo purposes
@@ -831,7 +1002,11 @@
       
       page.render(renderContext);
     });
+    
+    // Update page indicators
     document.getElementById('page_num').textContent = num;
+    document.getElementById('page_input').value = num;
+    document.getElementById('page-slider').value = num;
     document.getElementById('prev').disabled = (num <= 1);
     document.getElementById('next').disabled = (num >= pdfDoc.numPages);
   }
@@ -852,7 +1027,16 @@
 
     pdfjsLib.getDocument(file).promise.then(function(pdf) {
       pdfDoc = pdf;
-      document.getElementById('page_count').textContent = pdf.numPages;
+      const totalPages = pdf.numPages;
+      
+      // Update page indicators
+      document.getElementById('page_count').textContent = totalPages;
+      document.getElementById('total-pages').textContent = totalPages;
+      
+      // Configure page slider
+      document.getElementById('page-slider').max = totalPages;
+      document.getElementById('page-input').max = totalPages;
+      
       pageNum = 1;
       renderPage(pageNum);
     }).catch(error => {
@@ -903,6 +1087,28 @@
     if (viewScale > 0.3) {
       viewScale -= 0.1;
       container.style.transform = `scale(${viewScale})`;
+    }
+  });
+
+  // Page slider functionality
+  document.getElementById('page-slider').addEventListener('input', function() {
+    const newPage = parseInt(this.value);
+    if (newPage !== pageNum && newPage >= 1 && newPage <= pdfDoc.numPages) {
+      pageNum = newPage;
+      renderPage(pageNum);
+    }
+  });
+
+  // Page input functionality
+  document.getElementById('page-input').addEventListener('change', function() {
+    let newPage = parseInt(this.value);
+    if (isNaN(newPage)) newPage = 1;
+    if (newPage < 1) newPage = 1;
+    if (newPage > pdfDoc.numPages) newPage = pdfDoc.numPages;
+    
+    if (newPage !== pageNum) {
+      pageNum = newPage;
+      renderPage(pageNum);
     }
   });
 
