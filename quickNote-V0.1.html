@@ -1005,7 +1005,12 @@
     
     // Update page indicators
     document.getElementById('page_num').textContent = num;
-    document.getElementById('page_input').value = num;
+      // Ensure num is a valid number and within min/max
+      const pageInput = document.getElementById('page_input');
+      let safeNum = parseInt(num);
+      if (isNaN(safeNum) || safeNum < 1) safeNum = 1;
+      if (pdfDoc && safeNum > pdfDoc.numPages) safeNum = pdfDoc.numPages;
+      pageInput.value = safeNum;
     document.getElementById('page-slider').value = num;
     document.getElementById('prev').disabled = (num <= 1);
     document.getElementById('next').disabled = (num >= pdfDoc.numPages);
