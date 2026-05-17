@@ -1,2523 +1,1231 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EduBook — Premium Academic Library</title>
-  <meta name="description" content="Discover thousands of engineering notes, programming PDFs, novels and story books on EduBook — the modern student platform." />
-
-  <!-- Favicon SVG inline -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563EB'/%3E%3Cpath d='M8 8h10a6 6 0 0 1 6 6v0a6 6 0 0 1-6 6H8V8z' fill='%23fff' opacity='.9'/%3E%3Crect x='8' y='22' width='16' height='2' rx='1' fill='%2338BDF8'/%3E%3C/svg%3E" />
-
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-
-  <style>
-    :root {
-      --bg: #0F172A;
-      --bg2: #0a1020;
-      --surface: rgba(255,255,255,0.04);
-      --surface-md: rgba(255,255,255,0.07);
-      --surface-hi: rgba(255,255,255,0.11);
-      --border: rgba(255,255,255,0.08);
-      --border-hi: rgba(255,255,255,0.14);
-      --blue: #2563EB;
-      --blue-light: #3B82F6;
-      --purple: #7C3AED;
-      --purple-light: #A78BFA;
-      --cyan: #38BDF8;
-      --text: #F8FAFC;
-      --text-md: #CBD5E1;
-      --text-muted: #64748B;
-      --radius: 20px;
-      --radius-lg: 28px;
-      --radius-xl: 36px;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'DM Sans', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── CANVAS BG ── */
-    #bg-canvas {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-    }
-
-    .page-wrap {
-      position: relative;
-      z-index: 1;
-    }
-
-    /* ── NAVBAR ── */
-    .navbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      height: 68px;
-      background: rgba(15,23,42,0.72);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border-bottom: 1px solid var(--border);
-      transition: background 0.3s;
-    }
-
-    .nav-brand {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      text-decoration: none;
-      color: var(--text);
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 1.15rem;
-      letter-spacing: -0.02em;
-    }
-
-    .nav-logo {
-      width: 34px; height: 34px;
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      font-size: 0.85rem;
-      font-weight: 900;
-      box-shadow: 0 0 24px rgba(37,99,235,0.45);
-      flex-shrink: 0;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2rem;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: var(--text-md);
-      text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      letter-spacing: 0.01em;
-      transition: color 0.2s;
-      position: relative;
-    }
-
-    .nav-links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px; left: 0; right: 0;
-      height: 1.5px;
-      background: linear-gradient(90deg, var(--blue), var(--cyan));
-      border-radius: 2px;
-      transform: scaleX(0);
-      transition: transform 0.25s cubic-bezier(.4,0,.2,1);
-    }
-
-    .nav-links a:hover { color: var(--text); }
-    .nav-links a:hover::after { transform: scaleX(1); }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .nav-icon-btn {
-      width: 38px; height: 38px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-md);
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-size: 0.9rem;
-    }
-
-    .nav-icon-btn:hover {
-      background: var(--surface-md);
-      color: var(--text);
-      border-color: var(--border-hi);
-    }
-
-    .btn-upload {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1.1rem;
-      border-radius: 999px;
-      background: var(--surface-md);
-      border: 1px solid var(--border-hi);
-      color: var(--text);
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-upload:hover {
-      background: var(--surface-hi);
-      box-shadow: 0 0 18px rgba(56,189,248,0.12);
-    }
-
-    .btn-login {
-      padding: 0.5rem 1.3rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      color: white;
-      font-size: 0.88rem;
-      font-weight: 700;
-      cursor: pointer;
-      border: none;
-      box-shadow: 0 0 20px rgba(37,99,235,0.35);
-      transition: all 0.2s;
-    }
-
-    .btn-login:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 30px rgba(37,99,235,0.5);
-    }
-
-    /* Hamburger */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      padding: 6px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-    }
-
-    .hamburger span {
-      display: block;
-      width: 20px;
-      height: 2px;
-      background: var(--text-md);
-      border-radius: 2px;
-      transition: all 0.3s;
-    }
-
-    /* Mobile menu */
-    .mobile-menu {
-      position: fixed;
-      top: 68px; left: 0; right: 0;
-      background: rgba(15,23,42,0.97);
-      backdrop-filter: blur(24px);
-      border-bottom: 1px solid var(--border);
-      padding: 1.5rem 2rem;
-      display: none;
-      flex-direction: column;
-      gap: 1rem;
-      z-index: 99;
-      transform: translateY(-10px);
-      opacity: 0;
-      transition: all 0.3s cubic-bezier(.4,0,.2,1);
-    }
-
-    .mobile-menu.open {
-      display: flex;
-      transform: translateY(0);
-      opacity: 1;
-    }
-
-    .mobile-menu a {
-      color: var(--text-md);
-      text-decoration: none;
-      font-size: 1rem;
-      font-weight: 500;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      gap: 4rem;
-      padding: 120px 5vw 80px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .hero-copy {
-      position: relative;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      padding: 0.45rem 1rem;
-      border-radius: 999px;
-      background: rgba(37,99,235,0.12);
-      border: 1px solid rgba(37,99,235,0.25);
-      color: var(--cyan);
-      font-size: 0.82rem;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 1.5rem;
-    }
-
-    .eyebrow-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--cyan);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
-
-    .hero-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(2.8rem, 5vw, 5.2rem);
-      font-weight: 800;
-      line-height: 1.02;
-      letter-spacing: -0.04em;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-title .grad {
-      background: linear-gradient(135deg, #60A5FA 0%, #A78BFA 40%, #38BDF8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .hero-desc {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-      line-height: 1.85;
-      max-width: 520px;
-      margin-bottom: 2.5rem;
-    }
-
-    .hero-search {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border-hi);
-      border-radius: 999px;
-      padding: 0.5rem 0.5rem 0.5rem 1.25rem;
-      max-width: 520px;
-      margin-bottom: 2rem;
-      box-shadow: 0 0 40px rgba(37,99,235,0.08);
-      backdrop-filter: blur(12px);
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    .hero-search:focus-within {
-      border-color: rgba(37,99,235,0.5);
-      box-shadow: 0 0 40px rgba(37,99,235,0.18);
-    }
-
-    .hero-search input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--text);
-      font-size: 0.95rem;
-      font-family: inherit;
-    }
-
-    .hero-search input::placeholder { color: var(--text-muted); }
-
-    .search-btn {
-      padding: 0.65rem 1.3rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      color: white;
-      font-size: 0.88rem;
-      font-weight: 700;
-      border: none;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: all 0.2s;
-      box-shadow: 0 0 20px rgba(37,99,235,0.3);
-    }
-
-    .search-btn:hover { transform: translateY(-1px); }
-
-    .hero-ctas {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-      margin-bottom: 3rem;
-    }
-
-    .cta-primary {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.85rem 2rem;
-      border-radius: 999px;
-      background: linear-gradient(135deg, var(--blue), var(--purple));
-      color: white;
-      font-size: 0.95rem;
-      font-weight: 700;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 0 30px rgba(37,99,235,0.4);
-      transition: all 0.25s;
-    }
-
-    .cta-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 50px rgba(37,99,235,0.55);
-    }
-
-    .cta-secondary {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.85rem 1.75rem;
-      border-radius: 999px;
-      background: var(--surface-md);
-      border: 1px solid var(--border-hi);
-      color: var(--text);
-      font-size: 0.95rem;
-      font-weight: 600;
-      text-decoration: none;
-      cursor: pointer;
-      transition: all 0.25s;
-    }
-
-    .cta-secondary:hover {
-      background: var(--surface-hi);
-      transform: translateY(-2px);
-    }
-
-    .hero-stats {
-      display: flex;
-      gap: 2.5rem;
-    }
-
-    .stat {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .stat-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.75rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      background: linear-gradient(135deg, var(--text) 0%, var(--text-md) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .stat-label {
-      color: var(--text-muted);
-      font-size: 0.82rem;
-      font-weight: 500;
-    }
-
-    /* ── 3D BOOK ── */
-    .hero-visual {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      min-height: 560px;
-    }
-
-    .glow-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-    }
-
-    .glow-orb-1 {
-      width: 360px; height: 360px;
-      background: radial-gradient(circle, rgba(37,99,235,0.22), transparent 70%);
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-    }
-
-    .glow-orb-2 {
-      width: 200px; height: 200px;
-      background: radial-gradient(circle, rgba(124,58,237,0.25), transparent 70%);
-      bottom: 20%; right: 10%;
-    }
-
-    .book-scene {
-      perspective: 1200px;
-      width: 280px;
-      height: 380px;
-      position: relative;
-      cursor: pointer;
-    }
-
-    .book-3d {
-      width: 100%;
-      height: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      animation: bookFloat 6s ease-in-out infinite, bookRotate 20s linear infinite;
-      transform-origin: center center;
-      transition: transform 0.15s cubic-bezier(.4,0,.2,1);
-    }
-
-    @keyframes bookFloat {
-      0%,100% { transform: translateY(0px) rotateY(var(--ry,0deg)) rotateX(18deg); }
-      50% { transform: translateY(-18px) rotateY(var(--ry,0deg)) rotateX(18deg); }
-    }
-
-    @keyframes bookRotate {
-      0% { --ry: 0deg; }
-      100% { --ry: 360deg; }
-    }
-
-    .book-face {
-      position: absolute;
-      border-radius: 4px 18px 18px 4px;
-    }
-
-    .book-front {
-      width: 100%; height: 100%;
-      background: linear-gradient(145deg, #1e3a8a 0%, #1d4ed8 40%, #7c3aed 100%);
-      transform: translateZ(26px);
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: space-between;
-      padding: 2rem 1.75rem;
-      box-shadow:
-        inset 3px 0 8px rgba(0,0,0,0.25),
-        0 30px 80px rgba(0,0,0,0.55),
-        0 0 60px rgba(37,99,235,0.2);
-      border: 1px solid rgba(255,255,255,0.1);
-      overflow: hidden;
-    }
-
-    .book-front::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, transparent 50%);
-      pointer-events: none;
-    }
-
-    .book-front-logo {
-      width: 40px; height: 40px;
-      background: rgba(255,255,255,0.15);
-      border-radius: 10px;
-      display: grid;
-      place-items: center;
-      font-size: 1.1rem;
-    }
-
-    .book-front-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.3rem;
-      font-weight: 800;
-      color: white;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-    }
-
-    .book-front-sub {
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.65);
-      font-weight: 500;
-      margin-top: 0.35rem;
-    }
-
-    .book-front-bar {
-      width: 100%;
-      height: 3px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.3), rgba(56,189,248,0.6));
-      border-radius: 2px;
-    }
-
-    .book-back {
-      width: 100%; height: 100%;
-      background: linear-gradient(145deg, #1a2f5e, #1e3a8a);
-      transform: rotateY(180deg) translateZ(26px);
-      border-radius: 18px 4px 4px 18px;
-    }
-
-    .book-spine {
-      width: 52px; height: 100%;
-      background: linear-gradient(180deg, #1d4ed8 0%, #5b21b6 100%);
-      position: absolute;
-      left: 0; top: 0;
-      transform-origin: left center;
-      transform: translateX(-26px) rotateY(-90deg) translateZ(26px);
-      box-shadow: inset -3px 0 8px rgba(0,0,0,0.4);
-      border-radius: 4px 0 0 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .book-spine-text {
-      writing-mode: vertical-rl;
-      text-orientation: mixed;
-      transform: rotate(180deg);
-      color: rgba(255,255,255,0.5);
-      font-size: 0.65rem;
-      letter-spacing: 0.15em;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    .book-top {
-      width: 100%; height: 52px;
-      background: linear-gradient(90deg, #2563eb, #7c3aed);
-      position: absolute;
-      top: -26px; left: 0;
-      transform: rotateX(90deg) translateZ(0px);
-      transform-origin: center bottom;
-      opacity: 0.6;
-    }
-
-    .book-bottom {
-      width: 100%; height: 52px;
-      background: linear-gradient(90deg, #1e40af, #5b21b6);
-      position: absolute;
-      bottom: -26px; left: 0;
-      transform: rotateX(-90deg) translateZ(0px);
-      transform-origin: center top;
-      opacity: 0.4;
-    }
-
-    /* Pages effect */
-    .book-pages {
-      position: absolute;
-      right: -3px; top: 4px;
-      width: 18px; height: calc(100% - 8px);
-      transform: translateZ(10px);
-      background: repeating-linear-gradient(
-        to bottom,
-        #e2e8f0 0px,
-        #e2e8f0 1px,
-        #f1f5f9 1px,
-        #f1f5f9 3px
-      );
-      border-radius: 0 4px 4px 0;
-      opacity: 0.9;
-    }
-
-    /* Floating cards around book */
-    .float-card {
-      position: absolute;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.1);
-      backdrop-filter: blur(12px);
-      border-radius: 14px;
-      padding: 0.75rem 1rem;
-      font-size: 0.78rem;
-      color: var(--text-md);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 500;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      animation: floatCard 4s ease-in-out infinite;
-      pointer-events: none;
-    }
-
-    .float-card-icon {
-      width: 26px; height: 26px;
-      border-radius: 8px;
-      display: grid;
-      place-items: center;
-      font-size: 0.75rem;
-    }
-
-    .float-card-1 {
-      top: 10%; left: -30%;
-      animation-delay: 0s;
-    }
-
-    .float-card-2 {
-      bottom: 18%; right: -28%;
-      animation-delay: -2s;
-    }
-
-    .float-card-3 {
-      top: 50%; right: -32%;
-      animation-delay: -1s;
-    }
-
-    @keyframes floatCard {
-      0%,100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
-
-    /* ── SECTION SHARED ── */
-    .section {
-      padding: 6rem 5vw;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .section-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 3rem;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.4rem 0.9rem;
-      border-radius: 999px;
-      background: rgba(37,99,235,0.1);
-      border: 1px solid rgba(37,99,235,0.2);
-      color: var(--cyan);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 0.85rem;
-    }
-
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(1.8rem, 3vw, 2.8rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.1;
-    }
-
-    .section-desc {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      line-height: 1.8;
-      margin-top: 0.75rem;
-      max-width: 480px;
-    }
-
-    .see-all {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--cyan);
-      font-size: 0.88rem;
-      font-weight: 600;
-      text-decoration: none;
-      padding: 0.6rem 1.25rem;
-      border-radius: 999px;
-      border: 1px solid rgba(56,189,248,0.2);
-      transition: all 0.2s;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    .see-all:hover {
-      background: rgba(56,189,248,0.08);
-      border-color: rgba(56,189,248,0.4);
-    }
-
-    /* ── STATS STRIP ── */
-    .stats-strip {
-      padding: 2.5rem 5vw;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-    }
-
-    .stat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 2rem 1.75rem;
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(37,99,235,0.05), transparent);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .stat-card:hover::before { opacity: 1; }
-
-    .stat-card:hover {
-      border-color: rgba(37,99,235,0.3);
-      transform: translateY(-3px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    }
-
-    .stat-icon {
-      width: 50px; height: 50px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
-    .stat-card-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      line-height: 1;
-    }
-
-    .stat-card-label {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      margin-top: 0.25rem;
-    }
-
-    /* ── NOTES GRID ── */
-    .notes-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-
-    .notes-grid.wide {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    /* ── BOOK CARD ── */
-    .book-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.35s cubic-bezier(.4,0,.2,1);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .book-card::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: linear-gradient(135deg, rgba(37,99,235,0.07), rgba(124,58,237,0.05));
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    .book-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(37,99,235,0.3);
-      box-shadow: 0 28px 80px rgba(0,0,0,0.45), 0 0 0 1px rgba(37,99,235,0.1);
-    }
-
-    .book-card:hover::after { opacity: 1; }
-
-    .card-thumb {
-      width: 100%;
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 3.5rem;
-      position: relative;
-      overflow: hidden;
-      flex-shrink: 0;
-    }
-
-    .card-thumb::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      opacity: 0.08;
-      background: repeating-linear-gradient(
-        45deg,
-        rgba(255,255,255,0.04) 0px,
-        rgba(255,255,255,0.04) 1px,
-        transparent 1px,
-        transparent 12px
-      );
-    }
-
-    .card-body {
-      padding: 1.25rem 1.5rem 1.5rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .card-tags {
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-      margin-bottom: 0.75rem;
-    }
-
-    .card-tag {
-      padding: 0.28rem 0.65rem;
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
-
-    .card-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.3;
-      margin-bottom: 0.5rem;
-    }
-
-    .card-desc {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      line-height: 1.7;
-      flex: 1;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 1rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-    }
-
-    .card-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-    }
-
-    .card-open {
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      color: var(--cyan);
-      font-size: 0.82rem;
-      font-weight: 700;
-      transition: gap 0.2s;
-    }
-
-    .book-card:hover .card-open { gap: 0.6rem; }
-
-    /* Coming soon overlay */
-    .coming-soon-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(15,23,42,0.7);
-      backdrop-filter: blur(2px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: inherit;
-      z-index: 2;
-    }
-
-    .coming-soon-badge {
-      padding: 0.5rem 1.2rem;
-      background: rgba(124,58,237,0.2);
-      border: 1px solid rgba(124,58,237,0.4);
-      border-radius: 999px;
-      color: var(--purple-light);
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-    }
-
-    /* ── STORY BOOKS ── */
-    .story-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-    }
-
-    .story-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.35s cubic-bezier(.4,0,.2,1);
-      position: relative;
-    }
-
-    .story-card:hover {
-      transform: translateY(-6px) scale(1.01);
-      border-color: rgba(124,58,237,0.35);
-      box-shadow: 0 28px 80px rgba(0,0,0,0.45), 0 0 40px rgba(124,58,237,0.08);
-    }
-
-    .story-cover {
-      width: 100%;
-      height: 220px;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
-      overflow: hidden;
-    }
-
-    .story-cover::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 60px;
-      background: linear-gradient(to top, var(--bg), transparent);
-    }
-
-    .story-body {
-      padding: 1rem 1.25rem 1.25rem;
-    }
-
-    .story-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.3rem;
-    }
-
-    .story-author {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-    }
-
-    .story-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-top: 0.85rem;
-    }
-
-    .story-rating {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-      color: #FBBF24;
-      font-size: 0.78rem;
-      font-weight: 600;
-    }
-
-    .story-tag {
-      padding: 0.25rem 0.6rem;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      font-weight: 700;
-    }
-
-    /* ── TRENDING SECTION ── */
-    .trending-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .trend-item {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      padding: 1rem 1.25rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: all 0.25s;
-    }
-
-    .trend-item:hover {
-      background: var(--surface-md);
-      border-color: var(--border-hi);
-      transform: translateX(4px);
-    }
-
-    .trend-num {
-      font-family: 'Syne', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--border-hi);
-      min-width: 32px;
-      letter-spacing: -0.04em;
-    }
-
-    .trend-icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
-    .trend-info { flex: 1; min-width: 0; }
-
-    .trend-title {
-      font-weight: 600;
-      font-size: 0.92rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .trend-meta {
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      margin-top: 0.2rem;
-    }
-
-    .trend-views {
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      white-space: nowrap;
-    }
-
-    /* ── PDF VIEWER ── */
-    .pdf-viewer {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 200;
-      background: rgba(9,12,20,0.95);
-      backdrop-filter: blur(20px);
-      flex-direction: column;
-    }
-
-    .pdf-viewer.active { display: flex; }
-
-    .pdf-topbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 1rem 1.5rem;
-      border-bottom: 1px solid var(--border);
-      background: rgba(15,23,42,0.9);
-      flex-wrap: wrap;
-    }
-
-    .pdf-title-text {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-    }
-
-    .pdf-controls-group {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .pdf-btn {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.6rem 1rem;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text-md);
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .pdf-btn:hover {
-      background: var(--surface-md);
-      color: var(--text);
-    }
-
-    .pdf-btn.primary {
-      background: rgba(37,99,235,0.15);
-      border-color: rgba(37,99,235,0.3);
-      color: var(--cyan);
-    }
-
-    .pdf-content {
-      flex: 1;
-      overflow: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1.5rem;
-      gap: 1rem;
-    }
-
-    #canvas-container {
-      max-width: 900px;
-      width: 100%;
-      border-radius: var(--radius);
-      overflow: hidden;
-      box-shadow: 0 40px 120px rgba(0,0,0,0.6);
-    }
-
-    canvas { width: 100%; display: block; }
-
-    .pdf-toolbar {
-      max-width: 900px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .page-slider-wrap {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    input[type=range] {
-      flex: 1;
-      appearance: none;
-      height: 6px;
-      border-radius: 999px;
-      background: rgba(37,99,235,0.2);
-      outline: none;
-    }
-
-    input[type=range]::-webkit-slider-thumb {
-      appearance: none;
-      width: 18px; height: 18px;
-      border-radius: 50%;
-      background: var(--blue);
-      cursor: pointer;
-      border: 2px solid white;
-      box-shadow: 0 0 10px rgba(37,99,235,0.4);
-    }
-
-    .page-input-box {
-      width: 64px;
-      padding: 0.5rem 0.6rem;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-weight: 600;
-      font-size: 0.85rem;
-      text-align: center;
-      outline: none;
-    }
-
-    .page-label {
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      white-space: nowrap;
-    }
-
-    /* ── CATEGORIES ── */
-    .cat-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.25rem;
-    }
-
-    .cat-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.75rem;
-      cursor: pointer;
-      transition: all 0.3s;
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .cat-card:hover {
-      border-color: rgba(37,99,235,0.3);
-      transform: translateY(-4px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    }
-
-    .cat-icon {
-      width: 52px; height: 52px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      font-size: 1.3rem;
-    }
-
-    .cat-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 1rem;
-      font-weight: 700;
-    }
-
-    .cat-count {
-      color: var(--text-muted);
-      font-size: 0.82rem;
-      margin-top: 0.2rem;
-    }
-
-    /* ── RECENTLY UPLOADED ── */
-    .recent-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-    }
-
-    .note-item {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      cursor: pointer;
-      transition: all 0.25s;
-    }
-
-    .note-item:hover {
-      background: var(--surface-md);
-      border-color: var(--border-hi);
-      transform: translateY(-2px);
-    }
-
-    .note-icon {
-      width: 46px; height: 46px;
-      border-radius: 14px;
-      display: grid;
-      place-items: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
-    .note-title {
-      font-weight: 600;
-      font-size: 0.92rem;
-    }
-
-    .note-time {
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      margin-top: 0.2rem;
-    }
-
-    /* ── FOOTER ── */
-    .footer {
-      padding: 4rem 5vw 2.5rem;
-      border-top: 1px solid var(--border);
-      position: relative;
-    }
-
-    .footer-grid {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 3rem;
-      margin-bottom: 3rem;
-    }
-
-    .footer-brand { }
-
-    .footer-brand p {
-      color: var(--text-muted);
-      font-size: 0.88rem;
-      line-height: 1.8;
-      margin: 1rem 0 1.5rem;
-      max-width: 300px;
-    }
-
-    .footer-socials {
-      display: flex;
-      gap: 0.75rem;
-    }
-
-    .social-btn {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      display: grid;
-      place-items: center;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .social-btn:hover {
-      color: var(--cyan);
-      border-color: rgba(56,189,248,0.3);
-      background: rgba(56,189,248,0.06);
-    }
-
-    .footer-col h4 {
-      font-family: 'Syne', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 700;
-      margin-bottom: 1.25rem;
-      color: var(--text);
-    }
-
-    .footer-col ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 0.75rem;
-    }
-
-    .footer-col a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.88rem;
-      transition: color 0.2s;
-    }
-
-    .footer-col a:hover { color: var(--text); }
-
-    .footer-bottom {
-      max-width: 1400px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
-      gap: 1rem;
-      flex-wrap: wrap;
-      color: var(--text-muted);
-      font-size: 0.82rem;
-    }
-
-    /* ── SCROLL REVEAL ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(32px);
-      transition: opacity 0.7s cubic-bezier(.4,0,.2,1), transform 0.7s cubic-bezier(.4,0,.2,1);
-    }
-
-    .reveal.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ── UTILITY ── */
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 1100px) {
-      .notes-grid.wide, .story-grid { grid-template-columns: repeat(3, 1fr); }
-      .cat-grid { grid-template-columns: repeat(2, 1fr); }
-      .footer-grid { grid-template-columns: 1fr 1fr; }
-    }
-
-    @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; gap: 3rem; padding: 100px 5vw 60px; min-height: auto; }
-      .hero-visual { min-height: 400px; }
-      .notes-grid, .notes-grid.wide, .story-grid { grid-template-columns: repeat(2, 1fr); }
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .recent-grid { grid-template-columns: 1fr 1fr; }
-      .nav-links { display: none; }
-      .hamburger { display: flex; }
-      .btn-login, .btn-upload { display: none; }
-      .float-card-1 { display: none; }
-    }
-
-    @media (max-width: 600px) {
-      .notes-grid, .notes-grid.wide, .story-grid { grid-template-columns: 1fr; }
-      .stats-grid { grid-template-columns: 1fr 1fr; }
-      .recent-grid { grid-template-columns: 1fr; }
-      .cat-grid { grid-template-columns: 1fr 1fr; }
-      .footer-grid { grid-template-columns: 1fr; }
-      .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
-      .float-card-2, .float-card-3 { display: none; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0"/>
+<title>EduBook — Premium Academic Library</title>
+<meta name="description" content="Thousands of engineering notes, programming PDFs and story books for modern students."/>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%232563EB'/%3E%3Cpath d='M8 8h10a6 6 0 0 1 6 6v0a6 6 0 0 1-6 6H8V8z' fill='%23fff' opacity='.9'/%3E%3Crect x='8' y='22' width='16' height='2' rx='1' fill='%2338BDF8'/%3E%3C/svg%3E"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+<style>
+/* ═══════════════════════════════════════════
+   THEME TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --blue:#2563EB; --blue-l:#3B82F6;
+  --purple:#7C3AED; --purple-l:#A78BFA;
+  --cyan:#38BDF8;
+  --r:16px; --r-lg:22px; --r-xl:30px;
+  --transition:0.35s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"]{
+  --bg:#0F172A; --bg2:#0a1020;
+  --sf:rgba(255,255,255,.04); --sf-md:rgba(255,255,255,.07); --sf-hi:rgba(255,255,255,.12);
+  --bd:rgba(255,255,255,.08); --bd-hi:rgba(255,255,255,.15);
+  --tx:#F8FAFC; --tx-md:#CBD5E1; --tx-mu:#64748B;
+  --nav:rgba(15,23,42,.85); --card:rgba(255,255,255,.04);
+  --sh:0 24px 80px rgba(0,0,0,.55);
+  --viewer-bg:rgba(8,10,18,.97);
+}
+[data-theme="light"]{
+  --bg:#F0F4FF; --bg2:#E8EEFF;
+  --sf:rgba(255,255,255,.8); --sf-md:rgba(255,255,255,.92); --sf-hi:#fff;
+  --bd:rgba(15,23,42,.08); --bd-hi:rgba(15,23,42,.16);
+  --tx:#0F172A; --tx-md:#334155; --tx-mu:#64748B;
+  --nav:rgba(240,244,255,.9); --card:rgba(255,255,255,.85);
+  --sh:0 24px 80px rgba(37,99,235,.1);
+  --viewer-bg:rgba(240,244,255,.98);
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent}
+body{
+  font-family:'Figtree',system-ui,sans-serif;
+  background:var(--bg); color:var(--tx);
+  min-height:100vh; overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  transition:background var(--transition),color .3s;
+}
+button{font-family:inherit;cursor:pointer}
+a{text-decoration:none}
+
+/* ─── BG CANVAS ─── */
+#bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+.page-wrap{position:relative;z-index:1}
+
+/* ═══════════════════════════════════════════
+   NAVBAR
+═══════════════════════════════════════════ */
+.navbar{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 clamp(1rem,4vw,2rem);height:64px;
+  background:var(--nav);
+  backdrop-filter:blur(24px) saturate(180%);
+  -webkit-backdrop-filter:blur(24px) saturate(180%);
+  border-bottom:1px solid var(--bd);
+  transition:background .4s;
+}
+.nav-brand{display:flex;align-items:center;gap:.55rem;color:var(--tx);font-weight:800;font-size:1.1rem;letter-spacing:-.02em}
+.nav-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--purple));border-radius:9px;display:grid;place-items:center;font-size:.95rem;box-shadow:0 0 18px rgba(37,99,235,.4);flex-shrink:0}
+.nav-links{display:flex;align-items:center;gap:1.75rem;list-style:none}
+.nav-links a{color:var(--tx-md);font-size:.88rem;font-weight:500;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-3px;left:0;right:0;height:1.5px;background:linear-gradient(90deg,var(--blue),var(--cyan));border-radius:2px;transform:scaleX(0);transition:transform .25s ease}
+.nav-links a:hover{color:var(--tx)}
+.nav-links a:hover::after{transform:scaleX(1)}
+.nav-actions{display:flex;align-items:center;gap:.55rem}
+.nav-icon-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx-md);display:grid;place-items:center;transition:all .2s;font-size:.88rem}
+.nav-icon-btn:hover{background:var(--sf-md);color:var(--tx);border-color:var(--bd-hi)}
+
+/* BG color dots */
+.bg-picker{display:flex;align-items:center;gap:.35rem;padding:.28rem .45rem;border-radius:10px;border:1px solid var(--bd);background:var(--sf)}
+.bg-dot{width:18px;height:18px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:transform .2s,border-color .2s;flex-shrink:0}
+.bg-dot:hover{transform:scale(1.2)}
+.bg-dot.active{border-color:white;transform:scale(1.1)}
+
+.btn-upload{display:flex;align-items:center;gap:.4rem;padding:.44rem .95rem;border-radius:999px;background:var(--sf-md);border:1px solid var(--bd-hi);color:var(--tx);font-size:.84rem;font-weight:600;transition:all .2s}
+.btn-upload:hover{background:var(--sf-hi)}
+.btn-login{padding:.46rem 1.2rem;border-radius:999px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-size:.84rem;font-weight:700;border:none;box-shadow:0 0 18px rgba(37,99,235,.35);transition:all .2s}
+.btn-login:hover{transform:translateY(-1px);box-shadow:0 0 28px rgba(37,99,235,.5)}
+
+.hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:7px;border-radius:8px;border:1px solid var(--bd);background:var(--sf)}
+.hamburger span{display:block;width:18px;height:2px;background:var(--tx-md);border-radius:2px;transition:all .3s}
+
+/* Mobile menu */
+.mobile-menu{
+  position:fixed;top:64px;left:0;right:0;z-index:199;
+  background:var(--nav);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--bd);padding:1.25rem 1.5rem;
+  flex-direction:column;gap:.85rem;display:none;
+  transform:translateY(-8px);opacity:0;transition:all .3s ease;
+}
+.mobile-menu.open{display:flex;transform:translateY(0);opacity:1}
+.mobile-menu a{color:var(--tx-md);font-size:.95rem;font-weight:500;padding:.45rem 0;border-bottom:1px solid var(--bd)}
+.mobile-bg-row{display:flex;align-items:center;gap:.5rem;padding:.5rem 0}
+
+/* ═══════════════════════════════════════════
+   HERO
+═══════════════════════════════════════════ */
+.hero{
+  min-height:100vh;display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;gap:clamp(2rem,5vw,4rem);
+  padding:clamp(88px,12vh,120px) clamp(1.25rem,5vw,4rem) clamp(3rem,6vh,5rem);
+  max-width:1400px;margin:0 auto;
+}
+.eyebrow{display:inline-flex;align-items:center;gap:.55rem;padding:.42rem .95rem;border-radius:999px;background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.25);color:var(--cyan);font-size:.75rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:1.4rem}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero-title{font-size:clamp(2.4rem,5.5vw,5rem);font-weight:900;line-height:1.02;letter-spacing:-.04em;margin-bottom:1.3rem}
+.hero-title .grad{background:linear-gradient(135deg,#60A5FA 0%,#A78BFA 45%,#38BDF8 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-desc{color:var(--tx-mu);font-size:clamp(.9rem,2vw,1.05rem);line-height:1.85;max-width:500px;margin-bottom:2rem}
+.hero-search{display:flex;align-items:center;gap:.45rem;background:var(--sf-md);border:1px solid var(--bd-hi);border-radius:999px;padding:.45rem .45rem .45rem 1.15rem;max-width:500px;margin-bottom:1.85rem;backdrop-filter:blur(12px);transition:border-color .2s,box-shadow .2s}
+.hero-search:focus-within{border-color:rgba(37,99,235,.5);box-shadow:0 0 36px rgba(37,99,235,.18)}
+.hero-search input{flex:1;background:transparent;border:none;outline:none;color:var(--tx);font-size:.92rem;font-family:inherit}
+.hero-search input::placeholder{color:var(--tx-mu)}
+.search-btn{padding:.6rem 1.2rem;border-radius:999px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-size:.84rem;font-weight:700;border:none;white-space:nowrap;font-family:inherit;box-shadow:0 0 16px rgba(37,99,235,.3);transition:transform .2s}
+.search-btn:hover{transform:translateY(-1px)}
+.hero-ctas{display:flex;align-items:center;gap:.85rem;flex-wrap:wrap;margin-bottom:2.5rem}
+.cta-primary{display:flex;align-items:center;gap:.45rem;padding:.8rem 1.85rem;border-radius:999px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;font-size:.92rem;font-weight:700;border:none;font-family:inherit;box-shadow:0 0 26px rgba(37,99,235,.4);transition:all .25s}
+.cta-primary:hover{transform:translateY(-2px);box-shadow:0 0 44px rgba(37,99,235,.55)}
+.cta-secondary{display:flex;align-items:center;gap:.45rem;padding:.8rem 1.65rem;border-radius:999px;background:var(--sf-md);border:1px solid var(--bd-hi);color:var(--tx);font-size:.92rem;font-weight:600;font-family:inherit;transition:all .25s}
+.cta-secondary:hover{background:var(--sf-hi);transform:translateY(-2px)}
+.hero-stats{display:flex;gap:clamp(1.25rem,4vw,2.5rem);flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:.2rem}
+.stat-num{font-size:clamp(1.5rem,3vw,1.85rem);font-weight:900;letter-spacing:-.04em;background:linear-gradient(135deg,var(--tx),var(--tx-md));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-label{color:var(--tx-mu);font-size:.78rem;font-weight:500}
+
+/* ═══════════════════════════════════════════
+   3D BOOK
+═══════════════════════════════════════════ */
+.hero-visual{display:flex;align-items:center;justify-content:center;position:relative;min-height:clamp(380px,50vh,560px)}
+.glow-orb{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none}
+.glow-1{width:360px;height:360px;background:radial-gradient(circle,rgba(37,99,235,.22),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%)}
+.glow-2{width:200px;height:200px;background:radial-gradient(circle,rgba(124,58,237,.25),transparent 70%);bottom:15%;right:5%}
+
+/* Star canvas */
+#star-canvas{position:absolute;inset:-60px;pointer-events:none;z-index:5;opacity:0;transition:opacity .4s}
+#star-canvas.show{opacity:1}
+
+/* Book scene — perspective wrapper */
+.book-scene{
+  perspective:1100px;
+  width:clamp(200px,28vw,260px);
+  height:clamp(270px,38vw,360px);
+  position:relative;cursor:pointer;z-index:4;
+}
+
+/* The rotating container */
+.book-3d{
+  width:100%;height:100%;position:relative;
+  transform-style:preserve-3d;
+  /* continuous 360° spin + gentle float */
+  animation:bSpin 10s linear infinite, bFloat 5s ease-in-out infinite;
+  will-change:transform;
+}
+
+@keyframes bSpin{
+  from{transform:rotateX(12deg) rotateY(0deg)}
+  to  {transform:rotateX(12deg) rotateY(360deg)}
+}
+@keyframes bFloat{
+  0%,100%{margin-top:0px}
+  50%     {margin-top:-16px}
+}
+
+/* When hovered, JS removes animation and drives rotation manually at higher speed */
+
+/* ── book faces ── */
+.book-front,.book-back,.book-spine,.book-top,.book-bottom,.book-pages{position:absolute;backface-visibility:hidden}
+
+/* FRONT FACE */
+.book-front{
+  width:100%;height:100%;
+  background:linear-gradient(160deg,#1e3a8a 0%,#2563eb 45%,#7c3aed 100%);
+  transform:translateZ(24px);
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;
+  padding:clamp(1.25rem,4vw,1.75rem);
+  border-radius:3px 14px 14px 3px;
+  box-shadow:inset 3px 0 10px rgba(0,0,0,.25),0 30px 80px rgba(0,0,0,.5),0 0 50px rgba(37,99,235,.22);
+  border:1px solid rgba(255,255,255,.1);overflow:hidden;
+}
+.book-front::before{content:'';position:absolute;inset:0;background:linear-gradient(140deg,rgba(255,255,255,.14) 0%,transparent 55%);pointer-events:none}
+.bf-logo{width:34px;height:34px;background:rgba(255,255,255,.15);border-radius:9px;display:grid;place-items:center;font-size:1rem}
+.bf-title{font-size:clamp(1rem,2.5vw,1.2rem);font-weight:900;color:#fff;line-height:1.2;letter-spacing:-.02em}
+.bf-sub{font-size:.7rem;color:rgba(255,255,255,.6);font-weight:500;margin-top:.28rem}
+.bf-bar{width:100%;height:3px;background:linear-gradient(90deg,rgba(255,255,255,.3),rgba(56,189,248,.7));border-radius:2px}
+
+/* BACK FACE */
+.book-back{width:100%;height:100%;background:linear-gradient(145deg,#0f1f5c,#1e3a8a);transform:rotateY(180deg) translateZ(24px);border-radius:14px 3px 3px 14px}
+
+/* SPINE — left side */
+.book-spine{
+  width:48px;height:100%;
+  background:linear-gradient(180deg,#1d4ed8,#5b21b6);
+  left:0;top:0;
+  transform:translateX(-24px) rotateY(-90deg) translateZ(24px);
+  transform-origin:right center;
+  box-shadow:inset -3px 0 8px rgba(0,0,0,.4);
+  border-radius:4px 0 0 4px;
+  display:flex;align-items:center;justify-content:center;
+}
+.spine-txt{writing-mode:vertical-rl;transform:rotate(180deg);color:rgba(255,255,255,.45);font-size:.58rem;letter-spacing:.18em;font-weight:700;text-transform:uppercase}
+
+/* TOP / BOTTOM */
+.book-top{width:100%;height:48px;background:linear-gradient(90deg,#2563eb,#7c3aed);top:-24px;left:0;transform:rotateX(90deg) translateZ(0);transform-origin:center bottom;opacity:.55}
+.book-bottom{width:100%;height:48px;background:linear-gradient(90deg,#1e40af,#5b21b6);bottom:-24px;left:0;transform:rotateX(-90deg) translateZ(0);transform-origin:center top;opacity:.35}
+
+/* PAGES edge */
+.book-pages{right:-3px;top:4px;width:16px;height:calc(100% - 8px);transform:translateZ(10px);background:repeating-linear-gradient(to bottom,#e2e8f0 0,#e2e8f0 1px,#f1f5f9 1px,#f1f5f9 3px);border-radius:0 4px 4px 0;opacity:.88}
+
+/* floating badges */
+.float-card{position:absolute;background:var(--sf-md);border:1px solid var(--bd-hi);backdrop-filter:blur(14px);border-radius:13px;padding:.65rem .95rem;font-size:.74rem;color:var(--tx-md);display:flex;align-items:center;gap:.45rem;font-weight:600;box-shadow:0 8px 28px rgba(0,0,0,.25);pointer-events:none;z-index:3;animation:fc 4s ease-in-out infinite}
+.fc-icon{width:24px;height:24px;border-radius:7px;display:grid;place-items:center;font-size:.75rem}
+.fc1{top:8%;left:-28%;animation-delay:0s}
+.fc2{bottom:16%;right:-26%;animation-delay:-2s}
+.fc3{top:52%;right:-30%;animation-delay:-1s}
+@keyframes fc{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+
+/* ═══════════════════════════════════════════
+   SECTIONS SHARED
+═══════════════════════════════════════════ */
+.section{padding:clamp(3rem,7vw,5.5rem) clamp(1.25rem,5vw,4rem);max-width:1400px;margin:0 auto}
+.section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:clamp(1.75rem,4vw,2.75rem);gap:1.5rem;flex-wrap:wrap}
+.section-label{display:inline-flex;align-items:center;gap:.45rem;padding:.36rem .85rem;border-radius:999px;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.2);color:var(--cyan);font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.75rem}
+.section-title{font-size:clamp(1.6rem,3vw,2.7rem);font-weight:900;letter-spacing:-.03em;line-height:1.08}
+.section-desc{color:var(--tx-mu);font-size:.92rem;line-height:1.8;margin-top:.65rem;max-width:460px}
+.see-all{display:flex;align-items:center;gap:.45rem;color:var(--cyan);font-size:.85rem;font-weight:600;padding:.55rem 1.15rem;border-radius:999px;border:1px solid rgba(56,189,248,.22);transition:all .2s;white-space:nowrap;flex-shrink:0}
+.see-all:hover{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.4)}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--bd),transparent);max-width:1400px;margin:0 auto}
+
+/* ═══════════════════════════════════════════
+   STATS STRIP
+═══════════════════════════════════════════ */
+.stats-strip{padding:2rem clamp(1.25rem,5vw,4rem);max-width:1400px;margin:0 auto}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.15rem}
+.stat-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);padding:clamp(1.25rem,3vw,1.75rem) clamp(1rem,3vw,1.5rem);display:flex;align-items:center;gap:1rem;transition:all .3s;position:relative;overflow:hidden}
+.stat-card:hover{border-color:rgba(37,99,235,.3);transform:translateY(-3px);box-shadow:var(--sh)}
+.s-icon{width:46px;height:46px;border-radius:13px;display:grid;place-items:center;font-size:1.1rem;flex-shrink:0}
+.s-num{font-size:clamp(1.5rem,3vw,1.85rem);font-weight:900;letter-spacing:-.04em;line-height:1}
+.s-lbl{color:var(--tx-mu);font-size:.78rem;margin-top:.2rem}
+
+/* ═══════════════════════════════════════════
+   CATEGORIES
+═══════════════════════════════════════════ */
+.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem}
+.cat-card{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);padding:clamp(1.25rem,3vw,1.75rem);cursor:pointer;transition:all .3s;display:flex;flex-direction:column;gap:.85rem}
+.cat-card:hover{border-color:rgba(37,99,235,.3);transform:translateY(-4px);box-shadow:var(--sh)}
+.cat-icon{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;font-size:1.2rem}
+.cat-title{font-size:.95rem;font-weight:700}
+.cat-count{color:var(--tx-mu);font-size:.78rem;margin-top:.15rem}
+
+/* ═══════════════════════════════════════════
+   BOOK CARDS
+═══════════════════════════════════════════ */
+.notes-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem}
+.book-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all .35s cubic-bezier(.4,0,.2,1);position:relative;display:flex;flex-direction:column;backdrop-filter:blur(10px)}
+.book-card:hover{transform:translateY(-6px);border-color:rgba(37,99,235,.3);box-shadow:var(--sh)}
+.card-thumb{width:100%;height:clamp(130px,15vw,170px);display:flex;align-items:center;justify-content:center;font-size:clamp(2.5rem,5vw,3.2rem);position:relative;overflow:hidden;flex-shrink:0}
+.card-thumb::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 1px,transparent 1px,transparent 12px)}
+.card-body{padding:clamp(.9rem,2vw,1.25rem) clamp(1rem,2.5vw,1.4rem) clamp(1rem,2.5vw,1.4rem);display:flex;flex-direction:column;flex:1}
+.card-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.6rem}
+.card-tag{padding:.24rem .58rem;border-radius:999px;font-size:.68rem;font-weight:700;letter-spacing:.04em}
+.card-title{font-size:clamp(.88rem,2vw,1rem);font-weight:800;letter-spacing:-.02em;line-height:1.3;margin-bottom:.4rem}
+.card-desc{color:var(--tx-mu);font-size:.8rem;line-height:1.7;flex:1}
+.card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.9rem;padding-top:.85rem;border-top:1px solid var(--bd)}
+.card-meta{display:flex;align-items:center;gap:.35rem;color:var(--tx-mu);font-size:.76rem}
+.card-open{display:flex;align-items:center;gap:.3rem;color:var(--cyan);font-size:.78rem;font-weight:700;transition:gap .2s}
+.book-card:hover .card-open{gap:.55rem}
+
+/* ═══════════════════════════════════════════
+   STORY GRID
+═══════════════════════════════════════════ */
+.story-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem}
+.story-card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r-lg);overflow:hidden;cursor:pointer;transition:all .35s cubic-bezier(.4,0,.2,1)}
+.story-card:hover{transform:translateY(-6px) scale(1.01);border-color:rgba(124,58,237,.35);box-shadow:var(--sh)}
+.story-cover{width:100%;height:clamp(160px,18vw,210px);display:flex;align-items:center;justify-content:center;font-size:clamp(3rem,5vw,3.8rem);position:relative;overflow:hidden}
+.story-cover::after{content:'';position:absolute;bottom:0;left:0;right:0;height:55px;background:linear-gradient(to top,var(--bg),transparent)}
+.story-body{padding:clamp(.85rem,2vw,1rem) clamp(.95rem,2vw,1.2rem) clamp(.95rem,2vw,1.2rem)}
+.story-title{font-size:.9rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.25rem}
+.story-author{color:var(--tx-mu);font-size:.76rem}
+.story-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.75rem}
+.story-rating{display:flex;align-items:center;gap:.28rem;color:#FBBF24;font-size:.76rem;font-weight:700}
+.story-tag{padding:.22rem .55rem;border-radius:999px;font-size:.67rem;font-weight:700}
+
+/* ═══════════════════════════════════════════
+   TRENDING
+═══════════════════════════════════════════ */
+.trending-list{display:flex;flex-direction:column;gap:.65rem}
+.trend-item{display:flex;align-items:center;gap:.85rem;padding:.85rem 1.1rem;background:var(--sf);border:1px solid var(--bd);border-radius:var(--r);cursor:pointer;transition:all .25s}
+.trend-item:hover{background:var(--sf-md);border-color:var(--bd-hi);transform:translateX(4px)}
+.trend-num{font-size:1.35rem;font-weight:900;color:var(--bd-hi);min-width:28px;letter-spacing:-.04em}
+.trend-icon{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-size:1rem;flex-shrink:0}
+.trend-info{flex:1;min-width:0}
+.trend-title{font-weight:700;font-size:.87rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trend-meta{color:var(--tx-mu);font-size:.73rem;margin-top:.15rem}
+.trend-views{color:var(--tx-mu);font-size:.73rem;white-space:nowrap}
+
+/* Recently uploaded */
+.note-item{background:var(--sf);border:1px solid var(--bd);border-radius:var(--r-lg);padding:clamp(1rem,2vw,1.25rem);display:flex;align-items:center;gap:.85rem;cursor:pointer;transition:all .25s;margin-bottom:.65rem}
+.note-item:hover{background:var(--sf-md);border-color:var(--bd-hi);transform:translateY(-2px)}
+.note-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:1.05rem;flex-shrink:0}
+.note-title{font-weight:700;font-size:.87rem}
+.note-time{color:var(--tx-mu);font-size:.73rem;margin-top:.18rem}
+
+/* ═══════════════════════════════════════════
+   FOOTER
+═══════════════════════════════════════════ */
+.footer{padding:clamp(2.5rem,6vw,4rem) clamp(1.25rem,5vw,4rem) 2rem;border-top:1px solid var(--bd)}
+.footer-grid{max-width:1400px;margin:0 auto 2.5rem;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:clamp(1.5rem,4vw,3rem)}
+.footer-brand p{color:var(--tx-mu);font-size:.84rem;line-height:1.8;margin:1rem 0 1.4rem;max-width:280px}
+.footer-socials{display:flex;gap:.6rem}
+.social-btn{width:32px;height:32px;border-radius:9px;border:1px solid var(--bd);background:var(--sf);display:grid;place-items:center;color:var(--tx-mu);font-size:.8rem;cursor:pointer;transition:all .2s}
+.social-btn:hover{color:var(--cyan);border-color:rgba(56,189,248,.3);background:rgba(56,189,248,.06)}
+.footer-col h4{font-size:.88rem;font-weight:800;margin-bottom:1.1rem;color:var(--tx)}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.65rem}
+.footer-col a{color:var(--tx-mu);font-size:.84rem;transition:color .2s}
+.footer-col a:hover{color:var(--tx)}
+.footer-bottom{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding-top:1.4rem;border-top:1px solid var(--bd);gap:1rem;flex-wrap:wrap;color:var(--tx-mu);font-size:.78rem}
+
+/* ═══════════════════════════════════════════
+   PDF VIEWER OVERLAY
+═══════════════════════════════════════════ */
+.pdf-viewer{display:none;position:fixed;inset:0;z-index:500;background:var(--viewer-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);flex-direction:column}
+.pdf-viewer.active{display:flex}
+
+/* Top bar */
+.pdf-topbar{display:flex;align-items:center;justify-content:space-between;gap:.85rem;padding:.85rem clamp(.85rem,3vw,1.5rem);border-bottom:1px solid var(--bd);background:var(--nav);flex-wrap:wrap;flex-shrink:0}
+.pdf-title-text{font-weight:800;font-size:clamp(.85rem,2vw,1rem);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+.pdf-ctrl-group{display:flex;align-items:center;gap:.4rem;flex-wrap:wrap}
+.pdf-btn{display:flex;align-items:center;gap:.35rem;padding:.52rem .9rem;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx-md);font-size:.82rem;font-weight:600;font-family:inherit;transition:all .2s;white-space:nowrap}
+.pdf-btn:hover{background:var(--sf-md);color:var(--tx)}
+.pdf-btn.blue{background:rgba(37,99,235,.15);border-color:rgba(37,99,235,.3);color:var(--cyan)}
+.pdf-btn.green{background:linear-gradient(135deg,var(--blue),var(--purple));border-color:transparent;color:#fff;box-shadow:0 0 14px rgba(37,99,235,.3)}
+.pdf-btn.green:hover{transform:translateY(-1px);box-shadow:0 0 22px rgba(37,99,235,.45)}
+
+/* Content area */
+.pdf-content{flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;align-items:center;padding:clamp(.75rem,3vw,1.5rem);gap:1rem;-webkit-overflow-scrolling:touch}
+#canvas-container{max-width:min(900px,100%);width:100%;border-radius:var(--r);overflow:hidden;box-shadow:0 40px 120px rgba(0,0,0,.5);position:relative}
+canvas{width:100%;display:block}
+
+/* Swipe hint */
+.swipe-hint{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.55);color:#fff;font-size:.72rem;padding:.35rem .85rem;border-radius:999px;pointer-events:none;opacity:0;transition:opacity .3s;white-space:nowrap}
+.swipe-hint.show{opacity:1}
+
+/* Page transition overlay */
+#page-transition{position:absolute;inset:0;background:var(--bg);opacity:0;pointer-events:none;transition:opacity .18s;border-radius:var(--r)}
+
+/* BOTTOM NAV BAR (Prev / Slider / Next) */
+.pdf-bottom-bar{
+  display:flex;align-items:center;gap:clamp(.5rem,2vw,1rem);
+  padding:clamp(.65rem,2vw,1rem) clamp(.85rem,3vw,1.5rem);
+  border-top:1px solid var(--bd);background:var(--nav);flex-shrink:0;
+  flex-wrap:wrap;
+}
+.pdf-nav-btn{
+  display:flex;align-items:center;gap:.4rem;
+  padding:.65rem clamp(.75rem,3vw,1.25rem);
+  border-radius:12px;border:1px solid var(--bd);
+  background:var(--sf);color:var(--tx-md);
+  font-size:.85rem;font-weight:700;font-family:inherit;
+  transition:all .2s;flex-shrink:0;min-width:90px;justify-content:center;
+}
+.pdf-nav-btn:hover:not(:disabled){background:var(--sf-md);color:var(--tx);border-color:var(--bd-hi);transform:translateY(-1px)}
+.pdf-nav-btn:disabled{opacity:.35;cursor:not-allowed}
+.pdf-nav-btn.next-btn{background:rgba(37,99,235,.12);border-color:rgba(37,99,235,.25);color:var(--cyan)}
+.pdf-nav-btn.next-btn:hover:not(:disabled){background:rgba(37,99,235,.2)}
+
+.slider-wrap{flex:1;display:flex;align-items:center;gap:.65rem;min-width:0}
+input[type=range]{flex:1;appearance:none;height:5px;border-radius:999px;background:rgba(37,99,235,.2);outline:none;min-width:0}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:16px;height:16px;border-radius:50%;background:var(--blue);cursor:pointer;border:2px solid #fff;box-shadow:0 0 8px rgba(37,99,235,.4)}
+.page-input-box{width:58px;padding:.44rem .5rem;border-radius:9px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font-weight:600;font-size:.82rem;text-align:center;outline:none;font-family:inherit}
+.page-lbl{color:var(--tx-mu);font-size:.8rem;white-space:nowrap}
+.page-pill{padding:.5rem .9rem;background:var(--sf);border:1px solid var(--bd);border-radius:10px;font-size:.8rem;color:var(--tx-md);white-space:nowrap;font-weight:600;flex-shrink:0}
+
+/* ═══════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════ */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.4,0,.2,1),transform .65s cubic-bezier(.4,0,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════ */
+@media(max-width:1100px){
+  .notes-grid,.story-grid{grid-template-columns:repeat(3,1fr)}
+  .cat-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .bg-picker{display:none}
+}
+@media(max-width:860px){
+  .hero{grid-template-columns:1fr;padding-top:88px;min-height:auto}
+  .hero-visual{min-height:380px;order:-1}
+  .notes-grid,.story-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .btn-login,.btn-upload{display:none}
+  .fc1{display:none}
+  #trending-layout{grid-template-columns:1fr!important}
+}
+@media(max-width:580px){
+  .notes-grid,.story-grid,.cat-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .footer-grid{grid-template-columns:1fr}
+  .fc2,.fc3{display:none}
+  .pdf-topbar{gap:.5rem}
+  .pdf-title-text{max-width:120px}
+  .pdf-ctrl-group .pdf-btn span{display:none}
+  .pdf-nav-btn{min-width:60px;padding:.6rem .65rem}
+}
+@media(max-width:380px){
+  .hero-title{font-size:2rem}
+  .notes-grid,.story-grid{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
 
-<!-- Animated Canvas Background -->
 <canvas id="bg-canvas"></canvas>
-
 <div class="page-wrap">
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <a href="#" class="nav-brand">
-      <div class="nav-logo">📚</div>
-      EduBook
-    </a>
-
-    <ul class="nav-links">
-      <li><a href="#notes">Notes</a></li>
-      <li><a href="#stories">Story Books</a></li>
-      <li><a href="#trending">Trending</a></li>
-      <li><a href="#categories">Categories</a></li>
-    </ul>
-
-    <div class="nav-actions">
-      <button class="nav-icon-btn" id="theme-search" title="Search"><i class="fas fa-search"></i></button>
-      <button class="btn-upload" onclick="uploadNote()"><i class="fas fa-cloud-upload-alt"></i> Upload</button>
-      <button class="btn-login">Sign In</button>
-      <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-        <span></span><span></span><span></span>
-      </div>
+<!-- ══════════ NAVBAR ══════════ -->
+<nav class="navbar">
+  <a href="#" class="nav-brand"><div class="nav-logo">📚</div>EduBook</a>
+  <ul class="nav-links">
+    <li><a href="#notes">Notes</a></li>
+    <li><a href="#stories">Story Books</a></li>
+    <li><a href="#trending">Trending</a></li>
+    <li><a href="#categories">Categories</a></li>
+  </ul>
+  <div class="nav-actions">
+    <!-- BG color picker (desktop) -->
+    <div class="bg-picker" title="Change background">
+      <div class="bg-dot active" data-d="#0F172A" data-l="#F0F4FF" style="background:#2563EB"></div>
+      <div class="bg-dot" data-d="#0D1B2A" data-l="#EAF2FF" style="background:#38BDF8"></div>
+      <div class="bg-dot" data-d="#13101F" data-l="#F4EEFF" style="background:#7C3AED"></div>
+      <div class="bg-dot" data-d="#0A1A0A" data-l="#EDFFF0" style="background:#22C55E"></div>
+      <div class="bg-dot" data-d="#1A1A1A" data-l="#F5F5F5" style="background:#94A3B8"></div>
     </div>
-  </nav>
-
-  <!-- Mobile Menu -->
-  <div class="mobile-menu" id="mobile-menu">
-    <a href="#notes" onclick="toggleMenu()">📖 Notes</a>
-    <a href="#stories" onclick="toggleMenu()">📚 Story Books</a>
-    <a href="#trending" onclick="toggleMenu()">🔥 Trending</a>
-    <a href="#categories" onclick="toggleMenu()">🗂 Categories</a>
-    <button class="btn-login" style="width:100%;padding:.75rem;margin-top:.5rem;">Sign In</button>
+    <button class="nav-icon-btn" id="theme-toggle" title="Toggle theme">🌙</button>
+    <button class="btn-upload" onclick="uploadNote()"><i class="fas fa-cloud-upload-alt"></i> <span>Upload</span></button>
+    <button class="btn-login">Sign In</button>
+    <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
   </div>
+</nav>
 
-  <!-- HERO -->
-  <section class="hero" id="home">
-    <div class="hero-copy reveal">
-      <div class="eyebrow">
-        <span class="eyebrow-dot"></span>
-        Premium Academic Library · 2026
-      </div>
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#notes" onclick="toggleMenu()">📖 Notes</a>
+  <a href="#stories" onclick="toggleMenu()">📚 Story Books</a>
+  <a href="#trending" onclick="toggleMenu()">🔥 Trending</a>
+  <a href="#categories" onclick="toggleMenu()">🗂 Categories</a>
+  <div class="mobile-bg-row">
+    <span style="font-size:.78rem;color:var(--tx-mu);margin-right:.25rem">Theme:</span>
+    <div class="bg-dot" data-d="#0F172A" data-l="#F0F4FF" style="background:#2563EB;width:22px;height:22px"></div>
+    <div class="bg-dot" data-d="#0D1B2A" data-l="#EAF2FF" style="background:#38BDF8;width:22px;height:22px"></div>
+    <div class="bg-dot" data-d="#13101F" data-l="#F4EEFF" style="background:#7C3AED;width:22px;height:22px"></div>
+    <div class="bg-dot" data-d="#0A1A0A" data-l="#EDFFF0" style="background:#22C55E;width:22px;height:22px"></div>
+    <div class="bg-dot" data-d="#1A1A1A" data-l="#F5F5F5" style="background:#94A3B8;width:22px;height:22px"></div>
+  </div>
+  <button class="btn-login" style="width:100%;padding:.72rem;margin-top:.25rem">Sign In</button>
+</div>
 
-      <h1 class="hero-title">
-        Learn Smarter.<br>
-        <span class="grad">Read Better.</span><br>
-        Grow Faster.
-      </h1>
-
-      <p class="hero-desc">
-        Thousands of engineering notes, programming PDFs, handwritten notes, novels and story books — curated for modern students who never stop learning.
-      </p>
-
-      <div class="hero-search">
-        <i class="fas fa-search" style="color:var(--text-muted);font-size:.9rem;"></i>
-        <input type="search" id="book-search" placeholder="Search notes, books, subjects…" oninput="filterBooks()" />
-        <button class="search-btn" onclick="filterBooks()">Search</button>
-      </div>
-
-      <div class="hero-ctas">
-        <a href="#notes" class="cta-primary">
-          <i class="fas fa-book-open"></i> Explore Library
-        </a>
-        <button class="cta-secondary" onclick="uploadNote()">
-          <i class="fas fa-cloud-upload-alt"></i> Upload Notes
-        </button>
-      </div>
-
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-num" data-count="5400">0</span>
-          <span class="stat-label">Study Materials</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num" data-count="12000">0</span>
-          <span class="stat-label">Active Students</span>
-        </div>
-        <div class="stat">
-          <span class="stat-num" data-count="98">0</span>
-          <span class="stat-label">% Satisfaction</span>
-        </div>
-      </div>
+<!-- ══════════ HERO ══════════ -->
+<section class="hero" id="home">
+  <div class="hero-copy reveal">
+    <div class="eyebrow"><span class="eyebrow-dot"></span>Premium Academic Library · 2026</div>
+    <h1 class="hero-title">Learn Smarter.<br><span class="grad">Read Better.</span><br>Grow Faster.</h1>
+    <p class="hero-desc">Thousands of engineering notes, programming PDFs, handwritten notes, novels and story books — curated for modern students who never stop learning.</p>
+    <div class="hero-search">
+      <i class="fas fa-search" style="color:var(--tx-mu);font-size:.85rem"></i>
+      <input type="search" id="book-search" placeholder="Search notes, books, subjects…" oninput="filterBooks()"/>
+      <button class="search-btn" onclick="filterBooks()">Search</button>
     </div>
-
-    <!-- 3D Book Visual -->
-    <div class="hero-visual">
-      <div class="glow-orb glow-orb-1"></div>
-      <div class="glow-orb glow-orb-2"></div>
-
-      <!-- Floating badge cards -->
-      <div class="float-card float-card-1">
-        <div class="float-card-icon" style="background:rgba(37,99,235,0.2);color:var(--cyan);">📖</div>
-        Java DSA Notes
-      </div>
-      <div class="float-card float-card-2">
-        <div class="float-card-icon" style="background:rgba(124,58,237,0.2);color:var(--purple-light);">⭐</div>
-        4.9 Rating
-      </div>
-      <div class="float-card float-card-3">
-        <div class="float-card-icon" style="background:rgba(56,189,248,0.15);color:var(--cyan);">🔥</div>
-        Trending Today
-      </div>
-
-      <div class="book-scene" id="book-scene">
-        <div class="book-3d" id="book-3d">
-          <div class="book-spine"><span class="book-spine-text">EduBook Library</span></div>
-          <div class="book-top"></div>
-          <div class="book-bottom"></div>
-          <div class="book-pages"></div>
-          <div class="book-front">
-            <div class="book-front-logo">📚</div>
-            <div>
-              <div class="book-front-title">Java<br>Programming<br>Notes</div>
-              <div class="book-front-sub">Complete Study Guide</div>
-            </div>
-            <div class="book-front-bar"></div>
-          </div>
-          <div class="book-back"></div>
-        </div>
-      </div>
+    <div class="hero-ctas">
+      <a href="#notes" class="cta-primary"><i class="fas fa-book-open"></i> Explore Library</a>
+      <button class="cta-secondary" onclick="uploadNote()"><i class="fas fa-cloud-upload-alt"></i> Upload Notes</button>
     </div>
-  </section>
-
-  <!-- STATS STRIP -->
-  <div class="stats-strip reveal">
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(37,99,235,0.12);color:#60A5FA;">
-          <i class="fas fa-file-pdf"></i>
-        </div>
-        <div>
-          <div class="stat-card-num">500+</div>
-          <div class="stat-card-label">Engineering PDFs</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(124,58,237,0.12);color:var(--purple-light);">
-          <i class="fas fa-book"></i>
-        </div>
-        <div>
-          <div class="stat-card-num">200+</div>
-          <div class="stat-card-label">Story Books</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(56,189,248,0.12);color:var(--cyan);">
-          <i class="fas fa-users"></i>
-        </div>
-        <div>
-          <div class="stat-card-num" id="access-count">—</div>
-          <div class="stat-card-label">Total Visitors</div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon" style="background:rgba(251,191,36,0.12);color:#FBBF24;">
-          <i class="fas fa-star"></i>
-        </div>
-        <div>
-          <div class="stat-card-num">4.9★</div>
-          <div class="stat-card-label">Average Rating</div>
-        </div>
-      </div>
+    <div class="hero-stats">
+      <div class="stat"><span class="stat-num" data-count="5400">0</span><span class="stat-label">Study Materials</span></div>
+      <div class="stat"><span class="stat-num" data-count="12000">0</span><span class="stat-label">Active Students</span></div>
+      <div class="stat"><span class="stat-num" data-count="98">0</span><span class="stat-label">% Satisfaction</span></div>
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- CATEGORIES -->
-  <section class="section" id="categories">
-    <div class="section-header reveal">
-      <div>
-        <div class="section-label">🗂 Browse by Category</div>
-        <h2 class="section-title">Find what you need,<br>instantly.</h2>
-      </div>
-      <a href="#" class="see-all">View all <i class="fas fa-arrow-right"></i></a>
-    </div>
-    <div class="cat-grid reveal">
-      <div class="cat-card" onclick="document.getElementById('notes').scrollIntoView({behavior:'smooth'})">
-        <div class="cat-icon" style="background:rgba(37,99,235,0.12);color:#60A5FA;">☕</div>
-        <div>
-          <div class="cat-title">Java & JVM</div>
-          <div class="cat-count">34 materials</div>
+  <!-- 3D BOOK -->
+  <div class="hero-visual">
+    <div class="glow-orb glow-1"></div>
+    <div class="glow-orb glow-2"></div>
+    <canvas id="star-canvas"></canvas>
+    <div class="float-card fc1"><div class="fc-icon" style="background:rgba(37,99,235,.2);color:var(--cyan)">📖</div>Java DSA Notes</div>
+    <div class="float-card fc2"><div class="fc-icon" style="background:rgba(124,58,237,.2);color:var(--purple-l)">⭐</div>4.9 Rating</div>
+    <div class="float-card fc3"><div class="fc-icon" style="background:rgba(56,189,248,.15);color:var(--cyan)">🔥</div>Trending Today</div>
+    <div class="book-scene" id="book-scene">
+      <div class="book-3d" id="book-3d">
+        <div class="book-spine"><span class="spine-txt">EduBook Library</span></div>
+        <div class="book-top"></div>
+        <div class="book-bottom"></div>
+        <div class="book-pages"></div>
+        <div class="book-front">
+          <div class="bf-logo">📚</div>
+          <div><div class="bf-title">Java<br>Programming<br>Notes</div><div class="bf-sub">Complete Study Guide</div></div>
+          <div class="bf-bar"></div>
         </div>
-      </div>
-      <div class="cat-card" onclick="document.getElementById('notes').scrollIntoView({behavior:'smooth'})">
-        <div class="cat-icon" style="background:rgba(124,58,237,0.12);color:var(--purple-light);">🌿</div>
-        <div>
-          <div class="cat-title">Spring & Cloud</div>
-          <div class="cat-count">28 materials</div>
-        </div>
-      </div>
-      <div class="cat-card" onclick="document.getElementById('notes').scrollIntoView({behavior:'smooth'})">
-        <div class="cat-icon" style="background:rgba(56,189,248,0.12);color:var(--cyan);">🏗</div>
-        <div>
-          <div class="cat-title">System Design</div>
-          <div class="cat-count">22 materials</div>
-        </div>
-      </div>
-      <div class="cat-card" onclick="document.getElementById('notes').scrollIntoView({behavior:'smooth'})">
-        <div class="cat-icon" style="background:rgba(251,191,36,0.12);color:#FBBF24;">⚙️</div>
-        <div>
-          <div class="cat-title">DevOps & CI/CD</div>
-          <div class="cat-count">18 materials</div>
-        </div>
-      </div>
-      <div class="cat-card" onclick="document.getElementById('notes').scrollIntoView({behavior:'smooth'})">
-        <div class="cat-icon" style="background:rgba(34,197,94,0.12);color:#4ADE80;">🧮</div>
-        <div>
-          <div class="cat-title">Algorithms & DSA</div>
-          <div class="cat-count">41 materials</div>
-        </div>
-      </div>
-      <div class="cat-card" onclick="document.getElementById('stories').scrollIntoView({behavior:'smooth'})">
-        <div class="cat-icon" style="background:rgba(251,146,60,0.12);color:#FB923C;">📖</div>
-        <div>
-          <div class="cat-title">Novels & Fiction</div>
-          <div class="cat-count">120+ books</div>
-        </div>
-      </div>
-      <div class="cat-card" onclick="document.getElementById('stories').scrollIntoView({behavior:'smooth'})">
-        <div class="cat-icon" style="background:rgba(236,72,153,0.12);color:#F472B6;">💡</div>
-        <div>
-          <div class="cat-title">Motivational</div>
-          <div class="cat-count">55 books</div>
-        </div>
-      </div>
-      <div class="cat-card" onclick="document.getElementById('stories').scrollIntoView({behavior:'smooth'})">
-        <div class="cat-icon" style="background:rgba(20,184,166,0.12);color:#2DD4BF;">🧒</div>
-        <div>
-          <div class="cat-title">Kids Story Books</div>
-          <div class="cat-count">80+ books</div>
-        </div>
+        <div class="book-back"></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <div class="divider"></div>
+<!-- STATS -->
+<div class="stats-strip reveal">
+  <div class="stats-grid">
+    <div class="stat-card"><div class="s-icon" style="background:rgba(37,99,235,.12);color:#60A5FA"><i class="fas fa-file-pdf"></i></div><div><div class="s-num">500+</div><div class="s-lbl">Engineering PDFs</div></div></div>
+    <div class="stat-card"><div class="s-icon" style="background:rgba(124,58,237,.12);color:var(--purple-l)"><i class="fas fa-book"></i></div><div><div class="s-num">200+</div><div class="s-lbl">Story Books</div></div></div>
+    <div class="stat-card"><div class="s-icon" style="background:rgba(56,189,248,.12);color:var(--cyan)"><i class="fas fa-users"></i></div><div><div class="s-num" id="access-count">—</div><div class="s-lbl">Total Visitors</div></div></div>
+    <div class="stat-card"><div class="s-icon" style="background:rgba(251,191,36,.12);color:#FBBF24"><i class="fas fa-star"></i></div><div><div class="s-num">4.9★</div><div class="s-lbl">Average Rating</div></div></div>
+  </div>
+</div>
 
-  <!-- NOTES SECTION -->
-  <section class="section" id="notes">
-    <div class="section-header reveal">
-      <div>
-        <div class="section-label">📖 Study Notes</div>
-        <h2 class="section-title">Engineering &amp;<br>Programming Notes</h2>
-        <p class="section-desc">Handwritten notes, semester PDFs, MCA materials and programming guides.</p>
+<div class="divider"></div>
+
+<!-- CATEGORIES -->
+<section class="section" id="categories">
+  <div class="section-header reveal">
+    <div><div class="section-label">🗂 Browse by Category</div><h2 class="section-title">Find what you need,<br>instantly.</h2></div>
+    <a href="#" class="see-all">View all <i class="fas fa-arrow-right"></i></a>
+  </div>
+  <div class="cat-grid reveal">
+    <div class="cat-card" onclick="scrollTo('notes')"><div class="cat-icon" style="background:rgba(37,99,235,.12);color:#60A5FA">☕</div><div><div class="cat-title">Java & JVM</div><div class="cat-count">34 materials</div></div></div>
+    <div class="cat-card" onclick="scrollTo('notes')"><div class="cat-icon" style="background:rgba(124,58,237,.12);color:var(--purple-l)">🌿</div><div><div class="cat-title">Spring & Cloud</div><div class="cat-count">28 materials</div></div></div>
+    <div class="cat-card" onclick="scrollTo('notes')"><div class="cat-icon" style="background:rgba(56,189,248,.12);color:var(--cyan)">🏗</div><div><div class="cat-title">System Design</div><div class="cat-count">22 materials</div></div></div>
+    <div class="cat-card" onclick="scrollTo('notes')"><div class="cat-icon" style="background:rgba(251,191,36,.12);color:#FBBF24">⚙️</div><div><div class="cat-title">DevOps & CI/CD</div><div class="cat-count">18 materials</div></div></div>
+    <div class="cat-card" onclick="scrollTo('notes')"><div class="cat-icon" style="background:rgba(34,197,94,.12);color:#4ADE80">🧮</div><div><div class="cat-title">Algorithms & DSA</div><div class="cat-count">41 materials</div></div></div>
+    <div class="cat-card" onclick="scrollTo('stories')"><div class="cat-icon" style="background:rgba(251,146,60,.12);color:#FB923C">📖</div><div><div class="cat-title">Novels & Fiction</div><div class="cat-count">120+ books</div></div></div>
+    <div class="cat-card" onclick="scrollTo('stories')"><div class="cat-icon" style="background:rgba(236,72,153,.12);color:#F472B6">💡</div><div><div class="cat-title">Motivational</div><div class="cat-count">55 books</div></div></div>
+    <div class="cat-card" onclick="scrollTo('stories')"><div class="cat-icon" style="background:rgba(20,184,166,.12);color:#2DD4BF">🧒</div><div><div class="cat-title">Kids Story Books</div><div class="cat-count">80+ books</div></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- NOTES -->
+<section class="section" id="notes">
+  <div class="section-header reveal">
+    <div><div class="section-label">📖 Study Notes</div><h2 class="section-title">Engineering &amp;<br>Programming Notes</h2><p class="section-desc">Handwritten notes, semester PDFs, MCA materials and programming guides.</p></div>
+    <a href="#" class="see-all">All Notes <i class="fas fa-arrow-right"></i></a>
+  </div>
+  <div class="notes-grid reveal" id="book-grid">
+
+    <article class="book-card" onclick="loadBook('Java programming notes.pdf')" data-title="Java programming notes">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#0f3460,#1a5276)">☕</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(37,99,235,.15);color:#60A5FA">Java</span><span class="card-tag" style="background:rgba(34,197,94,.12);color:#4ADE80">Popular</span></div>
+        <div class="card-title">Java Programming Notes</div>
+        <div class="card-desc">Complete Java fundamentals, OOP, collections and interview-ready concepts.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-java">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
       </div>
-      <a href="#" class="see-all">All Notes <i class="fas fa-arrow-right"></i></a>
-    </div>
+    </article>
 
-    <div class="notes-grid wide reveal" id="book-grid">
-
-      <!-- Java -->
-      <article class="book-card" onclick="loadBook('Java programming notes.pdf')" data-title="Java programming notes">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#0f3460,#1a5276);">☕</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(37,99,235,0.15);color:#60A5FA;">Java</span>
-            <span class="card-tag" style="background:rgba(34,197,94,0.12);color:#4ADE80;">Popular</span>
-          </div>
-          <div class="card-title">Java Programming Notes</div>
-          <div class="card-desc">Complete Java fundamentals, OOP, collections and interview-ready concepts.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-java">0</span> views</span>
-            <span class="card-open">Open <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Java 8 -->
-      <article class="book-card" onclick="loadBook('Java 8 interview questions.pdf')" data-title="Java 8 interview questions">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#1a0533,#4a1070);">⚡</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(124,58,237,0.15);color:var(--purple-light);">Java 8</span>
-            <span class="card-tag" style="background:rgba(251,191,36,0.12);color:#FBBF24;">Interview</span>
-          </div>
-          <div class="card-title">Java 8 Interview Questions</div>
-          <div class="card-desc">Lambdas, streams, Optional, functional interfaces and real-world patterns.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-java8">0</span> views</span>
-            <span class="card-open">Open <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Java Stream -->
-      <article class="book-card" onclick="loadBook('Java Stream.pdf')" data-title="Java Stream">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#0d3b2e,#1a6b50);">🌊</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(56,189,248,0.12);color:var(--cyan);">Streams</span>
-            <span class="card-tag" style="background:rgba(34,197,94,0.12);color:#4ADE80;">Functional</span>
-          </div>
-          <div class="card-title">Java Stream API</div>
-          <div class="card-desc">Data transformation, collectors, parallel streams and functional programming.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-stream">0</span> views</span>
-            <span class="card-open">Open <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Spring Boot -->
-      <article class="book-card" onclick="loadBook('Spring boot interview.pdf')" data-title="Spring boot interview">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#0c2340,#1a4a80);">🌿</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(37,99,235,0.15);color:#60A5FA;">Spring</span>
-            <span class="card-tag" style="background:rgba(251,191,36,0.12);color:#FBBF24;">Interview</span>
-          </div>
-          <div class="card-title">Spring Boot Interview</div>
-          <div class="card-desc">Core concepts, auto-configuration, REST APIs and microservice patterns.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-spring">0</span> views</span>
-            <span class="card-open">Open <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Spring Bean -->
-      <article class="book-card" onclick="loadBook('Spring Bean Life Cycle.pdf')" data-title="Spring Bean Life Cycle">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#2d1b4e,#6b35c0);">🔄</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(124,58,237,0.15);color:var(--purple-light);">Spring</span>
-            <span class="card-tag" style="background:rgba(37,99,235,0.12);color:#60A5FA;">Core</span>
-          </div>
-          <div class="card-title">Spring Bean Life Cycle</div>
-          <div class="card-desc">Bean init, scopes, dependency injection, lifecycle callbacks and proxies.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-bean">0</span> views</span>
-            <span class="card-open">Open <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-      </article>
-
-      <!-- System Design -->
-      <article class="book-card" onclick="loadBook('System design notes.pdf')" data-title="System design notes">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#1a1a2e,#16213e);">🏗</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(56,189,248,0.12);color:var(--cyan);">Design</span>
-            <span class="card-tag" style="background:rgba(251,191,36,0.12);color:#FBBF24;">Architecture</span>
-          </div>
-          <div class="card-title">System Design Notes</div>
-          <div class="card-desc">Scalable architectures, load balancers, databases, caching and distributed systems.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-system">0</span> views</span>
-            <span class="card-open">Open <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Microservice -->
-      <article class="book-card" onclick="loadBook('Microservice.pdf')" data-title="Microservice Architecture">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#0a1628,#1e3a5f);">☁️</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(37,99,235,0.15);color:#60A5FA;">Cloud</span>
-            <span class="card-tag" style="background:rgba(34,197,94,0.12);color:#4ADE80;">Microservice</span>
-          </div>
-          <div class="card-title">Microservice Architecture</div>
-          <div class="card-desc">Service decomposition, API gateway, resilience patterns and deployment.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-micro">0</span> views</span>
-            <span class="card-open">Open <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Jenkins -->
-      <article class="book-card" onclick="loadBook('Top Jenkins Interview Questions.pdf')" data-title="Top Jenkins Interview Questions">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#2c1810,#6b3320);">⚙️</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(251,146,60,0.15);color:#FB923C;">CI/CD</span>
-            <span class="card-tag" style="background:rgba(251,191,36,0.12);color:#FBBF24;">DevOps</span>
-          </div>
-          <div class="card-title">Jenkins Interview Q&A</div>
-          <div class="card-desc">Pipelines, declarative syntax, deployment automation and Jenkins best practices.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-jenkins">0</span> views</span>
-            <span class="card-open">Open <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Algorithms -->
-      <article class="book-card" onclick="loadBook('Algorithms.pdf')" data-title="Algorithms">
-        <div class="card-thumb" style="background:linear-gradient(135deg,#0d2b0d,#1a5c1a);">🧮</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(34,197,94,0.12);color:#4ADE80;">Algorithms</span>
-            <span class="card-tag" style="background:rgba(56,189,248,0.12);color:var(--cyan);">DSA</span>
-          </div>
-          <div class="card-title">Algorithms & DSA</div>
-          <div class="card-desc">Sorting, searching, graphs, trees, dynamic programming and complexity analysis.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-algo">0</span> views</span>
-            <span class="card-open">Open <i class="fas fa-arrow-right"></i></span>
-          </div>
-        </div>
-      </article>
-
-      <!-- Microservices Design (coming soon) -->
-      <article class="book-card" data-title="Microservices Design Pattern" style="position:relative;">
-        <div class="coming-soon-overlay"><span class="coming-soon-badge">✨ Coming Soon</span></div>
-        <div class="card-thumb" style="background:linear-gradient(135deg,#1e0a3c,#3d1273);">🔷</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(124,58,237,0.15);color:var(--purple-light);">New</span>
-          </div>
-          <div class="card-title">Microservices Design Patterns</div>
-          <div class="card-desc">Event-driven patterns, CQRS, sagas, and resilient API architectures.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-microservices">0</span></span>
-            <span class="card-open" style="color:var(--purple-light);">Soon <i class="fas fa-clock"></i></span>
-          </div>
-        </div>
-      </article>
-
-      <!-- RAG (coming soon) -->
-      <article class="book-card" data-title="RAG Architecture" style="position:relative;">
-        <div class="coming-soon-overlay"><span class="coming-soon-badge">✨ Coming Soon</span></div>
-        <div class="card-thumb" style="background:linear-gradient(135deg,#0a1f3d,#0d3b6b);">🤖</div>
-        <div class="card-body">
-          <div class="card-tags">
-            <span class="card-tag" style="background:rgba(56,189,248,0.12);color:var(--cyan);">AI</span>
-          </div>
-          <div class="card-title">RAG Architecture</div>
-          <div class="card-desc">Retrieval-augmented generation, vector DBs and intelligent AI workflows.</div>
-          <div class="card-footer">
-            <span class="card-meta"><i class="fas fa-eye"></i> <span id="views-rag">0</span></span>
-            <span class="card-open" style="color:var(--cyan);">Soon <i class="fas fa-clock"></i></span>
-          </div>
-        </div>
-      </article>
-
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- STORY BOOKS SECTION -->
-  <section class="section" id="stories">
-    <div class="section-header reveal">
-      <div>
-        <div class="section-label">📚 Story Books</div>
-        <h2 class="section-title">Novels, Fiction &amp;<br>Motivational Books</h2>
-        <p class="section-desc">Escape into stories, grow with motivation, explore worlds beyond textbooks.</p>
+    <article class="book-card" onclick="loadBook('Java 8 interview questions.pdf')" data-title="Java 8 interview questions">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#1a0533,#4a1070)">⚡</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(124,58,237,.15);color:var(--purple-l)">Java 8</span><span class="card-tag" style="background:rgba(251,191,36,.12);color:#FBBF24">Interview</span></div>
+        <div class="card-title">Java 8 Interview Questions</div>
+        <div class="card-desc">Lambdas, streams, Optional, functional interfaces and real-world patterns.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-java8">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
       </div>
-      <a href="#" class="see-all">Browse All <i class="fas fa-arrow-right"></i></a>
-    </div>
+    </article>
 
-    <div class="story-grid reveal">
-      <div class="story-card">
-        <div class="story-cover" style="background:linear-gradient(145deg,#1a0040,#4b0082);">📖</div>
-        <div class="story-body">
-          <div class="story-title">Atomic Habits</div>
-          <div class="story-author">James Clear</div>
-          <div class="story-footer">
-            <span class="story-rating"><i class="fas fa-star"></i> 4.9</span>
-            <span class="story-tag" style="background:rgba(251,146,60,0.15);color:#FB923C;">Motivational</span>
-          </div>
-        </div>
+    <article class="book-card" onclick="loadBook('Java Stream.pdf')" data-title="Java Stream">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#0d3b2e,#1a6b50)">🌊</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(56,189,248,.12);color:var(--cyan)">Streams</span><span class="card-tag" style="background:rgba(34,197,94,.12);color:#4ADE80">Functional</span></div>
+        <div class="card-title">Java Stream API</div>
+        <div class="card-desc">Data transformation, collectors, parallel streams and functional programming.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-stream">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
       </div>
+    </article>
 
-      <div class="story-card">
-        <div class="story-cover" style="background:linear-gradient(145deg,#002040,#003d7a);">🔮</div>
-        <div class="story-body">
-          <div class="story-title">The Alchemist</div>
-          <div class="story-author">Paulo Coelho</div>
-          <div class="story-footer">
-            <span class="story-rating"><i class="fas fa-star"></i> 4.8</span>
-            <span class="story-tag" style="background:rgba(56,189,248,0.12);color:var(--cyan);">Fiction</span>
-          </div>
-        </div>
+    <article class="book-card" onclick="loadBook('Spring boot interview.pdf')" data-title="Spring boot interview">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#0c2340,#1a4a80)">🌿</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(37,99,235,.15);color:#60A5FA">Spring</span><span class="card-tag" style="background:rgba(251,191,36,.12);color:#FBBF24">Interview</span></div>
+        <div class="card-title">Spring Boot Interview</div>
+        <div class="card-desc">Core concepts, auto-configuration, REST APIs and microservice patterns.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-spring">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
       </div>
+    </article>
 
-      <div class="story-card">
-        <div class="story-cover" style="background:linear-gradient(145deg,#0d2b0d,#1a5c1a);">🌍</div>
-        <div class="story-body">
-          <div class="story-title">Rich Dad Poor Dad</div>
-          <div class="story-author">Robert Kiyosaki</div>
-          <div class="story-footer">
-            <span class="story-rating"><i class="fas fa-star"></i> 4.7</span>
-            <span class="story-tag" style="background:rgba(34,197,94,0.12);color:#4ADE80;">Finance</span>
-          </div>
-        </div>
+    <article class="book-card" onclick="loadBook('Spring Bean Life Cycle.pdf')" data-title="Spring Bean Life Cycle">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#2d1b4e,#6b35c0)">🔄</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(124,58,237,.15);color:var(--purple-l)">Spring</span><span class="card-tag" style="background:rgba(37,99,235,.12);color:#60A5FA">Core</span></div>
+        <div class="card-title">Spring Bean Life Cycle</div>
+        <div class="card-desc">Bean init, scopes, dependency injection, lifecycle callbacks and proxies.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-bean">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
       </div>
+    </article>
 
-      <div class="story-card">
-        <div class="story-cover" style="background:linear-gradient(145deg,#3d0a1a,#8b1a3a);">💡</div>
-        <div class="story-body">
-          <div class="story-title">Think and Grow Rich</div>
-          <div class="story-author">Napoleon Hill</div>
-          <div class="story-footer">
-            <span class="story-rating"><i class="fas fa-star"></i> 4.8</span>
-            <span class="story-tag" style="background:rgba(236,72,153,0.12);color:#F472B6;">Classic</span>
-          </div>
-        </div>
+    <article class="book-card" onclick="loadBook('System design notes.pdf')" data-title="System design notes">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#1a1a2e,#16213e)">🏗</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(56,189,248,.12);color:var(--cyan)">Design</span><span class="card-tag" style="background:rgba(251,191,36,.12);color:#FBBF24">Architecture</span></div>
+        <div class="card-title">System Design Notes</div>
+        <div class="card-desc">Scalable architectures, load balancers, databases, caching and distributed systems.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-system">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
       </div>
+    </article>
 
-      <div class="story-card">
-        <div class="story-cover" style="background:linear-gradient(145deg,#1a1a00,#4a4a00);">🌟</div>
-        <div class="story-body">
-          <div class="story-title">The Little Prince</div>
-          <div class="story-author">Antoine de Saint-Exupéry</div>
-          <div class="story-footer">
-            <span class="story-rating"><i class="fas fa-star"></i> 4.9</span>
-            <span class="story-tag" style="background:rgba(251,191,36,0.12);color:#FBBF24;">Kids</span>
-          </div>
-        </div>
+    <article class="book-card" onclick="loadBook('Microservice.pdf')" data-title="Microservice Architecture">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#0a1628,#1e3a5f)">☁️</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(37,99,235,.15);color:#60A5FA">Cloud</span><span class="card-tag" style="background:rgba(34,197,94,.12);color:#4ADE80">Microservice</span></div>
+        <div class="card-title">Microservice Architecture</div>
+        <div class="card-desc">Service decomposition, API gateway, resilience patterns and deployment.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-micro">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
       </div>
+    </article>
 
-      <div class="story-card">
-        <div class="story-cover" style="background:linear-gradient(145deg,#001a2e,#003060);">🚀</div>
-        <div class="story-body">
-          <div class="story-title">Zero to One</div>
-          <div class="story-author">Peter Thiel</div>
-          <div class="story-footer">
-            <span class="story-rating"><i class="fas fa-star"></i> 4.6</span>
-            <span class="story-tag" style="background:rgba(37,99,235,0.15);color:#60A5FA;">Startup</span>
-          </div>
-        </div>
+    <article class="book-card" onclick="loadBook('Top Jenkins Interview Questions.pdf')" data-title="Top Jenkins Interview Questions">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#2c1810,#6b3320)">⚙️</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(251,146,60,.15);color:#FB923C">CI/CD</span><span class="card-tag" style="background:rgba(251,191,36,.12);color:#FBBF24">DevOps</span></div>
+        <div class="card-title">Jenkins Interview Q&amp;A</div>
+        <div class="card-desc">Pipelines, declarative syntax, deployment automation and Jenkins best practices.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-jenkins">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
       </div>
+    </article>
 
-      <div class="story-card">
-        <div class="story-cover" style="background:linear-gradient(145deg,#1a0a2e,#3d1573);">✨</div>
-        <div class="story-body">
-          <div class="story-title">Can't Hurt Me</div>
-          <div class="story-author">David Goggins</div>
-          <div class="story-footer">
-            <span class="story-rating"><i class="fas fa-star"></i> 4.9</span>
-            <span class="story-tag" style="background:rgba(124,58,237,0.15);color:var(--purple-light);">Mindset</span>
-          </div>
-        </div>
+    <article class="book-card" onclick="loadBook('Algorithms.pdf')" data-title="Algorithms">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#0d2b0d,#1a5c1a)">🧮</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(34,197,94,.12);color:#4ADE80">Algorithms</span><span class="card-tag" style="background:rgba(56,189,248,.12);color:var(--cyan)">DSA</span></div>
+        <div class="card-title">Algorithms &amp; DSA</div>
+        <div class="card-desc">Sorting, searching, graphs, trees, dynamic programming and complexity analysis.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-algo">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
       </div>
+    </article>
 
-      <div class="story-card">
-        <div class="story-cover" style="background:linear-gradient(145deg,#0a1f0a,#1a4a1a);">🌱</div>
-        <div class="story-body">
-          <div class="story-title">Ikigai</div>
-          <div class="story-author">Héctor García</div>
-          <div class="story-footer">
-            <span class="story-rating"><i class="fas fa-star"></i> 4.7</span>
-            <span class="story-tag" style="background:rgba(20,184,166,0.12);color:#2DD4BF;">Wellbeing</span>
-          </div>
-        </div>
+    <!-- Microservices Design Pattern — NOW AVAILABLE -->
+    <article class="book-card" onclick="loadBook('Microservices Design Pattern.pdf')" data-title="Microservices Design Pattern">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#1e0a3c,#3d1273)">🔷</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(124,58,237,.15);color:var(--purple-l)">New</span><span class="card-tag" style="background:rgba(56,189,248,.12);color:var(--cyan)">Patterns</span></div>
+        <div class="card-title">Microservices Design Patterns</div>
+        <div class="card-desc">Event-driven patterns, CQRS, sagas, and resilient API architectures.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-msdp">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
+      </div>
+    </article>
+
+    <!-- RAG Architecture — NOW AVAILABLE -->
+    <article class="book-card" onclick="loadBook('RAG Architecture.pdf')" data-title="RAG Architecture">
+      <div class="card-thumb" style="background:linear-gradient(135deg,#0a1f3d,#0d3b6b)">🤖</div>
+      <div class="card-body">
+        <div class="card-tags"><span class="card-tag" style="background:rgba(56,189,248,.12);color:var(--cyan)">AI</span><span class="card-tag" style="background:rgba(34,197,94,.12);color:#4ADE80">New</span></div>
+        <div class="card-title">RAG Architecture</div>
+        <div class="card-desc">Retrieval-augmented generation, vector DBs and intelligent AI workflows.</div>
+        <div class="card-footer"><span class="card-meta"><i class="fas fa-eye"></i> <span id="vw-rag">0</span> views</span><span class="card-open">Open <i class="fas fa-arrow-right"></i></span></div>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- STORY BOOKS -->
+<section class="section" id="stories">
+  <div class="section-header reveal">
+    <div><div class="section-label">📚 Story Books</div><h2 class="section-title">Novels, Fiction &amp;<br>Motivational Books</h2><p class="section-desc">Escape into stories, grow with motivation, explore worlds beyond textbooks.</p></div>
+    <a href="#" class="see-all">Browse All <i class="fas fa-arrow-right"></i></a>
+  </div>
+  <div class="story-grid reveal">
+    <div class="story-card"><div class="story-cover" style="background:linear-gradient(145deg,#1a0040,#4b0082)">📖</div><div class="story-body"><div class="story-title">Atomic Habits</div><div class="story-author">James Clear</div><div class="story-footer"><span class="story-rating"><i class="fas fa-star"></i> 4.9</span><span class="story-tag" style="background:rgba(251,146,60,.15);color:#FB923C">Motivational</span></div></div></div>
+    <div class="story-card"><div class="story-cover" style="background:linear-gradient(145deg,#002040,#003d7a)">🔮</div><div class="story-body"><div class="story-title">The Alchemist</div><div class="story-author">Paulo Coelho</div><div class="story-footer"><span class="story-rating"><i class="fas fa-star"></i> 4.8</span><span class="story-tag" style="background:rgba(56,189,248,.12);color:var(--cyan)">Fiction</span></div></div></div>
+    <div class="story-card"><div class="story-cover" style="background:linear-gradient(145deg,#0d2b0d,#1a5c1a)">🌍</div><div class="story-body"><div class="story-title">Rich Dad Poor Dad</div><div class="story-author">Robert Kiyosaki</div><div class="story-footer"><span class="story-rating"><i class="fas fa-star"></i> 4.7</span><span class="story-tag" style="background:rgba(34,197,94,.12);color:#4ADE80">Finance</span></div></div></div>
+    <div class="story-card"><div class="story-cover" style="background:linear-gradient(145deg,#3d0a1a,#8b1a3a)">💡</div><div class="story-body"><div class="story-title">Think and Grow Rich</div><div class="story-author">Napoleon Hill</div><div class="story-footer"><span class="story-rating"><i class="fas fa-star"></i> 4.8</span><span class="story-tag" style="background:rgba(236,72,153,.12);color:#F472B6">Classic</span></div></div></div>
+    <div class="story-card"><div class="story-cover" style="background:linear-gradient(145deg,#1a1a00,#4a4a00)">🌟</div><div class="story-body"><div class="story-title">The Little Prince</div><div class="story-author">Saint-Exupéry</div><div class="story-footer"><span class="story-rating"><i class="fas fa-star"></i> 4.9</span><span class="story-tag" style="background:rgba(251,191,36,.12);color:#FBBF24">Kids</span></div></div></div>
+    <div class="story-card"><div class="story-cover" style="background:linear-gradient(145deg,#001a2e,#003060)">🚀</div><div class="story-body"><div class="story-title">Zero to One</div><div class="story-author">Peter Thiel</div><div class="story-footer"><span class="story-rating"><i class="fas fa-star"></i> 4.6</span><span class="story-tag" style="background:rgba(37,99,235,.15);color:#60A5FA">Startup</span></div></div></div>
+    <div class="story-card"><div class="story-cover" style="background:linear-gradient(145deg,#1a0a2e,#3d1573)">✨</div><div class="story-body"><div class="story-title">Can't Hurt Me</div><div class="story-author">David Goggins</div><div class="story-footer"><span class="story-rating"><i class="fas fa-star"></i> 4.9</span><span class="story-tag" style="background:rgba(124,58,237,.15);color:var(--purple-l)">Mindset</span></div></div></div>
+    <div class="story-card"><div class="story-cover" style="background:linear-gradient(145deg,#0a1f0a,#1a4a1a)">🌱</div><div class="story-body"><div class="story-title">Ikigai</div><div class="story-author">Héctor García</div><div class="story-footer"><span class="story-rating"><i class="fas fa-star"></i> 4.7</span><span class="story-tag" style="background:rgba(20,184,166,.12);color:#2DD4BF">Wellbeing</span></div></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TRENDING + RECENT -->
+<section class="section" id="trending">
+  <div id="trending-layout" style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,5vw,4rem);align-items:start">
+    <div>
+      <div class="section-header reveal" style="margin-bottom:1.5rem"><div><div class="section-label">🔥 Trending Now</div><h2 class="section-title">Most Read<br>This Week</h2></div></div>
+      <div class="trending-list reveal">
+        <div class="trend-item" onclick="loadBook('Java programming notes.pdf')"><span class="trend-num">01</span><div class="trend-icon" style="background:rgba(37,99,235,.12)">☕</div><div class="trend-info"><div class="trend-title">Java Programming Notes</div><div class="trend-meta">Java · Engineering</div></div><span class="trend-views"><i class="fas fa-eye"></i> <span id="tv-java">0</span></span></div>
+        <div class="trend-item" onclick="loadBook('System design notes.pdf')"><span class="trend-num">02</span><div class="trend-icon" style="background:rgba(56,189,248,.12)">🏗</div><div class="trend-info"><div class="trend-title">System Design Notes</div><div class="trend-meta">Architecture · Design</div></div><span class="trend-views"><i class="fas fa-eye"></i> <span id="tv-system">0</span></span></div>
+        <div class="trend-item" onclick="loadBook('Algorithms.pdf')"><span class="trend-num">03</span><div class="trend-icon" style="background:rgba(34,197,94,.12)">🧮</div><div class="trend-info"><div class="trend-title">Algorithms & DSA</div><div class="trend-meta">DSA · Competitive</div></div><span class="trend-views"><i class="fas fa-eye"></i> <span id="tv-algo">0</span></span></div>
+        <div class="trend-item" onclick="loadBook('Spring boot interview.pdf')"><span class="trend-num">04</span><div class="trend-icon" style="background:rgba(124,58,237,.12)">🌿</div><div class="trend-info"><div class="trend-title">Spring Boot Interview</div><div class="trend-meta">Spring · Backend</div></div><span class="trend-views"><i class="fas fa-eye"></i> <span id="tv-spring">0</span></span></div>
+        <div class="trend-item" onclick="loadBook('Microservice.pdf')"><span class="trend-num">05</span><div class="trend-icon" style="background:rgba(251,191,36,.12)">☁️</div><div class="trend-info"><div class="trend-title">Microservice Architecture</div><div class="trend-meta">Cloud · Distributed</div></div><span class="trend-views"><i class="fas fa-eye"></i> <span id="tv-micro">0</span></span></div>
       </div>
     </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- TRENDING SECTION -->
-  <section class="section" id="trending">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;">
-
-      <div>
-        <div class="section-header reveal" style="margin-bottom:1.75rem;">
-          <div>
-            <div class="section-label">🔥 Trending Now</div>
-            <h2 class="section-title">Most Read<br>This Week</h2>
-          </div>
-        </div>
-        <div class="trending-list reveal">
-          <div class="trend-item" onclick="loadBook('Java programming notes.pdf')">
-            <span class="trend-num">01</span>
-            <div class="trend-icon" style="background:rgba(37,99,235,0.12);">☕</div>
-            <div class="trend-info">
-              <div class="trend-title">Java Programming Notes</div>
-              <div class="trend-meta">Java · Engineering</div>
-            </div>
-            <span class="trend-views"><i class="fas fa-eye"></i> <span id="t-views-java">0</span></span>
-          </div>
-          <div class="trend-item" onclick="loadBook('System design notes.pdf')">
-            <span class="trend-num">02</span>
-            <div class="trend-icon" style="background:rgba(56,189,248,0.12);">🏗</div>
-            <div class="trend-info">
-              <div class="trend-title">System Design Notes</div>
-              <div class="trend-meta">Architecture · Design</div>
-            </div>
-            <span class="trend-views"><i class="fas fa-eye"></i> <span id="t-views-system">0</span></span>
-          </div>
-          <div class="trend-item" onclick="loadBook('Algorithms.pdf')">
-            <span class="trend-num">03</span>
-            <div class="trend-icon" style="background:rgba(34,197,94,0.12);">🧮</div>
-            <div class="trend-info">
-              <div class="trend-title">Algorithms & DSA</div>
-              <div class="trend-meta">DSA · Competitive</div>
-            </div>
-            <span class="trend-views"><i class="fas fa-eye"></i> <span id="t-views-algo">0</span></span>
-          </div>
-          <div class="trend-item" onclick="loadBook('Spring boot interview.pdf')">
-            <span class="trend-num">04</span>
-            <div class="trend-icon" style="background:rgba(124,58,237,0.12);">🌿</div>
-            <div class="trend-info">
-              <div class="trend-title">Spring Boot Interview</div>
-              <div class="trend-meta">Spring · Backend</div>
-            </div>
-            <span class="trend-views"><i class="fas fa-eye"></i> <span id="t-views-spring">0</span></span>
-          </div>
-          <div class="trend-item" onclick="loadBook('Microservice.pdf')">
-            <span class="trend-num">05</span>
-            <div class="trend-icon" style="background:rgba(251,191,36,0.12);">☁️</div>
-            <div class="trend-info">
-              <div class="trend-title">Microservice Architecture</div>
-              <div class="trend-meta">Cloud · Distributed</div>
-            </div>
-            <span class="trend-views"><i class="fas fa-eye"></i> <span id="t-views-micro">0</span></span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Recently Uploaded -->
-      <div>
-        <div class="section-header reveal" style="margin-bottom:1.75rem;">
-          <div>
-            <div class="section-label">🆕 Fresh Uploads</div>
-            <h2 class="section-title">Recently<br>Added</h2>
-          </div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:0.75rem;" class="reveal">
-          <div class="note-item">
-            <div class="note-icon" style="background:rgba(37,99,235,0.12);color:#60A5FA;font-size:1.1rem;">📝</div>
-            <div>
-              <div class="note-title">Behavioral Interview Guide</div>
-              <div class="note-time">Updated 2 days ago · Interview Prep</div>
-            </div>
-          </div>
-          <div class="note-item">
-            <div class="note-icon" style="background:rgba(124,58,237,0.12);color:var(--purple-light);font-size:1.1rem;">🗂</div>
-            <div>
-              <div class="note-title">Data Structures Cheat Sheet</div>
-              <div class="note-time">Updated 4 days ago · DSA</div>
-            </div>
-          </div>
-          <div class="note-item">
-            <div class="note-icon" style="background:rgba(56,189,248,0.12);color:var(--cyan);font-size:1.1rem;">🔧</div>
-            <div>
-              <div class="note-title">Design Patterns Summary</div>
-              <div class="note-time">Updated 1 week ago · Architecture</div>
-            </div>
-          </div>
-          <div class="note-item">
-            <div class="note-icon" style="background:rgba(34,197,94,0.12);color:#4ADE80;font-size:1.1rem;">💻</div>
-            <div>
-              <div class="note-title">React Hooks Deep Dive</div>
-              <div class="note-time">Updated 1 week ago · Frontend</div>
-            </div>
-          </div>
-          <div class="note-item">
-            <div class="note-icon" style="background:rgba(251,146,60,0.12);color:#FB923C;font-size:1.1rem;">🐳</div>
-            <div>
-              <div class="note-title">Docker & Kubernetes Notes</div>
-              <div class="note-time">Updated 2 weeks ago · DevOps</div>
-            </div>
-          </div>
-        </div>
+    <div>
+      <div class="section-header reveal" style="margin-bottom:1.5rem"><div><div class="section-label">🆕 Fresh Uploads</div><h2 class="section-title">Recently<br>Added</h2></div></div>
+      <div class="reveal">
+        <div class="note-item"><div class="note-icon" style="background:rgba(37,99,235,.12);color:#60A5FA">📝</div><div><div class="note-title">Behavioral Interview Guide</div><div class="note-time">Updated 2 days ago · Interview Prep</div></div></div>
+        <div class="note-item"><div class="note-icon" style="background:rgba(124,58,237,.12);color:var(--purple-l)">🗂</div><div><div class="note-title">Data Structures Cheat Sheet</div><div class="note-time">Updated 4 days ago · DSA</div></div></div>
+        <div class="note-item"><div class="note-icon" style="background:rgba(56,189,248,.12);color:var(--cyan)">🔧</div><div><div class="note-title">Design Patterns Summary</div><div class="note-time">Updated 1 week ago · Architecture</div></div></div>
+        <div class="note-item"><div class="note-icon" style="background:rgba(34,197,94,.12);color:#4ADE80">💻</div><div><div class="note-title">React Hooks Deep Dive</div><div class="note-time">Updated 1 week ago · Frontend</div></div></div>
+        <div class="note-item" style="margin-bottom:0"><div class="note-icon" style="background:rgba(251,146,60,.12);color:#FB923C">🐳</div><div><div class="note-title">Docker & Kubernetes Notes</div><div class="note-time">Updated 2 weeks ago · DevOps</div></div></div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <div class="divider"></div>
+<div class="divider"></div>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="#" class="nav-brand" style="margin-bottom:0.5rem;display:inline-flex;">
-          <div class="nav-logo">📚</div>
-          EduBook
-        </a>
-        <p>The premium academic library for modern students. Access thousands of study materials, engineering notes, story books and more — all in one place.</p>
-        <div class="footer-socials">
-          <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
-          <a href="#" class="social-btn"><i class="fab fa-github"></i></a>
-          <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
-        </div>
-      </div>
-      <div class="footer-col">
-        <h4>Library</h4>
-        <ul>
-          <li><a href="#notes">Engineering Notes</a></li>
-          <li><a href="#notes">Programming PDFs</a></li>
-          <li><a href="#notes">MCA Materials</a></li>
-          <li><a href="#notes">Handwritten Notes</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Books</h4>
-        <ul>
-          <li><a href="#stories">Novels</a></li>
-          <li><a href="#stories">Motivational</a></li>
-          <li><a href="#stories">Kids Books</a></li>
-          <li><a href="#stories">Educational</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Platform</h4>
-        <ul>
-          <li><a href="#">Upload Notes</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Contact Us</a></li>
-        </ul>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-brand" style="display:inline-flex;margin-bottom:.5rem"><div class="nav-logo">📚</div>EduBook</a>
+      <p>The premium academic library for modern students. Access thousands of study materials, engineering notes, story books and more.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-github"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
       </div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2026 EduBook Library. Designed for modern learning.</span>
-      <span>Made with ❤️ for students</span>
-    </div>
-  </footer>
-
+    <div class="footer-col"><h4>Library</h4><ul><li><a href="#notes">Engineering Notes</a></li><li><a href="#notes">Programming PDFs</a></li><li><a href="#notes">MCA Materials</a></li><li><a href="#notes">Handwritten Notes</a></li></ul></div>
+    <div class="footer-col"><h4>Books</h4><ul><li><a href="#stories">Novels</a></li><li><a href="#stories">Motivational</a></li><li><a href="#stories">Kids Books</a></li><li><a href="#stories">Educational</a></li></ul></div>
+    <div class="footer-col"><h4>Platform</h4><ul><li><a href="#">Upload Notes</a></li><li><a href="#">Privacy Policy</a></li><li><a href="#">Terms of Service</a></li><li><a href="#">Contact Us</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 EduBook Library. Designed for modern learning.</span><span>Made with ❤️ for students</span></div>
+</footer>
 </div><!-- /page-wrap -->
 
-<!-- PDF VIEWER OVERLAY -->
+<!-- ══════════ PDF VIEWER ══════════ -->
 <div class="pdf-viewer" id="pdf-viewer">
+
+  <!-- Top bar -->
   <div class="pdf-topbar">
-    <div style="display:flex;align-items:center;gap:1rem;">
-      <button class="pdf-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> Library</button>
+    <div style="display:flex;align-items:center;gap:.75rem;min-width:0">
+      <button class="pdf-btn" onclick="goBack()"><i class="fas fa-arrow-left"></i> <span>Library</span></button>
       <span class="pdf-title-text" id="pdf-title">Loading…</span>
     </div>
-    <div class="pdf-controls-group">
-      <button class="pdf-btn primary" id="zoom_out"><i class="fas fa-search-minus"></i></button>
-      <button class="pdf-btn primary" id="zoom_in"><i class="fas fa-search-plus"></i></button>
-      <button class="pdf-btn" id="prev"><i class="fas fa-chevron-left"></i> Prev</button>
-      <button class="pdf-btn" id="next">Next <i class="fas fa-chevron-right"></i></button>
+    <div class="pdf-ctrl-group">
+      <button class="pdf-btn blue" id="zoom-out"><i class="fas fa-search-minus"></i></button>
+      <button class="pdf-btn blue" id="zoom-in"><i class="fas fa-search-plus"></i></button>
+      <button class="pdf-btn green" id="download-btn" onclick="downloadPDF()"><i class="fas fa-download"></i> <span>Download</span></button>
+      <button class="pdf-btn" id="fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen"><i class="fas fa-expand"></i></button>
     </div>
   </div>
-  <div class="pdf-content">
-    <div id="canvas-container"><canvas id="pdf-render"></canvas></div>
-    <div class="pdf-toolbar">
-      <div class="page-slider-wrap">
-        <input type="range" min="1" value="1" id="page-slider" />
-        <input type="number" min="1" value="1" class="page-input-box" id="page-input" />
-        <span class="page-label">of <strong id="total-pages">—</strong></span>
-      </div>
-      <div style="padding:0.6rem 1.1rem;background:var(--surface);border:1px solid var(--border);border-radius:12px;font-size:0.85rem;color:var(--text-md);white-space:nowrap;">
-        Page <span id="page_num">1</span> / <span id="page_count">—</span>
-      </div>
+
+  <!-- Canvas area with swipe -->
+  <div class="pdf-content" id="pdf-content">
+    <div id="canvas-container">
+      <canvas id="pdf-render"></canvas>
+      <div id="page-transition"></div>
+      <div class="swipe-hint" id="swipe-hint">← Swipe to navigate →</div>
     </div>
+  </div>
+
+  <!-- BOTTOM BAR: Prev | Slider | Next -->
+  <div class="pdf-bottom-bar">
+    <button class="pdf-nav-btn" id="prev-btn" disabled><i class="fas fa-chevron-left"></i> Prev</button>
+    <div class="slider-wrap">
+      <input type="range" min="1" value="1" id="page-slider"/>
+      <input type="number" min="1" value="1" class="page-input-box" id="page-input"/>
+      <span class="page-lbl">of <strong id="total-pages">—</strong></span>
+    </div>
+    <div class="page-pill">Page <span id="page-num">1</span> / <span id="page-count">—</span></div>
+    <button class="pdf-nav-btn next-btn" id="next-btn" disabled>Next <i class="fas fa-chevron-right"></i></button>
   </div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
 <script>
-  // ── PDF.js ──
-  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
-  let pdfDoc = null, pageNum = 1, baseScale = 1.5, viewScale = 1;
-  const canvas = document.getElementById('pdf-render');
-  const ctx = canvas.getContext('2d');
+'use strict';
+/* ═══════════════════════════════════════
+   GLOBALS
+═══════════════════════════════════════ */
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.worker.min.js';
+let pdfDoc = null, pageNum = 1, baseScale = 1.5, viewScale = 1;
+let currentFile = '';
+const pdfCanvas = document.getElementById('pdf-render');
+const pdfCtx    = pdfCanvas.getContext('2d');
 
-  let viewCounts = {
-    'Java programming notes.pdf': 0,
-    'Java 8 interview questions.pdf': 0,
-    'Java Stream.pdf': 0,
-    'Spring boot interview.pdf': 0,
-    'Spring Bean Life Cycle.pdf': 0,
-    'System design notes.pdf': 0,
-    'Microservice.pdf': 0,
-    'Top Jenkins Interview Questions.pdf': 0,
-    'Algorithms.pdf': 0,
-    'Microservices Design Pattern.pdf': 0,
-    'RAG Architecture.pdf': 0
+const viewCounts = JSON.parse(localStorage.getItem('edu_vc') || '{}');
+let accessCount  = parseInt(localStorage.getItem('edu_ac') || '0');
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+(function init(){
+  if (!localStorage.getItem('edu_vid')) {
+    localStorage.setItem('edu_vid', Date.now() + '-' + Math.random().toString(36).slice(2));
+    accessCount++;
+    localStorage.setItem('edu_ac', accessCount);
+  }
+  const el = document.getElementById('access-count');
+  if (el) el.textContent = accessCount.toLocaleString();
+
+  // restore theme
+  const t = localStorage.getItem('edu_theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', t);
+  document.getElementById('theme-toggle').textContent = t === 'dark' ? '☀️' : '🌙';
+
+  // restore bg
+  const savedBg = localStorage.getItem('edu_bg');
+  if (savedBg) { try { applyBgVals(JSON.parse(savedBg)); } catch(e){} }
+
+  updateViewCounts();
+  initCounters();
+  initReveal();
+  initBgPicker();
+  initBook();
+  initBgCanvas();
+})();
+
+/* ═══════════════════════════════════════
+   HELPERS
+═══════════════════════════════════════ */
+function scrollTo(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+function toggleMenu(){ document.getElementById('mobile-menu').classList.toggle('open'); }
+function uploadNote(){ alert('📤 Upload feature coming soon! Stay tuned.'); }
+
+function updateViewCounts(){
+  const map = {
+    'vw-java':'Java programming notes.pdf','vw-java8':'Java 8 interview questions.pdf',
+    'vw-stream':'Java Stream.pdf','vw-spring':'Spring boot interview.pdf',
+    'vw-bean':'Spring Bean Life Cycle.pdf','vw-system':'System design notes.pdf',
+    'vw-micro':'Microservice.pdf','vw-jenkins':'Top Jenkins Interview Questions.pdf',
+    'vw-algo':'Algorithms.pdf','vw-msdp':'Microservices Design Pattern.pdf',
+    'vw-rag':'RAG Architecture.pdf',
+    'tv-java':'Java programming notes.pdf','tv-system':'System design notes.pdf',
+    'tv-algo':'Algorithms.pdf','tv-spring':'Spring boot interview.pdf','tv-micro':'Microservice.pdf'
   };
+  Object.entries(map).forEach(([id, f]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = viewCounts[f] || 0;
+  });
+}
 
-  let accessCount = 0;
+function filterBooks(){
+  const q = document.getElementById('book-search').value.toLowerCase().trim();
+  document.querySelectorAll('.book-card').forEach(c => {
+    c.style.display = (!q || c.dataset.title?.toLowerCase().includes(q)) ? '' : 'none';
+  });
+}
 
-  function init() {
-    try {
-      const saved = localStorage.getItem('pdfViewCounts');
-      if (saved) viewCounts = { ...viewCounts, ...JSON.parse(saved) };
-      accessCount = parseInt(localStorage.getItem('accessCount') || '0');
-      if (!localStorage.getItem('visitorId')) {
-        localStorage.setItem('visitorId', `${Date.now()}-${Math.random().toString(36).slice(2)}`);
-        accessCount++;
-        localStorage.setItem('accessCount', accessCount);
-      }
-    } catch(e) {}
-    updateViewCounts();
-    const el = document.getElementById('access-count');
-    if (el) el.textContent = accessCount.toLocaleString();
-    initCounters();
-    initScrollReveal();
-  }
+/* ═══════════════════════════════════════
+   THEME TOGGLE
+═══════════════════════════════════════ */
+document.getElementById('theme-toggle').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('edu_theme', next);
+  document.getElementById('theme-toggle').textContent = next === 'dark' ? '☀️' : '🌙';
+});
 
-  function updateViewCounts() {
-    const map = {
-      'views-java': 'Java programming notes.pdf',
-      'views-java8': 'Java 8 interview questions.pdf',
-      'views-stream': 'Java Stream.pdf',
-      'views-spring': 'Spring boot interview.pdf',
-      'views-bean': 'Spring Bean Life Cycle.pdf',
-      'views-system': 'System design notes.pdf',
-      'views-micro': 'Microservice.pdf',
-      'views-jenkins': 'Top Jenkins Interview Questions.pdf',
-      'views-algo': 'Algorithms.pdf',
-      'views-microservices': 'Microservices Design Pattern.pdf',
-      'views-rag': 'RAG Architecture.pdf',
-      't-views-java': 'Java programming notes.pdf',
-      't-views-system': 'System design notes.pdf',
-      't-views-algo': 'Algorithms.pdf',
-      't-views-spring': 'Spring boot interview.pdf',
-      't-views-micro': 'Microservice.pdf',
-    };
-    Object.entries(map).forEach(([id, file]) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = viewCounts[file] || 0;
+/* ═══════════════════════════════════════
+   BG COLOR PICKER
+═══════════════════════════════════════ */
+function initBgPicker(){
+  document.querySelectorAll('.bg-dot').forEach(dot => {
+    dot.addEventListener('click', () => { applyBgVals(dot.dataset); });
+  });
+}
+function applyBgVals(ds){
+  const sheet = document.getElementById('dyn-bg') || (() => {
+    const s = document.createElement('style'); s.id = 'dyn-bg';
+    document.head.appendChild(s); return s;
+  })();
+  sheet.textContent = `[data-theme="dark"]{--bg:${ds.d};--bg2:${ds.d}}[data-theme="light"]{--bg:${ds.l};--bg2:${ds.l}}`;
+  document.querySelectorAll('.bg-dot').forEach(d => d.classList.toggle('active', d.dataset.d === ds.d));
+  try { localStorage.setItem('edu_bg', JSON.stringify(ds)); } catch(e){}
+}
+
+/* ═══════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════ */
+function initReveal(){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) { setTimeout(() => e.target.classList.add('in'), i * 65); obs.unobserve(e.target); }
     });
-  }
+  }, { threshold: 0.07 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+}
 
-  function filterBooks() {
-    const q = document.getElementById('book-search').value.toLowerCase().trim();
-    document.querySelectorAll('.book-card').forEach(c => {
-      c.style.display = c.dataset.title?.toLowerCase().includes(q) ? '' : 'none';
+/* ═══════════════════════════════════════
+   COUNTERS
+═══════════════════════════════════════ */
+function initCounters(){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const target = parseInt(e.target.dataset.count);
+      const suf = target >= 1000 ? '+' : target >= 100 ? '%' : '+';
+      let cur = 0; const inc = target / (1600 / 16);
+      const t = setInterval(() => {
+        cur = Math.min(cur + inc, target);
+        e.target.textContent = Math.floor(cur).toLocaleString() + (cur >= target ? suf : '');
+        if (cur >= target) clearInterval(t);
+      }, 16);
+      obs.unobserve(e.target);
     });
-  }
+  }, { threshold: 0.5 });
+  document.querySelectorAll('[data-count]').forEach(el => obs.observe(el));
+}
 
-  function uploadNote() {
-    alert('📤 Upload feature coming soon! Stay tuned.');
-  }
-
-  function loadBook(file) {
-    if (file === 'Microservices Design Pattern.pdf' || file === 'RAG Architecture.pdf') {
-      alert('✨ This book will be available very soon!'); return;
-    }
-    document.getElementById('pdf-viewer').classList.add('active');
-    document.getElementById('pdf-title').textContent = file.replace('.pdf', '');
-    viewCounts[file] = (viewCounts[file] || 0) + 1;
-    try { localStorage.setItem('pdfViewCounts', JSON.stringify(viewCounts)); } catch(e) {}
-    updateViewCounts();
-    pdfDoc = null; pageNum = 1; viewScale = 1;
-    pdfjsLib.getDocument(file).promise.then(pdf => {
-      pdfDoc = pdf;
-      document.getElementById('page_count').textContent = pdf.numPages;
-      document.getElementById('total-pages').textContent = pdf.numPages;
-      document.getElementById('page-slider').max = pdf.numPages;
-      document.getElementById('page-input').max = pdf.numPages;
-      renderPage(1);
-    }).catch(() => { alert('Unable to open PDF. Please ensure the file is accessible.'); goBack(); });
-  }
-
-  function renderPage(num) {
-    if (!pdfDoc) return;
-    pdfDoc.getPage(num).then(page => {
-      const vp = page.getViewport({ scale: baseScale * viewScale });
-      canvas.height = vp.height; canvas.width = vp.width;
-      page.render({ canvasContext: ctx, viewport: vp });
+/* ═══════════════════════════════════════
+   ANIMATED BG CANVAS
+═══════════════════════════════════════ */
+function initBgCanvas(){
+  const c = document.getElementById('bg-canvas');
+  const ctx = c.getContext('2d');
+  let W, H, parts = [], t = 0;
+  function resize(){ W = c.width = innerWidth; H = c.height = innerHeight; }
+  function Pt(){ this.r(); }
+  Pt.prototype.r = function(){ this.x=Math.random()*W; this.y=Math.random()*H; this.rad=Math.random()*1.4+.3; this.vx=(Math.random()-.5)*.28; this.vy=(Math.random()-.5)*.28; this.a=Math.random()*.45+.1; this.col=Math.random()>.5?'37,99,235':'124,58,237'; };
+  Pt.prototype.u = function(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>W||this.y<0||this.y>H) this.r(); };
+  resize();
+  parts = Array.from({length:65}, () => new Pt());
+  function draw(){
+    ctx.clearRect(0,0,W,H); t+=.003;
+    [[W*.15+Math.sin(t*.7)*80, H*.25+Math.cos(t*.5)*60,420,'37,99,235',.12],
+     [W*.88+Math.sin(t*.4+2)*100,H*.75+Math.cos(t*.6)*70,360,'124,58,237',.1],
+     [W*.5+Math.sin(t*.3+1)*120, H*.5+Math.cos(t*.45)*90,280,'56,189,248',.06]
+    ].forEach(([ox,oy,or,oc,oa]) => {
+      const g = ctx.createRadialGradient(ox,oy,0,ox,oy,or);
+      g.addColorStop(0,`rgba(${oc},${oa})`); g.addColorStop(1,'transparent');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(ox,oy,or,0,Math.PI*2); ctx.fill();
     });
-    const safe = Math.min(Math.max(num, 1), pdfDoc ? pdfDoc.numPages : 1);
-    document.getElementById('page_num').textContent = safe;
-    document.getElementById('page-slider').value = safe;
-    document.getElementById('page-input').value = safe;
-    document.getElementById('prev').disabled = safe <= 1;
-    document.getElementById('next').disabled = pdfDoc ? safe >= pdfDoc.numPages : true;
+    ctx.strokeStyle='rgba(255,255,255,.015)'; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=80){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=80){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    parts.forEach(p=>{ p.u(); ctx.beginPath(); ctx.arc(p.x,p.y,p.rad,0,Math.PI*2); ctx.fillStyle=`rgba(${p.col},${p.a})`; ctx.fill(); });
+    requestAnimationFrame(draw);
   }
+  window.addEventListener('resize',()=>{ resize(); parts.forEach(p=>p.r()); });
+  draw();
+}
 
-  function goBack() { document.getElementById('pdf-viewer').classList.remove('active'); }
+/* ═══════════════════════════════════════
+   3D BOOK — 360° SPIN + HOVER TILT + STARS
+═══════════════════════════════════════ */
+function initBook(){
+  const scene = document.getElementById('book-scene');
+  const book  = document.getElementById('book-3d');
+  const starC = document.getElementById('star-canvas');
+  const sCtx  = starC.getContext('2d');
+  if (!scene || !book) return;
 
-  document.getElementById('prev').addEventListener('click', () => { if (!pdfDoc || pageNum <= 1) return; renderPage(--pageNum); });
-  document.getElementById('next').addEventListener('click', () => { if (!pdfDoc || pageNum >= pdfDoc.numPages) return; renderPage(++pageNum); });
-  document.getElementById('zoom_in').addEventListener('click', () => { if (viewScale < 3) { viewScale = Math.min(3, viewScale + 0.15); renderPage(pageNum); } });
-  document.getElementById('zoom_out').addEventListener('click', () => { if (viewScale > 0.5) { viewScale = Math.max(0.5, viewScale - 0.15); renderPage(pageNum); } });
-  document.getElementById('page-slider').addEventListener('input', function() { if (pdfDoc) { pageNum = +this.value; renderPage(pageNum); } });
-  document.getElementById('page-input').addEventListener('change', function() {
-    if (!pdfDoc) return;
-    let v = parseInt(this.value) || 1;
-    v = Math.min(Math.max(v, 1), pdfDoc.numPages);
-    if (v !== pageNum) { pageNum = v; renderPage(pageNum); }
+  let angle = 0;
+  let isHover = false;
+  let hoverTiltX = 0, hoverTiltY = 0;
+  const NORMAL_SPEED = 0.6;   // degrees/frame
+  const HOVER_SPEED  = 3.2;
+
+  /* resize star canvas */
+  function resizeStar(){
+    starC.width  = scene.offsetWidth  + 130;
+    starC.height = scene.offsetHeight + 130;
+  }
+  resizeStar();
+  window.addEventListener('resize', resizeStar);
+
+  /* mouse hover */
+  scene.addEventListener('mouseenter', () => {
+    isHover = true;
+    starC.classList.add('show');
+    /* pause CSS animation and take over */
+    book.style.animation = 'none';
+  });
+  scene.addEventListener('mouseleave', () => {
+    isHover = false;
+    starC.classList.remove('show');
+    hoverTiltX = 0; hoverTiltY = 0;
+  });
+  scene.addEventListener('mousemove', e => {
+    if (!isHover) return;
+    const r  = scene.getBoundingClientRect();
+    const mx = (e.clientX - r.left  - r.width /2) / (r.width /2);
+    const my = (e.clientY - r.top   - r.height/2) / (r.height/2);
+    hoverTiltX = -my * 14;
+    hoverTiltY = mx * 0; // keep horizontal spin dominating
   });
 
-  // ── MOBILE MENU ──
-  function toggleMenu() {
-    const m = document.getElementById('mobile-menu');
-    m.classList.toggle('open');
+  /* stars */
+  const COLORS = ['#60A5FA','#A78BFA','#38BDF8','#FBBF24','#F472B6','#4ADE80','#fff'];
+  const stars = Array.from({length:30}, (_, i) => ({
+    ang : (i/30)*Math.PI*2,
+    radius: 110 + Math.random()*65,
+    sz  : 1.8 + Math.random()*3.5,
+    spd : (.025+Math.random()*.03) * (Math.random()>.5?1:-1),
+    alf : Math.random(),
+    dAlf: .018+Math.random()*.035,
+    col : COLORS[Math.floor(Math.random()*COLORS.length)],
+  }));
+
+  function drawStar(c, cx, cy, sp, outerR, innerR){
+    let rot = -Math.PI/2;
+    const step = Math.PI/sp;
+    c.beginPath(); c.moveTo(cx+Math.cos(rot)*outerR, cy+Math.sin(rot)*outerR);
+    for(let i=0;i<sp;i++){ rot+=step; c.lineTo(cx+Math.cos(rot)*innerR, cy+Math.sin(rot)*innerR); rot+=step; c.lineTo(cx+Math.cos(rot)*outerR, cy+Math.sin(rot)*outerR); }
+    c.closePath(); c.fill();
   }
 
-  // ── SCROLL REVEAL ──
-  function initScrollReveal() {
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e, i) => {
-        if (e.isIntersecting) {
-          setTimeout(() => e.target.classList.add('visible'), i * 80);
-          obs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-  }
-
-  // ── ANIMATED COUNTERS ──
-  function initCounters() {
-    const counters = document.querySelectorAll('[data-count]');
-    const obs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const target = parseInt(e.target.dataset.count);
-        const suffix = target >= 100 ? (target > 1000 ? '+' : '%') : '+';
-        let start = 0;
-        const dur = 1600;
-        const step = 16;
-        const inc = target / (dur / step);
-        const timer = setInterval(() => {
-          start = Math.min(start + inc, target);
-          e.target.textContent = Math.floor(start).toLocaleString() + (start >= target ? suffix : '');
-          if (start >= target) clearInterval(timer);
-        }, step);
-        obs.unobserve(e.target);
-      });
-    }, { threshold: 0.5 });
-    counters.forEach(c => obs.observe(c));
-  }
-
-  // ── CANVAS ANIMATED BACKGROUND ──
-  (function() {
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let W, H, particles = [];
-
-    function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
-
-    function Particle() {
-      this.reset();
-    }
-
-    Particle.prototype.reset = function() {
-      this.x = Math.random() * W;
-      this.y = Math.random() * H;
-      this.r = Math.random() * 1.5 + 0.3;
-      this.vx = (Math.random() - 0.5) * 0.3;
-      this.vy = (Math.random() - 0.5) * 0.3;
-      this.alpha = Math.random() * 0.5 + 0.1;
-      this.color = Math.random() > 0.5 ? '37,99,235' : '124,58,237';
-    };
-
-    Particle.prototype.update = function() {
-      this.x += this.vx; this.y += this.vy;
-      if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
-    };
-
-    function init() {
-      resize();
-      particles = Array.from({ length: 80 }, () => new Particle());
-    }
-
-    let t = 0;
-    function draw() {
-      ctx.clearRect(0, 0, W, H);
-      t += 0.003;
-
-      // Animated gradient orbs
-      const orbs = [
-        { x: W * 0.15 + Math.sin(t * 0.7) * 80, y: H * 0.25 + Math.cos(t * 0.5) * 60, r: 400, c: '37,99,235', a: 0.12 },
-        { x: W * 0.85 + Math.sin(t * 0.4 + 2) * 100, y: H * 0.75 + Math.cos(t * 0.6) * 70, r: 350, c: '124,58,237', a: 0.1 },
-        { x: W * 0.5 + Math.sin(t * 0.3 + 1) * 120, y: H * 0.5 + Math.cos(t * 0.45) * 90, r: 300, c: '56,189,248', a: 0.06 },
-      ];
-
-      orbs.forEach(o => {
-        const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
-        g.addColorStop(0, `rgba(${o.c},${o.a})`);
-        g.addColorStop(1, 'transparent');
-        ctx.fillStyle = g;
-        ctx.beginPath();
-        ctx.arc(o.x, o.y, o.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
-
-      // Grid lines (subtle)
-      ctx.strokeStyle = 'rgba(255,255,255,0.018)';
-      ctx.lineWidth = 1;
-      const gsize = 80;
-      for (let x = 0; x < W; x += gsize) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
-      for (let y = 0; y < H; y += gsize) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
-
-      // Particles
-      particles.forEach(p => {
-        p.update();
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${p.color},${p.alpha})`;
-        ctx.fill();
-      });
-
-      requestAnimationFrame(draw);
-    }
-
-    window.addEventListener('resize', () => { resize(); particles.forEach(p => p.reset()); });
-    init();
-    draw();
-  })();
-
-  // ── 3D BOOK MOUSE PARALLAX ──
-  (function() {
-    const scene = document.getElementById('book-scene');
-    const book = document.getElementById('book-3d');
-    if (!scene || !book) return;
-    let mx = 0, my = 0;
-
-    scene.addEventListener('mousemove', e => {
-      const rect = scene.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      mx = (e.clientX - cx) / (rect.width / 2);
-      my = (e.clientY - cy) / (rect.height / 2);
+  function drawStars(){
+    const cx = starC.width /2;
+    const cy = starC.height/2;
+    sCtx.clearRect(0,0,starC.width,starC.height);
+    const speedMul = isHover ? 2.5 : 1;
+    stars.forEach(s => {
+      s.ang += s.spd * speedMul;
+      s.alf += s.dAlf; if(s.alf>1||s.alf<0) s.dAlf*=-1;
+      s.alf = Math.max(0,Math.min(1,s.alf));
+      const x = cx + Math.cos(s.ang)*s.radius;
+      const y = cy + Math.sin(s.ang)*s.radius;
+      sCtx.save();
+      sCtx.globalAlpha = s.alf * (isHover ? 1 : 0);
+      sCtx.shadowColor = s.col; sCtx.shadowBlur = 12;
+      sCtx.fillStyle   = s.col;
+      drawStar(sCtx, x, y, 5, s.sz, s.sz*.42);
+      sCtx.restore();
     });
+  }
 
-    scene.addEventListener('mouseleave', () => { mx = 0; my = 0; });
+  /* main book loop — drives rotation manually for precision */
+  function loop(){
+    const speed = isHover ? HOVER_SPEED : NORMAL_SPEED;
+    angle += speed;
+    const tiltX = 12 + (isHover ? hoverTiltX : 0);
+    const floatY = Math.sin(Date.now() / 2000) * 10; // gentle float offset
+    book.style.transform = `translateY(${floatY}px) rotateX(${tiltX}deg) rotateY(${angle}deg)`;
+    if (isHover) drawStars();
+    else sCtx.clearRect(0,0,starC.width,starC.height);
+    requestAnimationFrame(loop);
+  }
+  loop();
+}
 
-    let ry = -20, rx = 8;
-    function animBook() {
-      ry += (mx * 25 - ry) * 0.08;
-      rx += (-my * 12 - rx) * 0.08;
-      book.style.animation = 'none';
-      book.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg)`;
-      requestAnimationFrame(animBook);
-    }
-    animBook();
-  })();
+/* ═══════════════════════════════════════
+   PDF LOADING & RENDERING
+═══════════════════════════════════════ */
+function loadBook(file){
+  currentFile = file;
+  document.getElementById('pdf-title').textContent = file.replace('.pdf','');
+  document.getElementById('pdf-viewer').classList.add('active');
+  document.body.style.overflow = 'hidden';
+  pdfDoc = null; pageNum = 1; viewScale = 1;
 
-  init();
+  viewCounts[file] = (viewCounts[file] || 0) + 1;
+  try { localStorage.setItem('edu_vc', JSON.stringify(viewCounts)); } catch(e){}
+  updateViewCounts();
+
+  // Show swipe hint on mobile
+  if ('ontouchstart' in window){
+    const hint = document.getElementById('swipe-hint');
+    hint.classList.add('show');
+    setTimeout(() => hint.classList.remove('show'), 3000);
+  }
+
+  pdfjsLib.getDocument(file).promise.then(pdf => {
+    pdfDoc = pdf;
+    const n = pdf.numPages;
+    ['page-count','total-pages'].forEach(id => document.getElementById(id).textContent = n);
+    const sl = document.getElementById('page-slider');
+    sl.max = n; sl.value = 1;
+    document.getElementById('page-input').max = n;
+    renderPage(1);
+  }).catch(() => {
+    alert('⚠️ Unable to open PDF. Make sure the file is in the same folder as this page.');
+    goBack();
+  });
+}
+
+function renderPage(num, direction = 0){
+  if (!pdfDoc) return;
+  const n = Math.min(Math.max(num, 1), pdfDoc.numPages);
+
+  /* page-flip transition */
+  if (direction !== 0){
+    const ov = document.getElementById('page-transition');
+    ov.style.opacity = '0.45';
+    setTimeout(() => { ov.style.opacity = '0'; }, 200);
+  }
+
+  pdfDoc.getPage(n).then(page => {
+    /* scale to fit container width */
+    const container = document.getElementById('canvas-container');
+    const cw = container.offsetWidth || 860;
+    const base = cw / page.getViewport({scale:1}).width;
+    const vp = page.getViewport({ scale: base * viewScale });
+    pdfCanvas.height = vp.height;
+    pdfCanvas.width  = vp.width;
+    page.render({ canvasContext: pdfCtx, viewport: vp });
+  });
+
+  pageNum = n;
+  document.getElementById('page-num').textContent = n;
+  document.getElementById('page-slider').value = n;
+  document.getElementById('page-input').value = n;
+  document.getElementById('prev-btn').disabled = n <= 1;
+  document.getElementById('next-btn').disabled = pdfDoc ? n >= pdfDoc.numPages : true;
+}
+
+function goBack(){
+  document.getElementById('pdf-viewer').classList.remove('active');
+  document.body.style.overflow = '';
+  if (document.fullscreenElement) document.exitFullscreen().catch(()=>{});
+}
+
+/* ═══════════════════════════════════════
+   DOWNLOAD
+═══════════════════════════════════════ */
+function downloadPDF(){
+  if (!currentFile) return;
+  const a = document.createElement('a');
+  a.href = currentFile; a.download = currentFile;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+/* ═══════════════════════════════════════
+   FULLSCREEN
+═══════════════════════════════════════ */
+function toggleFullscreen(){
+  const viewer = document.getElementById('pdf-viewer');
+  const btn = document.getElementById('fullscreen-btn');
+  if (!document.fullscreenElement){
+    viewer.requestFullscreen().catch(()=>{});
+  } else {
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+document.addEventListener('fullscreenchange', () => {
+  const icon = document.querySelector('#fullscreen-btn i');
+  if (icon) icon.className = document.fullscreenElement ? 'fas fa-compress' : 'fas fa-expand';
+  /* re-render to fit new size */
+  setTimeout(() => renderPage(pageNum), 100);
+});
+
+/* ═══════════════════════════════════════
+   PDF CONTROLS (bottom bar)
+═══════════════════════════════════════ */
+document.getElementById('prev-btn').addEventListener('click', () => {
+  if (!pdfDoc || pageNum <= 1) return;
+  renderPage(--pageNum, -1);
+});
+document.getElementById('next-btn').addEventListener('click', () => {
+  if (!pdfDoc || pageNum >= pdfDoc.numPages) return;
+  renderPage(++pageNum, 1);
+});
+document.getElementById('zoom-in').addEventListener('click', () => {
+  if (viewScale < 3){ viewScale = Math.min(3, viewScale + 0.15); renderPage(pageNum); }
+});
+document.getElementById('zoom-out').addEventListener('click', () => {
+  if (viewScale > 0.4){ viewScale = Math.max(0.4, viewScale - 0.15); renderPage(pageNum); }
+});
+document.getElementById('page-slider').addEventListener('input', function(){
+  if (pdfDoc){ const v = +this.value; const dir = v > pageNum ? 1 : -1; renderPage(v, dir); }
+});
+document.getElementById('page-input').addEventListener('change', function(){
+  if (!pdfDoc) return;
+  let v = Math.min(Math.max(parseInt(this.value)||1, 1), pdfDoc.numPages);
+  if (v !== pageNum){ const dir = v > pageNum ? 1 : -1; renderPage(v, dir); }
+});
+
+/* ═══════════════════════════════════════
+   SWIPE GESTURES (touch)
+═══════════════════════════════════════ */
+(function(){
+  const content = document.getElementById('pdf-content');
+  let startX = 0, startY = 0, locked = false;
+  const THRESHOLD = 55;
+
+  content.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    locked = false;
+  }, { passive: true });
+
+  content.addEventListener('touchend', e => {
+    if (locked) return;
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) < THRESHOLD || Math.abs(dy) > Math.abs(dx) * 1.5) return;
+    locked = true;
+    if (dx < 0 && pdfDoc && pageNum < pdfDoc.numPages){ renderPage(++pageNum, 1); }
+    else if (dx > 0 && pageNum > 1){ renderPage(--pageNum, -1); }
+  }, { passive: true });
+})();
+
+/* ═══════════════════════════════════════
+   KEYBOARD SHORTCUTS
+═══════════════════════════════════════ */
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('pdf-viewer').classList.contains('active')) return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown'){
+    if (pdfDoc && pageNum < pdfDoc.numPages) renderPage(++pageNum, 1);
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp'){
+    if (pageNum > 1) renderPage(--pageNum, -1);
+  } else if (e.key === 'Escape'){
+    goBack();
+  } else if (e.key === 'f' || e.key === 'F'){
+    toggleFullscreen();
+  }
+});
 </script>
 </body>
 </html>
