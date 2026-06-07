@@ -1,0 +1,2285 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Java Developer Interview Answer Guide</title>
+  <style>
+    :root {
+      --ink: #172033;
+      --muted: #657186;
+      --line: #d9e0ea;
+      --page: #f6f8fb;
+      --panel: #ffffff;
+      --java: #d3382f;
+      --spring: #27824f;
+      --blue: #2457c5;
+      --gold: #b46a11;
+      --code: #101827;
+      --soft-red: #fff0ee;
+      --soft-green: #ecf8f1;
+      --soft-blue: #eef4ff;
+      --soft-gold: #fff6e8;
+      --radius: 8px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--page);
+      color: var(--ink);
+      line-height: 1.58;
+      overflow-x: hidden;
+    }
+
+    header {
+      background:
+        linear-gradient(120deg, rgba(23, 32, 51, .92), rgba(22, 70, 86, .82)),
+        url("https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=1800&q=80");
+      background-size: cover;
+      background-position: center;
+      color: white;
+      min-height: 74vh;
+      display: grid;
+      align-items: end;
+      padding: 28px;
+    }
+
+    .hero {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding-bottom: 44px;
+    }
+
+    .eyebrow {
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-size: .78rem;
+      color: #b9e7d0;
+      font-weight: 800;
+      margin: 0 0 12px;
+    }
+
+    h1 {
+      font-size: clamp(2.3rem, 5vw, 5rem);
+      line-height: 1.02;
+      margin: 0;
+      max-width: 920px;
+      letter-spacing: 0;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 18px 0 26px;
+      color: #edf4ff;
+      font-size: 1.08rem;
+    }
+
+    .search-wrap {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    input[type="search"] {
+      width: min(100%, 560px);
+      border: 1px solid rgba(255, 255, 255, .42);
+      color: white;
+      background: rgba(255, 255, 255, .12);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font: inherit;
+      outline: none;
+    }
+
+    input[type="search"]::placeholder { color: #d9e8f7; }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 36px;
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .14);
+      border: 1px solid rgba(255, 255, 255, .28);
+      color: white;
+      font-weight: 700;
+      font-size: .9rem;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(246, 248, 251, .96);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 10px 18px;
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .nav-inner a {
+      white-space: nowrap;
+      text-decoration: none;
+      color: var(--ink);
+      font-weight: 800;
+      font-size: .88rem;
+      padding: 8px 10px;
+      border-radius: var(--radius);
+    }
+
+    .nav-inner a:hover { background: #e9eef6; }
+
+    main {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 18px 70px;
+    }
+
+    section {
+      padding: 34px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(1.65rem, 3vw, 2.55rem);
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 820px;
+    }
+
+    .count {
+      color: var(--blue);
+      font-weight: 900;
+      background: var(--soft-blue);
+      padding: 8px 10px;
+      border-radius: var(--radius);
+      border: 1px solid #d7e5ff;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    details.qa {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    details.qa[open] {
+      box-shadow: 0 12px 30px rgba(25, 39, 62, .08);
+      border-color: #b9c9dd;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 16px 18px;
+      font-weight: 900;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      overflow-wrap: anywhere;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+
+    summary::before {
+      content: "+";
+      flex: 0 0 24px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-grid;
+      place-items: center;
+      background: var(--soft-blue);
+      color: var(--blue);
+      font-weight: 900;
+    }
+
+    details[open] summary::before { content: "-"; }
+
+    .answer {
+      border-top: 1px solid var(--line);
+      padding: 16px 18px 18px;
+      color: #27334a;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .answer p { margin: 0 0 12px; }
+    .answer ul { margin: 8px 0 14px 20px; padding: 0; }
+    .answer li { margin: 5px 0; }
+
+    .tag {
+      display: inline-block;
+      margin: 0 6px 10px 0;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: var(--soft-green);
+      color: var(--spring);
+      font-size: .78rem;
+      font-weight: 800;
+    }
+
+    .note {
+      border-left: 4px solid var(--gold);
+      background: var(--soft-gold);
+      padding: 10px 12px;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin: 12px 0;
+    }
+
+    pre {
+      margin: 12px 0;
+      overflow: auto;
+      max-width: 100%;
+      border-radius: var(--radius);
+      background: var(--code);
+      color: #eef4ff;
+      padding: 14px;
+      font-size: .92rem;
+      line-height: 1.48;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    code {
+      font-family: "Cascadia Code", Consolas, Monaco, monospace;
+      font-size: .95em;
+      overflow-wrap: normal;
+    }
+
+    table {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      border-collapse: collapse;
+      margin: 12px 0;
+      background: white;
+      font-size: .95rem;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    tbody { display: table; width: 100%; min-width: 620px; }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: #eef3fa;
+      color: #24304a;
+    }
+
+    .wide { grid-column: 1 / -1; }
+
+    .hidden { display: none !important; }
+
+    footer {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 26px 18px 50px;
+      color: var(--muted);
+    }
+
+    @media (max-width: 820px) {
+      header {
+        min-height: auto;
+        padding: 22px 16px 24px;
+        align-items: center;
+      }
+
+      .hero {
+        padding: 54px 0 22px;
+      }
+
+      h1 {
+        font-size: clamp(2rem, 10vw, 3.2rem);
+        line-height: 1.08;
+        max-width: 100%;
+      }
+
+      .hero p {
+        font-size: 1rem;
+        margin: 14px 0 18px;
+      }
+
+      .search-wrap {
+        gap: 8px;
+      }
+
+      input[type="search"] {
+        width: 100%;
+        padding: 13px 14px;
+        background: rgba(255, 255, 255, .18);
+      }
+
+      .chip {
+        min-height: 30px;
+        font-size: .78rem;
+        padding: 4px 8px;
+      }
+
+      nav {
+        position: static;
+      }
+
+      .nav-inner {
+        padding: 9px 12px;
+        gap: 6px;
+      }
+
+      .nav-inner a {
+        font-size: .8rem;
+        padding: 7px 9px;
+        background: #edf2f8;
+      }
+
+      main {
+        padding: 16px 12px 46px;
+      }
+
+      section {
+        padding: 26px 0;
+      }
+
+      .grid { grid-template-columns: 1fr; }
+      .section-head { grid-template-columns: 1fr; }
+      .count { justify-self: start; }
+
+      h2 {
+        font-size: clamp(1.45rem, 7vw, 2rem);
+      }
+
+      .section-head p {
+        font-size: .96rem;
+      }
+
+      details.qa[open] {
+        box-shadow: 0 8px 20px rgba(25, 39, 62, .07);
+      }
+
+      summary {
+        padding: 13px 12px;
+        gap: 8px;
+        font-size: .98rem;
+        line-height: 1.35;
+      }
+
+      summary::before {
+        flex-basis: 22px;
+        width: 22px;
+        height: 22px;
+        font-size: .92rem;
+      }
+
+      .answer {
+        padding: 13px 12px 15px;
+        font-size: .96rem;
+      }
+
+      .answer ul {
+        margin-left: 18px;
+      }
+
+      pre {
+        padding: 12px;
+        font-size: .78rem;
+        line-height: 1.45;
+      }
+
+      table {
+        font-size: .84rem;
+        border: 1px solid var(--line);
+      }
+
+      tbody {
+        min-width: 560px;
+      }
+
+      th, td {
+        padding: 8px;
+      }
+
+      footer {
+        padding: 20px 12px 38px;
+        font-size: .9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        padding: 16px 12px 20px;
+      }
+
+      .hero {
+        padding-top: 32px;
+      }
+
+      .eyebrow {
+        font-size: .68rem;
+      }
+
+      h1 {
+        font-size: clamp(1.85rem, 11vw, 2.65rem);
+      }
+
+      .hero p {
+        font-size: .94rem;
+      }
+
+      .chip {
+        max-width: 100%;
+      }
+
+      main {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .count {
+        font-size: .82rem;
+      }
+
+      summary {
+        font-size: .94rem;
+      }
+
+      .answer {
+        font-size: .93rem;
+      }
+
+      pre {
+        margin-left: -4px;
+        margin-right: -4px;
+        border-radius: 6px;
+      }
+
+      tbody {
+        min-width: 520px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hero">
+      <p class="eyebrow">Java Developer Interview Prep</p>
+      <h1>Clear answers, real examples, and comparison tables for your PDF questions.</h1>
+      <p>This guide is written like a senior developer explaining things at a whiteboard: simple words first, then code, then the interview angle.</p>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Search: HashMap, JWT, Saga, streams, deadlock...">
+        <span class="chip">10 grouped sections</span>
+        <span class="chip">Code examples included</span>
+        <span class="chip">Comparison tables included</span>
+      </div>
+    </div>
+  </header>
+
+  <nav aria-label="Topic navigation">
+    <div class="nav-inner">
+      <a href="#core-java">Core Java</a>
+      <a href="#spring">Spring Boot</a>
+      <a href="#microservices">Microservices</a>
+      <a href="#database">Databases</a>
+      <a href="#devops">DevOps</a>
+      <a href="#dsa">DSA</a>
+      <a href="#system-design">System Design</a>
+      <a href="#behavioral">Behavioral</a>
+      <a href="#debugging">Debugging</a>
+      <a href="#production">Production</a>
+      <a href="#additional-questions">Additional Questions</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="core-java">
+      <div class="section-head">
+        <div>
+          <h2>1. Core Java</h2>
+          <p>These are the questions interviewers use to check whether you know Java beyond syntax. Focus on why Java behaves this way, not only definitions.</p>
+        </div>
+        <span class="count">Fundamentals, Collections, Streams, JVM, Threads</span>
+      </div>
+      <div class="grid">
+        <details class="qa" open>
+          <summary>Difference between abstract class and interface</summary>
+          <div class="answer">
+            <span class="tag">Comparison</span>
+            <p>An abstract class is a base class with some common state or shared code. An interface is mainly a contract: it says what a class can do. Since Java 8, interfaces can have default and static methods, but they are still not meant to hold object state like a normal class.</p>
+            <table>
+              <tr><th>Point</th><th>Abstract class</th><th>Interface</th></tr>
+              <tr><td>Purpose</td><td>Share common behavior and fields</td><td>Define a capability or contract</td></tr>
+              <tr><td>Inheritance</td><td>A class can extend only one abstract class</td><td>A class can implement many interfaces</td></tr>
+              <tr><td>Fields</td><td>Can have instance fields</td><td>Fields are public static final constants</td></tr>
+              <tr><td>Constructor</td><td>Allowed</td><td>Not allowed</td></tr>
+              <tr><td>Best example</td><td><code>Vehicle</code> with common engine fields</td><td><code>Payable</code>, <code>Runnable</code>, <code>Serializable</code></td></tr>
+            </table>
+            <pre><code class="language-java">abstract class Vehicle {
+    protected String number;
+    Vehicle(String number) { this.number = number; }
+    abstract void start();
+}
+
+interface Trackable {
+    String currentLocation();
+}
+
+class Taxi extends Vehicle implements Trackable {
+    Taxi(String number) { super(number); }
+    public void start() { System.out.println("Taxi started"); }
+    public String currentLocation() { return "Pune"; }
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Can we achieve multiple inheritance in Java?</summary>
+          <div class="answer">
+            <p>Java does not allow a class to extend multiple classes because two parent classes may have the same method or state, and that creates confusion. But Java supports multiple inheritance of type through interfaces.</p>
+            <pre><code class="language-java">interface Printable { void print(); }
+interface Scannable { void scan(); }
+
+class MultiFunctionPrinter implements Printable, Scannable {
+    public void print() { System.out.println("Printing"); }
+    public void scan() { System.out.println("Scanning"); }
+}</code></pre>
+            <div class="note">Interview line: "Java avoids multiple class inheritance but allows a class to implement multiple interfaces, so we get flexibility without the diamond problem of shared state."</div>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Explain OOP concepts with real-time examples</summary>
+          <div class="answer">
+            <p>OOP means modeling software around objects that have data and behavior.</p>
+            <ul>
+              <li><b>Encapsulation:</b> Keep data private and expose controlled methods. Example: bank balance cannot be changed directly.</li>
+              <li><b>Abstraction:</b> Show what is needed and hide complex details. Example: you call <code>payment.pay()</code> without knowing bank network details.</li>
+              <li><b>Inheritance:</b> Reuse common behavior. Example: <code>Car</code> and <code>Bike</code> inherit from <code>Vehicle</code>.</li>
+              <li><b>Polymorphism:</b> Same method call behaves differently. Example: <code>Payment</code> can be card, UPI, or wallet payment.</li>
+            </ul>
+            <pre><code class="language-java">interface Payment {
+    void pay(double amount);
+}
+
+class UpiPayment implements Payment {
+    public void pay(double amount) {
+        System.out.println("Paid by UPI: " + amount);
+    }
+}
+
+class CardPayment implements Payment {
+    public void pay(double amount) {
+        System.out.println("Paid by card: " + amount);
+    }
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Encapsulation vs Abstraction</summary>
+          <div class="answer">
+            <span class="tag">Comparison</span>
+            <table>
+              <tr><th>Encapsulation</th><th>Abstraction</th></tr>
+              <tr><td>Protects data by wrapping fields and methods together</td><td>Hides implementation details and shows only required behavior</td></tr>
+              <tr><td>Uses private fields, getters, setters, validation</td><td>Uses interfaces, abstract classes, APIs</td></tr>
+              <tr><td>Example: balance cannot be set directly</td><td>Example: caller uses payment API without knowing gateway internals</td></tr>
+            </table>
+            <pre><code class="language-java">class Account {
+    private double balance;
+
+    public void deposit(double amount) {
+        if (amount <= 0) throw new IllegalArgumentException("Amount must be positive");
+        balance += amount;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Why is String immutable?</summary>
+          <div class="answer">
+            <p><code>String</code> is immutable because once created, its value cannot change. This makes strings safe for sharing, caching, security, and hashing.</p>
+            <ul>
+              <li><b>String pool:</b> Same string literals can be reused safely.</li>
+              <li><b>Security:</b> File paths, URLs, class names, and credentials cannot be changed silently after validation.</li>
+              <li><b>Thread safety:</b> Multiple threads can read the same string without locking.</li>
+              <li><b>HashMap keys:</b> Hash code remains stable after insertion.</li>
+            </ul>
+            <pre><code class="language-java">String name = "Java";
+String changed = name.concat(" 21");
+
+System.out.println(name);    // Java
+System.out.println(changed); // Java 21</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Difference between == and equals()</summary>
+          <div class="answer">
+            <p><code>==</code> compares references for objects. <code>equals()</code> compares logical value if the class has implemented it properly.</p>
+            <pre><code class="language-java">String a = new String("Java");
+String b = new String("Java");
+
+System.out.println(a == b);      // false, two different objects
+System.out.println(a.equals(b)); // true, same text value</code></pre>
+            <div class="note">For primitives, <code>==</code> compares value. For objects, use <code>equals()</code> when you care about business value.</div>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>hashCode() and equals(): why both are needed?</summary>
+          <div class="answer">
+            <p>Collections like <code>HashMap</code> and <code>HashSet</code> first use <code>hashCode()</code> to find a bucket, then use <code>equals()</code> to check the exact object. If two objects are equal, they must return the same hash code.</p>
+            <pre><code class="language-java">class Employee {
+    private final int id;
+    private final String name;
+
+    Employee(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Employee other)) return false;
+        return id == other.id;
+    }
+
+    public int hashCode() {
+        return Integer.hashCode(id);
+    }
+}</code></pre>
+            <p>If you override <code>equals()</code> but not <code>hashCode()</code>, hash-based collections may fail to find your object even though it looks equal.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Can we override a static method?</summary>
+          <div class="answer">
+            <p>No. Static methods belong to the class, not the object. If a child class declares a static method with the same signature, it is method hiding, not overriding.</p>
+            <pre><code class="language-java">class Parent {
+    static void show() { System.out.println("Parent"); }
+}
+
+class Child extends Parent {
+    static void show() { System.out.println("Child"); }
+}
+
+Parent p = new Child();
+p.show(); // Parent, because static method is resolved by reference type</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Comparable vs Comparator</summary>
+          <div class="answer">
+            <span class="tag">Comparison</span>
+            <table>
+              <tr><th>Comparable</th><th>Comparator</th></tr>
+              <tr><td>Natural/default sorting</td><td>Custom sorting, can have many rules</td></tr>
+              <tr><td>Implemented inside the class</td><td>Implemented outside the class</td></tr>
+              <tr><td><code>compareTo()</code></td><td><code>compare()</code></td></tr>
+            </table>
+            <pre><code class="language-java">record Employee(int id, String name, int salary) {}
+
+List&lt;Employee&gt; employees = List.of(
+    new Employee(1, "Asha", 90000),
+    new Employee(2, "Ravi", 80000)
+);
+
+List&lt;Employee&gt; bySalaryDesc = employees.stream()
+    .sorted(Comparator.comparing(Employee::salary).reversed())
+    .toList();</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>What is a transient variable?</summary>
+          <div class="answer">
+            <p><code>transient</code> tells Java serialization to skip that field. Use it for sensitive data or values that can be recalculated.</p>
+            <pre><code class="language-java">class UserSession implements Serializable {
+    private String username;
+    private transient String password; // will not be serialized
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Marker interface examples</summary>
+          <div class="answer">
+            <p>A marker interface has no methods. It marks a class for special treatment by JVM, libraries, or framework code.</p>
+            <ul>
+              <li><code>Serializable</code>: object can be serialized.</li>
+              <li><code>Cloneable</code>: object allows clone behavior.</li>
+              <li><code>Remote</code>: used in RMI.</li>
+            </ul>
+            <p>Modern Java often prefers annotations for this kind of metadata, but marker interfaces still exist in core Java.</p>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>HashMap, ConcurrentHashMap, LinkedHashMap, TreeMap, ArrayList, LinkedList, HashSet, TreeSet</summary>
+          <div class="answer">
+            <span class="tag">Comparison</span>
+            <table>
+              <tr><th>Type</th><th>Best use</th><th>Important point</th></tr>
+              <tr><td>HashMap</td><td>Fast key-value lookup</td><td>Not thread-safe; order not guaranteed</td></tr>
+              <tr><td>ConcurrentHashMap</td><td>Shared map in multithreaded code</td><td>Uses fine-grained locking/CAS; no null keys or values</td></tr>
+              <tr><td>LinkedHashMap</td><td>Keep insertion order or access order</td><td>Good for LRU cache logic</td></tr>
+              <tr><td>TreeMap</td><td>Sorted keys</td><td>Backed by red-black tree; O(log n)</td></tr>
+              <tr><td>ArrayList</td><td>Fast random access</td><td>Slow middle insert/delete because shifting is needed</td></tr>
+              <tr><td>LinkedList</td><td>Frequent insert/delete using iterator</td><td>Random access is slow</td></tr>
+              <tr><td>HashSet</td><td>Unique values, fast lookup</td><td>Internally uses HashMap</td></tr>
+              <tr><td>TreeSet</td><td>Unique sorted values</td><td>Uses tree structure; needs Comparable or Comparator</td></tr>
+            </table>
+            <p><b>HashMap internal working:</b> Java calculates the key hash, finds a bucket index, stores the entry there, and compares keys using <code>equals()</code> if collisions happen. When the map grows beyond load factor, it resizes. In Java 8+, a heavily collided bucket can become a tree for better lookup.</p>
+            <p><b>Important HashSet warning:</b> If you add a mutable object to a <code>HashSet</code> and later change the field used in <code>hashCode()</code>, the set may not find it again. Keep set keys immutable.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Fail-fast vs fail-safe iterators</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Fail-fast</th><th>Fail-safe</th></tr>
+              <tr><td>Throws <code>ConcurrentModificationException</code> if collection is structurally changed during iteration</td><td>Iterates over a copy or weakly consistent view</td></tr>
+              <tr><td><code>ArrayList</code>, <code>HashMap</code></td><td><code>CopyOnWriteArrayList</code>, <code>ConcurrentHashMap</code></td></tr>
+            </table>
+            <pre><code class="language-java">List&lt;String&gt; names = new ArrayList&lt;&gt;(List.of("A", "B"));
+for (String name : names) {
+    names.add("C"); // ConcurrentModificationException
+}</code></pre>
+            <p>Use iterator's <code>remove()</code> or collect changes separately when using normal collections.</p>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>Functional interfaces, Predicate, Function, Supplier, Consumer, map() and flatMap()</summary>
+          <div class="answer">
+            <p>A functional interface has exactly one abstract method. Lambdas need this because Java must know which method the lambda is implementing.</p>
+            <table>
+              <tr><th>Interface</th><th>Input</th><th>Output</th><th>Example</th></tr>
+              <tr><td>Predicate&lt;T&gt;</td><td>T</td><td>boolean</td><td><code>age -> age >= 18</code></td></tr>
+              <tr><td>Function&lt;T,R&gt;</td><td>T</td><td>R</td><td><code>user -> user.getEmail()</code></td></tr>
+              <tr><td>Supplier&lt;T&gt;</td><td>none</td><td>T</td><td><code>() -> UUID.randomUUID()</code></td></tr>
+              <tr><td>Consumer&lt;T&gt;</td><td>T</td><td>void</td><td><code>msg -> log.info(msg)</code></td></tr>
+            </table>
+            <pre><code class="language-java">List&lt;String&gt; words = List.of("java", "spring", "api");
+
+List&lt;Integer&gt; lengths = words.stream()
+    .map(String::length)
+    .toList();
+
+List&lt;List&lt;String&gt;&gt; nested = List.of(List.of("a", "b"), List.of("c"));
+List&lt;String&gt; flat = nested.stream()
+    .flatMap(List::stream)
+    .toList();</code></pre>
+            <p><code>map()</code> transforms one item to one item. <code>flatMap()</code> transforms one item into many items and then flattens the result.</p>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>Common Stream API coding tasks</summary>
+          <div class="answer">
+            <pre><code class="language-java">// Count character occurrences
+Map&lt;Character, Long&gt; counts = "interview".chars()
+    .mapToObj(c -> (char) c)
+    .collect(Collectors.groupingBy(Function.identity(), LinkedHashMap::new, Collectors.counting()));
+
+// First non-repeated character
+Optional&lt;Character&gt; first = counts.entrySet().stream()
+    .filter(e -> e.getValue() == 1)
+    .map(Map.Entry::getKey)
+    .findFirst();
+
+// Find duplicates
+Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+Set&lt;Integer&gt; duplicates = List.of(1, 2, 3, 2, 4, 1).stream()
+    .filter(n -> !seen.add(n))
+    .collect(Collectors.toSet());
+
+// Second highest number
+Optional&lt;Integer&gt; secondHighest = List.of(10, 40, 20, 40, 30).stream()
+    .distinct()
+    .sorted(Comparator.reverseOrder())
+    .skip(1)
+    .findFirst();
+
+// Group anagrams
+Map&lt;String, List&lt;String&gt;&gt; anagrams = List.of("eat", "tea", "tan", "ate").stream()
+    .collect(Collectors.groupingBy(word -> {
+        char[] chars = word.toCharArray();
+        Arrays.sort(chars);
+        return new String(chars);
+    }));
+
+// Sum and average
+IntSummaryStatistics stats = List.of(1, 2, 3, 4).stream()
+    .mapToInt(Integer::intValue)
+    .summaryStatistics();
+
+// Join strings
+String joined = List.of("Java", "Spring", "Kafka").stream()
+    .collect(Collectors.joining(", "));</code></pre>
+            <p>For custom collectors, use <code>Collector.of(supplier, accumulator, combiner, finisher)</code>. In real projects, first check if built-in collectors already solve the job.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Optional: how to avoid NullPointerException effectively</summary>
+          <div class="answer">
+            <p><code>Optional</code> is a return type that tells the caller "this value may be absent." It is cleaner than returning null from service methods.</p>
+            <pre><code class="language-java">Optional&lt;User&gt; user = userRepository.findByEmail(email);
+
+String displayName = user
+    .map(User::getName)
+    .filter(name -> !name.isBlank())
+    .orElse("Guest");</code></pre>
+            <p>Do not overuse it for fields, method parameters, or every local variable. Use it mainly at boundaries where absence is a normal result.</p>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>Java 8 to 25 evolution: key features</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Version</th><th>Useful interview points</th></tr>
+              <tr><td>Java 8</td><td>Lambdas, Stream API, Optional, default methods, new Date/Time API, CompletableFuture</td></tr>
+              <tr><td>Java 11</td><td>HTTP Client, local-variable syntax for lambda parameters, string helpers like <code>isBlank()</code>, <code>lines()</code>, <code>strip()</code></td></tr>
+              <tr><td>Java 17</td><td>Records, sealed classes, pattern matching for <code>instanceof</code>, text blocks, stronger encapsulation of JDK internals</td></tr>
+              <tr><td>Java 21</td><td>Virtual threads, pattern matching for switch, sequenced collections, record patterns</td></tr>
+              <tr><td>Java 25</td><td>Another LTS-era release with finalized beginner-friendly source-file launching improvements, performance/runtime improvements, and continued work around preview/incubator features from OpenJDK projects</td></tr>
+            </table>
+            <pre><code class="language-java">record Customer(Long id, String name) {}
+
+sealed interface Payment permits CardPayment, UpiPayment {}
+final class CardPayment implements Payment {}
+final class UpiPayment implements Payment {}
+
+void print(Object value) {
+    if (value instanceof String text) {
+        System.out.println(text.toUpperCase());
+    }
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>JVM memory, garbage collection, memory leak, OOM, compiler, JIT, ClassLoaders</summary>
+          <div class="answer">
+            <p>The JVM runs Java bytecode. The compiler converts <code>.java</code> to <code>.class</code>. The JVM interprets bytecode first and uses JIT compilation for hot code paths so frequently used code becomes native machine code.</p>
+            <table>
+              <tr><th>Area</th><th>What it stores</th></tr>
+              <tr><td>Heap</td><td>Objects and arrays. Main GC area.</td></tr>
+              <tr><td>Stack</td><td>Method calls, local variables, references. One stack per thread.</td></tr>
+              <tr><td>Metaspace</td><td>Class metadata.</td></tr>
+              <tr><td>PC register/native stack</td><td>Execution position and native calls.</td></tr>
+            </table>
+            <p><b>GC:</b> Garbage collection removes objects no longer reachable from live references. Common collectors include G1, ZGC, Shenandoah, Parallel GC, and Serial GC.</p>
+            <p><b>OutOfMemoryError:</b> Can happen due to real traffic growth, unbounded caches, memory leaks, too many threads, large payloads, or wrong heap sizing. Debug using heap dumps, GC logs, <code>jcmd</code>, <code>jmap</code>, and monitoring.</p>
+            <p><b>ClassLoaders:</b> Bootstrap loads core Java classes, Platform loads platform modules, Application loads app classes. Custom classloaders are used by app servers, plugins, and frameworks.</p>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>Race condition, deadlock, volatile, AtomicInteger, synchronized, ThreadLocal, ExecutorService</summary>
+          <div class="answer">
+            <p>A race condition happens when multiple threads access shared data and the result depends on timing. Protect shared mutable state or avoid sharing it.</p>
+            <table>
+              <tr><th>Tool</th><th>Use it when</th><th>Limit</th></tr>
+              <tr><td>synchronized</td><td>You need mutual exclusion and visibility</td><td>Can block threads</td></tr>
+              <tr><td>volatile</td><td>One thread writes, others must see latest value</td><td>Does not make compound actions atomic</td></tr>
+              <tr><td>AtomicInteger</td><td>You need lock-free atomic counters</td><td>Good for simple atomic operations only</td></tr>
+              <tr><td>ThreadLocal</td><td>Per-thread data like correlation id</td><td>Must clear it in thread pools to avoid leaks</td></tr>
+            </table>
+            <pre><code class="language-java">class SafeCounter {
+    private final AtomicInteger count = new AtomicInteger();
+
+    int increment() {
+        return count.incrementAndGet();
+    }
+}</code></pre>
+            <p><b>Deadlock:</b> Two threads wait forever for locks held by each other. Prevent it by using consistent lock order, timeouts, smaller lock scopes, and avoiding nested locks where possible.</p>
+            <p><b>Executor sizing:</b> CPU-bound pools are close to CPU core count. I/O-bound pools can be larger because threads wait on network or database calls. With Java 21 virtual threads, blocking I/O becomes cheaper, but database and downstream limits still matter.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>sleep() vs wait()</summary>
+          <div class="answer">
+            <table>
+              <tr><th>sleep()</th><th>wait()</th></tr>
+              <tr><td>Static method of <code>Thread</code></td><td>Method of <code>Object</code></td></tr>
+              <tr><td>Does not release lock</td><td>Releases lock and waits for notification</td></tr>
+              <tr><td>Used for pausing</td><td>Used for thread coordination</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>CompletableFuture, CountDownLatch, Producer-Consumer</summary>
+          <div class="answer">
+            <p><code>CompletableFuture</code> is used for async pipelines. It helps combine async tasks, handle errors, and add timeouts.</p>
+            <pre><code class="language-java">CompletableFuture&lt;User&gt; userFuture =
+    CompletableFuture.supplyAsync(() -> userService.findUser(id))
+        .orTimeout(2, TimeUnit.SECONDS)
+        .exceptionally(ex -> User.guest());</code></pre>
+            <p><code>CountDownLatch</code> lets one thread wait until other tasks finish. Producer-consumer is usually implemented with <code>BlockingQueue</code>.</p>
+            <pre><code class="language-java">BlockingQueue&lt;String&gt; queue = new ArrayBlockingQueue&lt;&gt;(100);
+
+// producer
+queue.put("order-1");
+
+// consumer
+String order = queue.take();</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Checked vs unchecked exceptions and try-catch-finally order</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Checked</th><th>Unchecked</th></tr>
+              <tr><td>Compiler forces handling</td><td>Runtime exception; compiler does not force handling</td></tr>
+              <tr><td><code>IOException</code>, <code>SQLException</code></td><td><code>NullPointerException</code>, <code>IllegalArgumentException</code></td></tr>
+              <tr><td>Recoverable external problems</td><td>Programming errors or validation failures</td></tr>
+            </table>
+            <p><code>finally</code> runs after try/catch in most cases, even when an exception is thrown. It may not run if the JVM exits abruptly.</p>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>SOLID and common design patterns</summary>
+          <div class="answer">
+            <p><b>SOLID</b> is a set of habits that keep code easier to change.</p>
+            <ul>
+              <li><b>S:</b> One class should have one main reason to change.</li>
+              <li><b>O:</b> Add new behavior by adding code, not editing many old classes.</li>
+              <li><b>L:</b> Child classes should work wherever parent type is expected.</li>
+              <li><b>I:</b> Small interfaces are better than one giant interface.</li>
+              <li><b>D:</b> Depend on abstractions, not concrete classes.</li>
+            </ul>
+            <table>
+              <tr><th>Pattern</th><th>Use case</th></tr>
+              <tr><td>Singleton</td><td>One shared instance, like config holder. In Spring, singleton beans are default.</td></tr>
+              <tr><td>Factory</td><td>Create object based on type, such as payment method.</td></tr>
+              <tr><td>Builder</td><td>Create complex immutable objects cleanly.</td></tr>
+              <tr><td>Adapter</td><td>Make a third-party API fit your app interface.</td></tr>
+              <tr><td>Strategy</td><td>Swap algorithms at runtime, like discount calculation.</td></tr>
+              <tr><td>Observer</td><td>Notify listeners when something changes.</td></tr>
+              <tr><td>Circuit Breaker, Saga</td><td>Common in microservices for resilience and data consistency.</td></tr>
+            </table>
+            <pre><code class="language-java">class Singleton {
+    private Singleton() {}
+
+    private static class Holder {
+        private static final Singleton INSTANCE = new Singleton();
+    }
+
+    static Singleton getInstance() {
+        return Holder.INSTANCE;
+    }
+}</code></pre>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="spring">
+      <div class="section-head">
+        <div>
+          <h2>2. Spring and Spring Boot</h2>
+          <p>Spring questions check whether you understand the container, request lifecycle, transactions, security, testing, and production behavior.</p>
+        </div>
+        <span class="count">Beans, REST, Security, Transactions, Testing</span>
+      </div>
+      <div class="grid">
+        <details class="qa" open>
+          <summary>What is Spring Boot and why is it preferred over Spring Framework?</summary>
+          <div class="answer">
+            <p>Spring Framework gives core features like dependency injection, AOP, transactions, MVC, and data access. Spring Boot sits on top of it and reduces setup work. It gives auto-configuration, starters, embedded server, actuator, and production-ready defaults.</p>
+            <table>
+              <tr><th>Spring Framework</th><th>Spring Boot</th></tr>
+              <tr><td>More manual configuration</td><td>Auto-configuration based on classpath and properties</td></tr>
+              <tr><td>External server often needed</td><td>Embedded Tomcat/Jetty/Undertow</td></tr>
+              <tr><td>Dependencies managed manually</td><td>Starters group common dependencies</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>How does Spring Boot auto-configuration work internally?</summary>
+          <div class="answer">
+            <p>Spring Boot checks what classes are on the classpath, what beans already exist, and what properties are set. Then it creates sensible default beans. It uses conditional annotations like <code>@ConditionalOnClass</code>, <code>@ConditionalOnMissingBean</code>, and <code>@ConditionalOnProperty</code>.</p>
+            <pre><code class="language-java">@Configuration
+@ConditionalOnClass(DataSource.class)
+@ConditionalOnProperty(name = "app.db.enabled", havingValue = "true")
+class DatabaseConfig {
+    @Bean
+    DataSource dataSource() {
+        return createDataSource();
+    }
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>@Component, @Service, @Repository, @Controller, @RestController, @Bean, @Autowired</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Annotation</th><th>Meaning</th></tr>
+              <tr><td>@Component</td><td>Generic Spring-managed class</td></tr>
+              <tr><td>@Service</td><td>Business logic class; also a component</td></tr>
+              <tr><td>@Repository</td><td>Persistence class; translates database exceptions</td></tr>
+              <tr><td>@Controller</td><td>MVC controller returning views or responses</td></tr>
+              <tr><td>@RestController</td><td><code>@Controller + @ResponseBody</code>; returns JSON/XML response body</td></tr>
+              <tr><td>@Bean</td><td>Declares a bean inside a configuration class</td></tr>
+              <tr><td>@Autowired</td><td>Asks Spring to inject a dependency. Constructor injection is preferred.</td></tr>
+            </table>
+            <pre><code class="language-java">@Service
+class OrderService {
+    private final PaymentClient paymentClient;
+
+    OrderService(PaymentClient paymentClient) {
+        this.paymentClient = paymentClient;
+    }
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>What is @SpringBootApplication composed of?</summary>
+          <div class="answer">
+            <p><code>@SpringBootApplication</code> combines:</p>
+            <ul>
+              <li><code>@SpringBootConfiguration</code></li>
+              <li><code>@EnableAutoConfiguration</code></li>
+              <li><code>@ComponentScan</code></li>
+            </ul>
+            <p>That means it marks the main configuration class, enables Boot auto-config, and scans packages for Spring components.</p>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>IoC container, dependency injection, bean lifecycle, scopes, @PostConstruct</summary>
+          <div class="answer">
+            <p>The IoC container creates objects, wires dependencies, manages lifecycle, and gives those objects to your code. Dependency Injection means the class receives dependencies from outside instead of creating them itself.</p>
+            <table>
+              <tr><th>Scope</th><th>Meaning</th></tr>
+              <tr><td>singleton</td><td>One bean per Spring container. Default.</td></tr>
+              <tr><td>prototype</td><td>New bean whenever requested.</td></tr>
+              <tr><td>request</td><td>One bean per HTTP request.</td></tr>
+              <tr><td>session</td><td>One bean per HTTP session.</td></tr>
+            </table>
+            <p>Bean lifecycle is roughly: instantiate, inject dependencies, call aware callbacks, call post-processors, call <code>@PostConstruct</code>, use bean, call destroy callbacks on shutdown.</p>
+            <p>If <code>@PostConstruct</code> throws an exception, bean creation fails and usually the application startup fails.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>@Qualifier vs @Primary</summary>
+          <div class="answer">
+            <p>Use <code>@Primary</code> when one bean should be the default choice. Use <code>@Qualifier</code> when the injection point must ask for a specific bean.</p>
+            <pre><code class="language-java">@Service("smsNotifier")
+class SmsNotifier implements Notifier {}
+
+@Service("emailNotifier")
+@Primary
+class EmailNotifier implements Notifier {}
+
+class AlertService {
+    AlertService(@Qualifier("smsNotifier") Notifier notifier) {}
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>@Value, @PropertySource, @ConfigurationProperties, @Profile</summary>
+          <div class="answer">
+            <p><code>@Value</code> is fine for one or two values. <code>@ConfigurationProperties</code> is cleaner for grouped config because it gives type-safe binding.</p>
+            <pre><code class="language-java">@ConfigurationProperties(prefix = "payment")
+record PaymentProperties(String baseUrl, int timeoutMs) {}
+
+@Profile("prod")
+@Configuration
+class ProductionConfig {}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>REST APIs: mappings, request params, request body, status codes, idempotency, versioning</summary>
+          <div class="answer">
+            <pre><code class="language-java">@RestController
+@RequestMapping("/api/v1/orders")
+class OrderController {
+    @GetMapping("/{id}")
+    ResponseEntity&lt;OrderDto&gt; find(@PathVariable Long id) {
+        return ResponseEntity.ok(service.find(id));
+    }
+
+    @PostMapping
+    ResponseEntity&lt;OrderDto&gt; create(@Valid @RequestBody CreateOrderRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
+    }
+}</code></pre>
+            <table>
+              <tr><th>Concept</th><th>Interview answer</th></tr>
+              <tr><td>PUT vs PATCH</td><td>PUT replaces the full resource. PATCH updates part of it.</td></tr>
+              <tr><td>@PathVariable</td><td>Reads value from URL path, like <code>/orders/10</code>.</td></tr>
+              <tr><td>@RequestParam</td><td>Reads query string, like <code>?page=1</code>.</td></tr>
+              <tr><td>@RequestBody</td><td>Uses HTTP message converters, usually Jackson, to convert JSON to Java object.</td></tr>
+              <tr><td>4xx</td><td>Client problem: bad request, unauthorized, forbidden, not found, conflict.</td></tr>
+              <tr><td>5xx</td><td>Server problem: bug, downstream failure, timeout.</td></tr>
+              <tr><td>Idempotent</td><td>GET, PUT, DELETE are normally idempotent. POST is normally not.</td></tr>
+            </table>
+            <p>API versioning can be done by URI (<code>/v1</code>), header, query parameter, or media type. URI versioning is easiest for teams and clients to understand.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Global exception handling and validation</summary>
+          <div class="answer">
+            <pre><code class="language-java">@RestControllerAdvice
+class ApiExceptionHandler {
+    @ExceptionHandler(OrderNotFoundException.class)
+    ResponseEntity&lt;ErrorResponse&gt; handle(OrderNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            .body(new ErrorResponse("ORDER_NOT_FOUND", ex.getMessage()));
+    }
+}
+
+record CreateUserRequest(
+    @NotBlank String name,
+    @Email String email
+) {}</code></pre>
+            <p>This keeps controllers clean and gives clients predictable error responses.</p>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>Spring Security, JWT, SecurityContext, filter chain, OAuth2, SSO</summary>
+          <div class="answer">
+            <p>JWT authentication flow: user logs in, server validates credentials, server returns signed token, client sends token in <code>Authorization: Bearer</code> header, security filter validates signature and expiry, then sets authenticated user in <code>SecurityContextHolder</code>.</p>
+            <pre><code class="language-java">@Bean
+SecurityFilterChain security(HttpSecurity http) throws Exception {
+    return http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/actuator/health").permitAll()
+            .anyRequest().authenticated())
+        .oauth2ResourceServer(oauth -> oauth.jwt(Customizer.withDefaults()))
+        .build();
+}</code></pre>
+            <table>
+              <tr><th>Topic</th><th>Short answer</th></tr>
+              <tr><td>Session auth</td><td>Server stores session. Good for traditional web apps.</td></tr>
+              <tr><td>Token auth</td><td>Client sends token. Good for APIs and distributed systems.</td></tr>
+              <tr><td>Authentication</td><td>Who are you?</td></tr>
+              <tr><td>Authorization</td><td>What are you allowed to do?</td></tr>
+              <tr><td>Method security</td><td>Use annotations like <code>@PreAuthorize</code> near service methods.</td></tr>
+              <tr><td>SSO</td><td>User logs in once with identity provider, then accesses multiple apps.</td></tr>
+              <tr><td>Certificate auth</td><td>Client proves identity using a trusted certificate, often mutual TLS.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>@Transactional: internal working, propagation, isolation, rollback, private methods</summary>
+          <div class="answer">
+            <p><code>@Transactional</code> usually works through a Spring proxy. The proxy starts a transaction before the method and commits or rolls back after it. Because of this, self-invocation and private methods do not work the way many developers expect.</p>
+            <table>
+              <tr><th>Question</th><th>Answer</th></tr>
+              <tr><td>Rollback default</td><td>Runtime exceptions roll back by default. Checked exceptions do not unless configured.</td></tr>
+              <tr><td>Private method</td><td>Proxy cannot intercept it, so <code>@Transactional</code> will not apply.</td></tr>
+              <tr><td>REQUIRED</td><td>Join existing transaction or create new one. Most common.</td></tr>
+              <tr><td>REQUIRES_NEW</td><td>Suspend current transaction and start a new one.</td></tr>
+              <tr><td>Isolation</td><td>Controls dirty reads, non-repeatable reads, and phantom reads.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Caching, scheduling, async processing</summary>
+          <div class="answer">
+            <pre><code class="language-java">@Cacheable(value = "customers", key = "#id")
+Customer findCustomer(Long id) {
+    return repository.findById(id).orElseThrow();
+}
+
+@Scheduled(cron = "0 */5 * * * *")
+void refreshReport() { }
+
+@Async
+CompletableFuture&lt;Void&gt; sendEmail() {
+    return CompletableFuture.completedFuture(null);
+}</code></pre>
+            <p>Keep scheduled jobs away from request threads. For heavy jobs, use a separate executor, queue, or worker service so API latency does not suffer.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Actuator, metrics, health indicators, Prometheus and Grafana</summary>
+          <div class="answer">
+            <p>Spring Boot Actuator exposes production endpoints like <code>/actuator/health</code>, <code>/metrics</code>, <code>/info</code>, <code>/loggers</code>, and <code>/prometheus</code> if configured. Prometheus scrapes metrics. Grafana shows dashboards and alerts.</p>
+            <pre><code class="language-java">@Component
+class PaymentGatewayHealth implements HealthIndicator {
+    public Health health() {
+        boolean ok = gateway.ping();
+        return ok ? Health.up().build() : Health.down().withDetail("gateway", "not reachable").build();
+    }
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>Spring Boot production debugging and testing</summary>
+          <div class="answer">
+            <p>If it works locally but fails in production, compare configuration, environment variables, profiles, database access, network rules, secrets, JVM version, container limits, and dependency versions. Read startup logs first; Spring usually tells you which bean or property failed.</p>
+            <table>
+              <tr><th>Problem</th><th>Fix direction</th></tr>
+              <tr><td>Multiple beans of same type</td><td>Use <code>@Primary</code>, <code>@Qualifier</code>, or remove duplicate registration.</td></tr>
+              <tr><td>Properties not reflected</td><td>Check active profile, config source order, refresh mechanism, and deployment actually using new artifact.</td></tr>
+              <tr><td>Bean init issue</td><td>Check condition report, logs, circular dependencies, constructor failures.</td></tr>
+              <tr><td>Fat JAR classloader issue</td><td>Check duplicate dependencies, shading, incompatible versions.</td></tr>
+            </table>
+            <p><b>Testing:</b> Use JUnit and Mockito for unit tests. Use <code>@SpringBootTest</code> for full context tests, <code>@WebMvcTest</code> for controller slice, <code>@DataJpaTest</code> for JPA slice, and <code>@MockBean</code> when you need to replace a Spring bean in test context.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="microservices">
+      <div class="section-head">
+        <div>
+          <h2>3. Microservices and Cloud</h2>
+          <p>Good answers here should mention trade-offs. Microservices solve some problems, but they add network, deployment, and data consistency complexity.</p>
+        </div>
+        <span class="count">Architecture, resilience, Kafka, cloud</span>
+      </div>
+      <div class="grid">
+        <details class="qa" open>
+          <summary>Monolith vs microservices and decomposing a monolith</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Monolith</th><th>Microservices</th></tr>
+              <tr><td>Simple deployment and transactions</td><td>Independent deployment and scaling</td></tr>
+              <tr><td>Can become hard to change at scale</td><td>Needs strong DevOps, monitoring, contracts</td></tr>
+              <tr><td>Good for small teams/products</td><td>Good when domains and teams are clearly separated</td></tr>
+            </table>
+            <p>To decompose, use the Strangler pattern: keep the monolith running, move one capability at a time behind an API gateway or routing layer, and slowly replace old modules.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Synchronous vs asynchronous communication, REST vs gRPC</summary>
+          <div class="answer">
+            <p>Synchronous communication is easy to understand but creates runtime dependency. Asynchronous messaging is better when work can happen later and you want resilience.</p>
+            <table>
+              <tr><th>REST</th><th>gRPC</th></tr>
+              <tr><td>Human-readable HTTP/JSON</td><td>Fast binary protocol using Protocol Buffers</td></tr>
+              <tr><td>Great for public APIs</td><td>Great for internal low-latency service-to-service calls</td></tr>
+              <tr><td>Easy browser and tool support</td><td>Strong contracts and streaming support</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>API Gateway, service discovery, config server, logging, tracing, monitoring</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Component</th><th>Why it is used</th></tr>
+              <tr><td>API Gateway</td><td>Single entry point for routing, auth, rate limiting, request transformation.</td></tr>
+              <tr><td>Service discovery</td><td>Find service instances dynamically. Examples: Eureka, Consul.</td></tr>
+              <tr><td>Config server</td><td>Central place for environment configs.</td></tr>
+              <tr><td>Central logging</td><td>Search logs across services using ELK, EFK, or Splunk.</td></tr>
+              <tr><td>Distributed tracing</td><td>Track one request across many services using trace id. Tools: Jaeger, Zipkin, OpenTelemetry.</td></tr>
+              <tr><td>Monitoring</td><td>Metrics and alerts using Micrometer, Prometheus, Grafana.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>Circuit breaker, retry, fallback, bulkhead, partial failure</summary>
+          <div class="answer">
+            <p>A circuit breaker protects your service from repeatedly calling a failing dependency. States are closed, open, and half-open.</p>
+            <table>
+              <tr><th>Pattern</th><th>Meaning</th></tr>
+              <tr><td>Retry</td><td>Try again for temporary failures, with delay/backoff.</td></tr>
+              <tr><td>Fallback</td><td>Return cached/default response or reduced feature.</td></tr>
+              <tr><td>Bulkhead</td><td>Separate thread pools/resources so one dependency does not consume everything.</td></tr>
+              <tr><td>Circuit breaker</td><td>Stop calls temporarily when failures cross threshold.</td></tr>
+            </table>
+            <pre><code class="language-java">@CircuitBreaker(name = "inventory", fallbackMethod = "fallback")
+public Inventory check(String sku) {
+    return inventoryClient.check(sku);
+}
+
+public Inventory fallback(String sku, Throwable ex) {
+    return Inventory.unknown(sku);
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Saga pattern and distributed transactions</summary>
+          <div class="answer">
+            <p>In microservices, one business operation may touch many databases. A normal database transaction cannot easily cover all services. Saga breaks the workflow into local transactions and compensation steps.</p>
+            <table>
+              <tr><th>2 Phase Commit</th><th>Saga</th></tr>
+              <tr><td>Strong consistency but slow and tightly coupled</td><td>Eventual consistency and better service independence</td></tr>
+              <tr><td>Coordinator locks resources</td><td>Compensation handles failure</td></tr>
+              <tr><td>Rare in high-scale microservices</td><td>Common for order, payment, booking workflows</td></tr>
+            </table>
+            <p>Orchestration uses one coordinator service. Choreography uses events where each service reacts to the previous event.</p>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>Kafka delivery guarantees, duplicate messages, lag, Kafka vs Redis Pub/Sub</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Topic</th><th>Answer</th></tr>
+              <tr><td>At-most-once</td><td>Message may be lost, but not retried.</td></tr>
+              <tr><td>At-least-once</td><td>Message will be processed but duplicates can happen.</td></tr>
+              <tr><td>Exactly-once</td><td>Requires Kafka transactions/idempotent producers and careful design.</td></tr>
+              <tr><td>Duplicate handling</td><td>Use idempotency keys, processed-message table, unique constraints.</td></tr>
+              <tr><td>Consumer lag</td><td>Check processing time, partitions, consumer count, downstream slowness, batch size.</td></tr>
+              <tr><td>Kafka vs Redis Pub/Sub</td><td>Kafka is durable and replayable. Redis Pub/Sub is lightweight but not a durable event log.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>AWS, Docker, Kubernetes, CI/CD, rollback, blue-green, canary</summary>
+          <div class="answer">
+            <p>A Spring Boot service can run on EC2, ECS/Fargate, EKS/Kubernetes, or Lambda depending on workload. Docker packages the app and runtime together.</p>
+            <pre><code class="language-dockerfile">FROM eclipse-temurin:21-jre
+WORKDIR /app
+COPY target/app.jar app.jar
+ENTRYPOINT ["java", "-jar", "app.jar"]</code></pre>
+            <table>
+              <tr><th>Deployment idea</th><th>Meaning</th></tr>
+              <tr><td>Blue-green</td><td>Run old and new environments, switch traffic when new is healthy.</td></tr>
+              <tr><td>Canary</td><td>Send small traffic percentage to new version first.</td></tr>
+              <tr><td>Rollback</td><td>Shift traffic back or redeploy previous image/version.</td></tr>
+              <tr><td>Kubernetes</td><td>Pods run containers, services expose them, ConfigMaps/Secrets hold config, Ingress routes traffic.</td></tr>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="database">
+      <div class="section-head">
+        <div>
+          <h2>4. Databases and Persistence</h2>
+          <p>Database answers should show both SQL knowledge and application performance thinking.</p>
+        </div>
+        <span class="count">SQL, indexes, JPA, transactions</span>
+      </div>
+      <div class="grid">
+        <details class="qa" open>
+          <summary>SQL vs NoSQL, joins, WHERE vs HAVING, keys, indexes</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Question</th><th>Answer</th></tr>
+              <tr><td>SQL vs NoSQL</td><td>SQL is strong for structured relational data and transactions. NoSQL is useful for flexible schema, huge scale, documents, key-value, or time-series workloads.</td></tr>
+              <tr><td>INNER JOIN</td><td>Rows matching in both tables.</td></tr>
+              <tr><td>LEFT JOIN</td><td>All left rows plus matching right rows.</td></tr>
+              <tr><td>RIGHT JOIN</td><td>All right rows plus matching left rows.</td></tr>
+              <tr><td>WHERE vs HAVING</td><td>WHERE filters rows before grouping. HAVING filters grouped results.</td></tr>
+              <tr><td>Primary key</td><td>Unique row identity, not null.</td></tr>
+              <tr><td>Unique key</td><td>Prevents duplicate values, often allows null depending on DB.</td></tr>
+              <tr><td>Index</td><td>Speeds reads but slows writes and uses space.</td></tr>
+            </table>
+            <pre><code class="language-sql">-- 2nd highest salary
+SELECT MAX(salary) AS second_highest
+FROM employees
+WHERE salary &lt; (SELECT MAX(salary) FROM employees);
+
+-- Employees earning more than department average
+SELECT e.*
+FROM employees e
+JOIN (
+    SELECT department_id, AVG(salary) avg_salary
+    FROM employees
+    GROUP BY department_id
+) d ON e.department_id = d.department_id
+WHERE e.salary &gt; d.avg_salary;</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Clustered vs non-clustered index, delete vs truncate vs drop</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Clustered index</th><th>Non-clustered index</th></tr>
+              <tr><td>Defines physical/logical row order in table storage</td><td>Separate structure pointing to table rows</td></tr>
+              <tr><td>Usually one per table</td><td>Many can exist</td></tr>
+            </table>
+            <table>
+              <tr><th>DELETE</th><th>TRUNCATE</th><th>DROP</th></tr>
+              <tr><td>Removes selected rows, can use WHERE</td><td>Removes all rows quickly</td><td>Removes table structure itself</td></tr>
+              <tr><td>Can fire triggers</td><td>Usually does not fire row triggers</td><td>Object no longer exists</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>JPA lifecycle, lazy/eager, N+1, cache, save/persist/saveAndFlush</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Concept</th><th>Answer</th></tr>
+              <tr><td>Transient</td><td>New object not managed by persistence context.</td></tr>
+              <tr><td>Persistent</td><td>Managed by EntityManager; changes are tracked.</td></tr>
+              <tr><td>Detached</td><td>Was managed earlier, now outside persistence context.</td></tr>
+              <tr><td>Removed</td><td>Marked for deletion.</td></tr>
+              <tr><td>Lazy loading</td><td>Fetch relation when accessed. Better default, but can fail outside transaction.</td></tr>
+              <tr><td>Eager loading</td><td>Fetch relation immediately. Can load too much data.</td></tr>
+              <tr><td>N+1 problem</td><td>One query for parent rows, then one query per child. Fix with fetch join, entity graph, batch fetch, or projection.</td></tr>
+              <tr><td>First-level cache</td><td>EntityManager/session cache, always enabled.</td></tr>
+              <tr><td>Second-level cache</td><td>Shared cache across sessions if configured.</td></tr>
+            </table>
+            <pre><code class="language-java">@Entity
+class Employee {
+    @Id @GeneratedValue
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Department department;
+}</code></pre>
+            <p><code>persist()</code> is JPA EntityManager API. <code>save()</code> is Spring Data repository API. <code>saveAndFlush()</code> saves and forces SQL flush immediately.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Optimistic locking, pessimistic locking, ACID, schema changes without breaking production</summary>
+          <div class="answer">
+            <p>Optimistic locking uses a version column. It is good when conflicts are rare. Pessimistic locking locks the row in DB. It is useful when conflicts are common but can reduce concurrency.</p>
+            <pre><code class="language-java">@Entity
+class Account {
+    @Id Long id;
+    BigDecimal balance;
+
+    @Version
+    Long version;
+}</code></pre>
+            <p><b>ACID:</b> Atomicity means all or nothing. Consistency means valid state. Isolation means transactions do not corrupt each other. Durability means committed data survives failure.</p>
+            <p><b>Zero-downtime schema change:</b> expand first, deploy app compatible with old and new schema, backfill data, switch reads/writes, then contract old columns later.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="devops">
+      <div class="section-head">
+        <div>
+          <h2>5. DevOps, CI/CD and Tools</h2>
+          <p>For these answers, explain the flow from code commit to monitored production release.</p>
+        </div>
+        <span class="count">Git, Maven, Docker, Kubernetes, monitoring</span>
+      </div>
+      <div class="grid">
+        <details class="qa" open>
+          <summary>CI/CD pipeline, Git, Maven vs Gradle, Docker, Kubernetes, Jenkins</summary>
+          <div class="answer">
+            <p>A normal CI/CD pipeline has checkout, build, unit tests, static code analysis, packaging, image build, security scan, deploy to lower environment, integration tests, approval if needed, production deploy, and monitoring.</p>
+            <table>
+              <tr><th>Tool/topic</th><th>Answer</th></tr>
+              <tr><td>Git branching</td><td>Use trunk-based or GitFlow depending on team. Resolve conflicts by pulling latest, understanding both changes, then testing.</td></tr>
+              <tr><td>Stash</td><td>Temporarily shelves local changes.</td></tr>
+              <tr><td>Maven vs Gradle</td><td>Maven is convention-based XML; Gradle is flexible and often faster with build cache.</td></tr>
+              <tr><td>Docker</td><td>Packages app with runtime into an image.</td></tr>
+              <tr><td>Kubernetes</td><td>Manages containers using pods, deployments, services, ingress, configmaps, secrets.</td></tr>
+              <tr><td>Jenkins</td><td>Automation server for pipeline scripting.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>SonarQube, Checkstyle, ELK/EFK, Prometheus and Grafana</summary>
+          <div class="answer">
+            <p>SonarQube checks bugs, code smells, test coverage, duplications, and vulnerabilities. Checkstyle enforces style rules. ELK/EFK centralizes logs. Prometheus collects metrics and Grafana visualizes them with alerts.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="dsa">
+      <div class="section-head">
+        <div>
+          <h2>6. Data Structures, Algorithms and Problem Solving</h2>
+          <p>For coding rounds, say the brute force idea briefly, then move to the optimized approach, complexity, and edge cases.</p>
+        </div>
+        <span class="count">Arrays, lists, trees, graphs, DP, coding tasks</span>
+      </div>
+      <div class="grid">
+        <details class="qa wide" open>
+          <summary>Core DSA topics and when to use them</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Topic</th><th>Use case</th></tr>
+              <tr><td>Sliding window</td><td>Contiguous subarray/string problems.</td></tr>
+              <tr><td>Prefix sum</td><td>Fast range sum and subarray sum problems.</td></tr>
+              <tr><td>Kadane</td><td>Maximum subarray sum.</td></tr>
+              <tr><td>Floyd cycle detection</td><td>Detect cycle in linked list using slow and fast pointers.</td></tr>
+              <tr><td>Stack</td><td>Next greater element, valid parentheses, min stack.</td></tr>
+              <tr><td>PriorityQueue</td><td>Top K, scheduling, shortest path.</td></tr>
+              <tr><td>BFS/DFS</td><td>Graph/tree traversal, connected components.</td></tr>
+              <tr><td>Topological sort</td><td>Dependency ordering in DAG.</td></tr>
+              <tr><td>Dijkstra</td><td>Shortest path with non-negative weights.</td></tr>
+              <tr><td>DP</td><td>Overlapping subproblems like LCS, LIS, knapsack.</td></tr>
+              <tr><td>Trie</td><td>Prefix search and autocomplete.</td></tr>
+              <tr><td>Backtracking</td><td>N-Queens, permutations, subsets.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Two Sum and duplicates in array</summary>
+          <div class="answer">
+            <pre><code class="language-java">int[] twoSum(int[] nums, int target) {
+    Map&lt;Integer, Integer&gt; index = new HashMap&lt;&gt;();
+    for (int i = 0; i &lt; nums.length; i++) {
+        int need = target - nums[i];
+        if (index.containsKey(need)) return new int[] { index.get(need), i };
+        index.put(nums[i], i);
+    }
+    return new int[] { -1, -1 };
+}
+
+Set&lt;Integer&gt; duplicates(int[] nums) {
+    Set&lt;Integer&gt; seen = new HashSet&lt;&gt;();
+    Set&lt;Integer&gt; dup = new HashSet&lt;&gt;();
+    for (int n : nums) if (!seen.add(n)) dup.add(n);
+    return dup;
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Best Time to Buy and Sell Stock</summary>
+          <div class="answer">
+            <p>Track the minimum price so far and the best profit if we sell today.</p>
+            <pre><code class="language-java">int maxProfit(int[] prices) {
+    int min = Integer.MAX_VALUE;
+    int profit = 0;
+    for (int price : prices) {
+        min = Math.min(min, price);
+        profit = Math.max(profit, price - min);
+    }
+    return profit;
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Merge two sorted linked lists</summary>
+          <div class="answer">
+            <pre><code class="language-java">ListNode merge(ListNode a, ListNode b) {
+    ListNode dummy = new ListNode(0);
+    ListNode tail = dummy;
+
+    while (a != null && b != null) {
+        if (a.val &lt;= b.val) {
+            tail.next = a;
+            a = a.next;
+        } else {
+            tail.next = b;
+            b = b.next;
+        }
+        tail = tail.next;
+    }
+    tail.next = (a != null) ? a : b;
+    return dummy.next;
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Sliding window maximum and interval scheduling</summary>
+          <div class="answer">
+            <p>Sliding window maximum uses a deque that keeps useful indexes in decreasing order. Minimum platforms/interval scheduling usually sorts start and end times, then counts overlaps.</p>
+            <pre><code class="language-java">int minPlatforms(int[] arrival, int[] departure) {
+    Arrays.sort(arrival);
+    Arrays.sort(departure);
+    int i = 0, j = 0, used = 0, max = 0;
+    while (i &lt; arrival.length) {
+        if (arrival[i] &lt;= departure[j]) {
+            used++;
+            max = Math.max(max, used);
+            i++;
+        } else {
+            used--;
+            j++;
+        }
+    }
+    return max;
+}</code></pre>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="system-design">
+      <div class="section-head">
+        <div>
+          <h2>7. System Design</h2>
+          <p>System design answers should start with requirements, scale, APIs, data model, high-level architecture, bottlenecks, and failure handling.</p>
+        </div>
+        <span class="count">CAP, caching, sharding, rate limiting, HLD</span>
+      </div>
+      <div class="grid">
+        <details class="qa wide" open>
+          <summary>CAP, load balancing, caching, sharding, replication, consistent hashing, quorum, gossip</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Concept</th><th>Simple answer</th></tr>
+              <tr><td>CAP theorem</td><td>During network partition, a distributed system chooses consistency or availability.</td></tr>
+              <tr><td>L4 load balancing</td><td>Routes by IP/port level.</td></tr>
+              <tr><td>L7 load balancing</td><td>Routes by HTTP path, host, headers.</td></tr>
+              <tr><td>Redis/CDN/Memcached</td><td>Reduce repeated DB or origin calls.</td></tr>
+              <tr><td>Sharding</td><td>Split data across nodes by key.</td></tr>
+              <tr><td>Replication</td><td>Copy data for availability and read scaling.</td></tr>
+              <tr><td>Consistent hashing</td><td>Minimizes key movement when nodes are added/removed.</td></tr>
+              <tr><td>Quorum</td><td>Read/write agreement from enough replicas.</td></tr>
+              <tr><td>Gossip</td><td>Nodes share state gradually with other nodes.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Design a rate limiter for high-traffic API</summary>
+          <div class="answer">
+            <p>Clarify limits: per user, IP, API key, endpoint, or tenant. A common design uses Redis with token bucket or sliding window. API gateway checks the limit before forwarding the request.</p>
+            <pre><code class="language-text">Client -> API Gateway -> Rate limit check in Redis -> Service
+
+Key: rate:user:123:/payments
+Value: request count or token bucket state
+TTL: window length</code></pre>
+            <p>For global distributed limiters, use Redis cluster, consistent hashing by key, Lua scripts for atomic updates, and fallback behavior if Redis is down.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Design BookMyShow or transaction processing backend</summary>
+          <div class="answer">
+            <p>For booking systems, the hard part is preventing double booking. Use seat hold with expiry, payment workflow, and final confirmation. Lock only the seat rows needed, keep hold time short, and make payment confirmation idempotent.</p>
+            <p>For transaction processing, use idempotency keys, durable event log, retries with backoff, audit table, reconciliation job, and clear state machine: initiated, pending, success, failed, reversed.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Design near real-time data pipeline</summary>
+          <div class="answer">
+            <p>A good pipeline is: producers write events to Kafka, stream processor validates/enriches/aggregates, data goes to time-series DB or warehouse, dashboards read from Grafana or BI tool. Add schema registry, dead-letter topic, replay strategy, and lag alerts.</p>
+            <pre><code class="language-text">Services -> Kafka -> Stream processing -> Time-series DB -> Grafana
+                 \-> Dead-letter topic for bad events</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>RBAC vs ABAC authorization models</summary>
+          <div class="answer">
+            <table>
+              <tr><th>RBAC</th><th>ABAC</th></tr>
+              <tr><td>Access based on roles like ADMIN, MANAGER</td><td>Access based on attributes like department, location, owner, time</td></tr>
+              <tr><td>Simple and common</td><td>More flexible for complex policies</td></tr>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="behavioral">
+      <div class="section-head">
+        <div>
+          <h2>8. Behavioral and Project Experience</h2>
+          <p>Do not memorize fake stories. Prepare honest stories using situation, action, result, and learning.</p>
+        </div>
+        <span class="count">Self intro, project, conflict, mentoring</span>
+      </div>
+      <div class="grid">
+        <details class="qa" open>
+          <summary>Self introduction</summary>
+          <div class="answer">
+            <p>Keep it under two minutes. Mention years of experience, main technologies, current project domain, your strongest responsibilities, one impact, and what kind of role you are looking for.</p>
+            <pre><code class="language-text">I am a Java backend developer with experience in Spring Boot,
+REST APIs, JPA, SQL, Kafka, and microservices. In my current project,
+I work on order and payment workflows, where I build APIs, optimize
+queries, write unit and integration tests, and handle production issues.
+One recent improvement I worked on reduced API latency by fixing an
+N+1 query and adding proper indexes. I enjoy backend design, debugging,
+and building reliable services.</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Explain your current project, role, challenges, conflict, mentoring, production incident</summary>
+          <div class="answer">
+            <p>For project explanation, follow this order: business purpose, architecture, tech stack, your module, your responsibilities, scale, challenges, and impact.</p>
+            <table>
+              <tr><th>Question</th><th>How to answer</th></tr>
+              <tr><td>Roles and responsibilities</td><td>API development, DB design, code reviews, tests, deployment support, monitoring, incident fixes.</td></tr>
+              <tr><td>Challenges</td><td>Pick one real issue: slow API, concurrency bug, external API failure, data mismatch. Explain diagnosis and fix.</td></tr>
+              <tr><td>Team conflict</td><td>Say you clarify facts, document options, involve stakeholders, and choose what helps delivery and quality.</td></tr>
+              <tr><td>Mentoring</td><td>Pair programming, code reviews, explaining design decisions, giving small ownership tasks.</td></tr>
+              <tr><td>Security</td><td>Auth, authorization, validation, secrets management, logging hygiene, dependency scanning.</td></tr>
+              <tr><td>AI tools</td><td>Use them for boilerplate, test ideas, refactoring suggestions, documentation, but review everything before committing.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Strengths, weaknesses, and questions for interviewer</summary>
+          <div class="answer">
+            <p>Good strengths are specific: debugging, ownership, clean API design, learning new systems, calm production support. A good weakness is real but controlled: "I used to jump into implementation too quickly, so now I write down assumptions and edge cases first."</p>
+            <p>Ask the interviewer about architecture, release process, production ownership, team size, testing culture, observability, and the biggest technical challenge the team is solving now.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="debugging">
+      <div class="section-head">
+        <div>
+          <h2>9. Debugging and Troubleshooting Tools</h2>
+          <p>In debugging answers, show a calm sequence: reproduce, observe, narrow down, test hypothesis, fix, and add prevention.</p>
+        </div>
+        <span class="count">Logs, metrics, traces, dumps, profiling</span>
+      </div>
+      <div class="grid">
+        <details class="qa wide" open>
+          <summary>Production issue diagnosis tools</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Area</th><th>Tools</th><th>Use</th></tr>
+              <tr><td>Logs</td><td>ELK, EFK, Splunk</td><td>Find errors and correlate by trace id.</td></tr>
+              <tr><td>Metrics/APM</td><td>Prometheus, Grafana, Micrometer, Dynatrace, New Relic, Datadog</td><td>See latency, error rate, CPU, memory, threads, DB time.</td></tr>
+              <tr><td>Tracing</td><td>Jaeger, Zipkin, OpenTelemetry</td><td>Find which service/span is slow.</td></tr>
+              <tr><td>Memory</td><td>JProfiler, VisualVM, Eclipse MAT, jmap, jcmd</td><td>Heap dump, memory leak, object growth.</td></tr>
+              <tr><td>Threads</td><td>jstack, kill -3, FastThread</td><td>Deadlocks, blocked threads, contention.</td></tr>
+              <tr><td>GC</td><td>GC logs, GCViewer, GCEasy</td><td>Pause time, allocation pressure, heap sizing.</td></tr>
+              <tr><td>Network/API</td><td>curl, Postman, tcpdump, Wireshark, Fiddler</td><td>Timeouts, headers, TLS, payload issues.</td></tr>
+              <tr><td>Database</td><td>Slow query logs, EXPLAIN ANALYZE, pgAdmin, MySQL Workbench</td><td>Bad queries, missing indexes, locks.</td></tr>
+              <tr><td>Container/cloud</td><td>docker logs/exec/stats, kubectl logs/describe/exec, CloudWatch, X-Ray</td><td>Pod restarts, limits, node issues, cloud tracing.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Heap dump vs thread dump and common scenarios</summary>
+          <div class="answer">
+            <p>A heap dump shows memory objects. Use it for memory leaks and OutOfMemoryError. A thread dump shows what threads are doing. Use it for CPU spikes, deadlocks, blocked threads, and latency caused by thread pool starvation.</p>
+            <table>
+              <tr><th>Scenario</th><th>First checks</th></tr>
+              <tr><td>Memory leak</td><td>Heap dump, GC logs, object retainers in MAT.</td></tr>
+              <tr><td>CPU spike</td><td>Top thread, thread dump, async profiler/JFR.</td></tr>
+              <tr><td>Latency spike</td><td>Metrics, traces, DB time, downstream calls, thread pool utilization.</td></tr>
+              <tr><td>API timeout</td><td>Trace across services, connection pool, DB locks, external API status.</td></tr>
+            </table>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="production">
+      <div class="section-head">
+        <div>
+          <h2>10. Real-World Production Scenarios</h2>
+          <p>These are not definition questions. The interviewer wants to see how you think under pressure.</p>
+        </div>
+        <span class="count">Slow APIs, startup, downtime, consistency</span>
+      </div>
+      <div class="grid">
+        <details class="qa" open>
+          <summary>API was fast in testing but times out in production after a few hours</summary>
+          <div class="answer">
+            <p>I would check whether something grows over time: memory, thread count, DB connections, cache size, queue lag, file handles, or blocked threads. Then I would compare latency, error rate, GC pauses, heap usage, thread pool usage, and database query time over the same period.</p>
+            <p>Common causes: memory leak, connection leak, unbounded cache, slow query under real data volume, downstream timeout, thread pool exhaustion, or GC pressure.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>CPU is low but API latency is high</summary>
+          <div class="answer">
+            <p>Low CPU usually means the app is waiting, not computing. I would check DB locks and slow queries, external service latency, connection pool exhaustion, thread pool queues, network latency, DNS, and Kafka/queue lag.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Endpoint becomes slower over time until restart fixes it</summary>
+          <div class="answer">
+            <p>This often points to a leak or accumulation problem: memory leak, connection leak, cache growing without eviction, thread leak, or data structure growing in memory. Restart clears memory temporarily, but the real fix is to identify the growing resource and add proper cleanup, limits, or pooling.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>New version increases response time by 30 percent</summary>
+          <div class="answer">
+            <p>First protect users: rollback, reduce traffic to the new version, or disable the feature flag. Then compare metrics between versions: DB calls, external calls, query plans, CPU, memory, GC, thread pools, and traces. If using canary, stop rollout before all traffic is affected.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Spring Boot starts slowly in production but quickly locally</summary>
+          <div class="answer">
+            <p>Check active profiles, config server latency, database connectivity, DNS, cloud metadata calls, classpath size, migration scripts, bean initialization doing network calls, low CPU/memory limits, and slow secret manager calls.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Critical bug saves wrong data. How to fix without downtime?</summary>
+          <div class="answer">
+            <p>Stop the damage first: feature flag off, block bad path, or route traffic to old version. Deploy a hotfix using rolling/canary release. Add data validation and idempotency if missing. Then run a controlled data correction script with backup, audit, and verification.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Third-party API fails intermittently</summary>
+          <div class="answer">
+            <p>Use timeouts, retries with backoff, circuit breaker, fallback, cache, queue for async retry, and clear error response. Also monitor the third-party dependency separately so the team knows it is not an internal outage.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Memory leak in production, pod keeps getting killed</summary>
+          <div class="answer">
+            <p>Capture heap dump before the pod dies, enable GC logs/JFR if safe, check memory trend, compare object counts, and find retainers in Eclipse MAT. Temporarily increase memory or restart policy only as a short-term mitigation. Real fix is usually limiting cache, closing resources, removing static references, or fixing collection growth.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Kafka consumers are lagging</summary>
+          <div class="answer">
+            <p>Check whether processing is slow or consumption capacity is low. Increase partitions and consumers if possible, tune batch size and poll records, optimize downstream DB/API calls, avoid long blocking work inside consumer thread, and commit offsets only after safe processing.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Payment deducted but confirmation failed</summary>
+          <div class="answer">
+            <p>Use a transaction state machine and reconciliation. The payment should have a unique transaction id. If confirmation fails, mark it pending, retry safely, query payment gateway status, and either confirm order or reverse/refund. Never rely only on one HTTP response for money flow.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Config server changed but services did not pick it up</summary>
+          <div class="answer">
+            <p>Check whether Spring Cloud refresh is enabled, whether the property is refresh-scoped, whether bus refresh is configured, and whether the service is using the correct profile/label. You can trigger refresh endpoint or publish a refresh event through Spring Cloud Bus. Some properties still need restart because they are read during bean creation.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="additional-questions">
+      <div class="section-head">
+        <div>
+          <h2>11. Additional PDF Questions</h2>
+          <p>This section fills the questions that are easy to miss when similar questions are grouped together. These are written separately so you can revise them directly before interviews.</p>
+        </div>
+        <span class="count">Gap-check additions</span>
+      </div>
+      <div class="grid">
+        <details class="qa" open>
+          <summary>Thread vs Runnable vs Callable</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Option</th><th>Use</th><th>Return value</th></tr>
+              <tr><td>Thread</td><td>Create a thread by extending class. Rarely preferred.</td><td>No direct return value.</td></tr>
+              <tr><td>Runnable</td><td>Task without return value. Preferred over extending Thread.</td><td>No return value.</td></tr>
+              <tr><td>Callable</td><td>Task that returns result or throws checked exception.</td><td>Returns value through Future.</td></tr>
+            </table>
+            <pre><code class="language-java">Callable&lt;Integer&gt; task = () -> 10 + 20;
+ExecutorService executor = Executors.newSingleThreadExecutor();
+Future&lt;Integer&gt; result = executor.submit(task);
+System.out.println(result.get()); // 30
+executor.shutdown();</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Mutex vs Semaphore</summary>
+          <div class="answer">
+            <p>A mutex allows only one thread to enter a critical section. A semaphore allows a fixed number of threads to access a resource at the same time.</p>
+            <table>
+              <tr><th>Mutex</th><th>Semaphore</th></tr>
+              <tr><td>One permit only</td><td>One or more permits</td></tr>
+              <tr><td>Used for exclusive lock</td><td>Used for limiting concurrent access</td></tr>
+              <tr><td>Example: updating account balance</td><td>Example: only 10 users can call third-party API at once</td></tr>
+            </table>
+            <pre><code class="language-java">Semaphore apiLimit = new Semaphore(10);
+
+apiLimit.acquire();
+try {
+    callExternalApi();
+} finally {
+    apiLimit.release();
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>synchronized block vs synchronized method</summary>
+          <div class="answer">
+            <p>A synchronized method locks the whole method on the object. A synchronized block lets you lock only the small critical part, so it is more flexible and usually better for performance.</p>
+            <pre><code class="language-java">class Wallet {
+    private final Object lock = new Object();
+    private int balance;
+
+    void add(int amount) {
+        validate(amount); // no lock needed
+        synchronized (lock) {
+            balance += amount;
+        }
+    }
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Java Memory Model and happens-before relationship</summary>
+          <div class="answer">
+            <p>The Java Memory Model explains when changes made by one thread become visible to another thread. A happens-before relationship is a visibility guarantee. For example, unlocking a synchronized block happens-before another thread locks the same monitor.</p>
+            <p>Common happens-before examples: thread start, thread join, volatile write followed by volatile read, synchronized unlock followed by lock, and completing a Future before reading its result.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>How to make a class thread-safe?</summary>
+          <div class="answer">
+            <p>Start by asking: does this class have shared mutable state? If yes, protect it. Good choices are immutability, synchronized blocks, locks, atomic classes, concurrent collections, or avoiding shared state completely.</p>
+            <pre><code class="language-java">final class MoneyTransferRequest {
+    private final String fromAccount;
+    private final String toAccount;
+    private final BigDecimal amount;
+
+    MoneyTransferRequest(String fromAccount, String toAccount, BigDecimal amount) {
+        this.fromAccount = fromAccount;
+        this.toAccount = toAccount;
+        this.amount = amount;
+    }
+}</code></pre>
+            <p>This class is thread-safe because it is immutable: fields are final and there are no setters.</p>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>Records, sealed classes, virtual threads, pattern matching, Project Panama, Project Valhalla</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Feature</th><th>Human answer</th><th>Example/use</th></tr>
+              <tr><td>Record</td><td>A compact class for data carriers.</td><td>DTOs, API responses, immutable command objects.</td></tr>
+              <tr><td>Sealed class</td><td>Restricts which classes can extend/implement it.</td><td>Payment can only be Card, UPI, Wallet.</td></tr>
+              <tr><td>Virtual thread</td><td>Lightweight thread useful for high-concurrency blocking I/O.</td><td>Many HTTP calls without creating many OS threads.</td></tr>
+              <tr><td>Pattern matching</td><td>Reduces casting and long if-else code.</td><td><code>if (obj instanceof String s)</code>.</td></tr>
+              <tr><td>Project Panama</td><td>Better connection between Java and native code/memory.</td><td>Calling C libraries more safely.</td></tr>
+              <tr><td>Project Valhalla</td><td>Work around value objects and better performance for data-heavy objects.</td><td>Future performance improvements for value-like classes.</td></tr>
+            </table>
+            <pre><code class="language-java">record Product(Long id, String name, BigDecimal price) {}
+
+sealed interface LoginResult permits Success, Failure {}
+record Success(String token) implements LoginResult {}
+record Failure(String reason) implements LoginResult {}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>Extra Stream tasks: first occurrence, reverse array, palindrome, Fibonacci</summary>
+          <div class="answer">
+            <pre><code class="language-java">// First word starting with each letter
+Map&lt;Character, String&gt; firstWordByLetter = List.of("apple", "ant", "bat").stream()
+    .collect(Collectors.toMap(
+        word -> word.charAt(0),
+        Function.identity(),
+        (first, second) -> first,
+        LinkedHashMap::new
+    ));
+
+// Reverse integer array
+int[] input = {1, 2, 3, 4};
+int[] reversed = IntStream.range(0, input.length)
+    .map(i -> input[input.length - 1 - i])
+    .toArray();
+
+// Palindrome check
+String text = "madam";
+boolean palindrome = IntStream.range(0, text.length() / 2)
+    .allMatch(i -> text.charAt(i) == text.charAt(text.length() - 1 - i));
+
+// Fibonacci using Stream.iterate
+List&lt;Integer&gt; fibonacci = Stream.iterate(new int[] {0, 1}, a -> new int[] {a[1], a[0] + a[1]})
+    .limit(10)
+    .map(a -> a[0])
+    .toList();</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Spring Boot starters and ways to create/get a bean</summary>
+          <div class="answer">
+            <p>A starter is a dependency bundle. For example, <code>spring-boot-starter-web</code> brings Spring MVC, Jackson, validation support, and embedded server dependencies needed for REST APIs.</p>
+            <p>You can create beans using <code>@Component</code>/<code>@Service</code>/<code>@Repository</code>, <code>@Bean</code> methods, XML in old projects, or programmatic registration. You normally get beans through constructor injection, not by manually calling the context.</p>
+            <pre><code class="language-java">@Configuration
+class AppConfig {
+    @Bean
+    Clock clock() {
+        return Clock.systemUTC();
+    }
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>@ConditionalOnProperty and @ConditionalOnClass</summary>
+          <div class="answer">
+            <p>Conditional annotations create beans only when a condition is true. This is heavily used in Spring Boot auto-configuration.</p>
+            <pre><code class="language-java">@Bean
+@ConditionalOnProperty(name = "feature.email.enabled", havingValue = "true")
+EmailSender emailSender() {
+    return new SmtpEmailSender();
+}</code></pre>
+            <p><code>@ConditionalOnClass</code> is useful when a bean should be created only if a library is present on the classpath.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Pagination and sorting in REST APIs</summary>
+          <div class="answer">
+            <p>Pagination avoids returning too much data in one response. In Spring Data, use <code>Pageable</code>. Always define stable sorting, otherwise page results can jump around when data changes.</p>
+            <pre><code class="language-java">@GetMapping("/customers")
+Page&lt;CustomerDto&gt; customers(Pageable pageable) {
+    return service.findCustomers(pageable);
+}
+
+// /customers?page=0&amp;size=20&amp;sort=name,asc</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Nested transaction calls and transaction boundaries</summary>
+          <div class="answer">
+            <p>A transaction boundary is where a transaction starts and ends. In Spring, this usually happens at a public service method called through a Spring proxy. If one method inside the same class calls another <code>@Transactional</code> method, the proxy may be bypassed, so the second annotation may not apply.</p>
+            <p>Keep transaction boundaries at service layer methods and avoid long transactions that include slow network calls.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>@Cacheable vs @CachePut vs @CacheEvict</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Annotation</th><th>Meaning</th></tr>
+              <tr><td>@Cacheable</td><td>Read from cache first; if missing, execute method and store result.</td></tr>
+              <tr><td>@CachePut</td><td>Always execute method and update cache.</td></tr>
+              <tr><td>@CacheEvict</td><td>Remove one entry or all entries from cache.</td></tr>
+            </table>
+            <pre><code class="language-java">@CacheEvict(value = "customers", key = "#id")
+void deleteCustomer(Long id) {
+    repository.deleteById(id);
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>RestTemplate vs Feign Client vs WebClient</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Client</th><th>Use</th></tr>
+              <tr><td>RestTemplate</td><td>Older synchronous HTTP client. Maintenance mode in modern Spring.</td></tr>
+              <tr><td>Feign Client</td><td>Declarative REST client. You write an interface, Feign creates implementation.</td></tr>
+              <tr><td>WebClient</td><td>Modern client for reactive and non-blocking calls; can also be used in normal apps.</td></tr>
+            </table>
+            <pre><code class="language-java">@FeignClient(name = "inventory-service")
+interface InventoryClient {
+    @GetMapping("/inventory/{sku}")
+    InventoryDto find(@PathVariable String sku);
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Stored procedures: create and use</summary>
+          <div class="answer">
+            <p>A stored procedure is SQL logic saved inside the database. Use it when logic must run close to data, but avoid hiding too much business logic in DB because testing and versioning become harder.</p>
+            <pre><code class="language-sql">CREATE PROCEDURE GiveBonus(IN dept_id INT, IN bonus DECIMAL(10,2))
+BEGIN
+    UPDATE employees
+    SET salary = salary + bonus
+    WHERE department_id = dept_id;
+END;</code></pre>
+            <pre><code class="language-java">@Procedure("GiveBonus")
+void giveBonus(Integer deptId, BigDecimal bonus);</code></pre>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>More coding problems from the PDF</summary>
+          <div class="answer">
+            <pre><code class="language-java">// Remove duplicates from sorted array, allowing at most two
+int removeDuplicates(int[] nums) {
+    int write = 0;
+    for (int n : nums) {
+        if (write &lt; 2 || n != nums[write - 2]) {
+            nums[write++] = n;
+        }
+    }
+    return write;
+}
+
+// Search in rotated sorted array
+int search(int[] nums, int target) {
+    int l = 0, r = nums.length - 1;
+    while (l &lt;= r) {
+        int m = l + (r - l) / 2;
+        if (nums[m] == target) return m;
+        if (nums[l] &lt;= nums[m]) {
+            if (nums[l] &lt;= target && target &lt; nums[m]) r = m - 1;
+            else l = m + 1;
+        } else {
+            if (nums[m] &lt; target && target &lt;= nums[r]) l = m + 1;
+            else r = m - 1;
+        }
+    }
+    return -1;
+}
+
+// Maximum salary per department using streams
+Map&lt;String, Optional&lt;Employee&gt;&gt; maxSalaryByDept = employees.stream()
+    .collect(Collectors.groupingBy(
+        Employee::department,
+        Collectors.maxBy(Comparator.comparing(Employee::salary))
+    ));</code></pre>
+            <p>For 3Sum, sort the array and use two pointers for each fixed number. For copy linked list with random pointer, use a map from old node to new node or interweave copied nodes. For 132 pattern, scan from right using a stack. For pyramid pattern, use nested loops for spaces and stars.</p>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Trees: traversals, diameter, LCA, balanced tree check</summary>
+          <div class="answer">
+            <p>Tree traversal types are inorder, preorder, postorder, and level order. Diameter is the longest path between any two nodes. LCA is the lowest node that has both target nodes under it. A balanced tree means left and right subtree heights do not differ too much, usually by more than one for height-balanced problems.</p>
+            <pre><code class="language-java">int height(TreeNode root) {
+    if (root == null) return 0;
+    int left = height(root.left);
+    int right = height(root.right);
+    if (left == -1 || right == -1 || Math.abs(left - right) &gt; 1) return -1;
+    return 1 + Math.max(left, right);
+}
+
+boolean isBalanced(TreeNode root) {
+    return height(root) != -1;
+}</code></pre>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>Event sourcing, CQRS, distributed locks, Paxos and Raft</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Concept</th><th>Answer</th></tr>
+              <tr><td>Event sourcing</td><td>Store every state change as an event, then rebuild current state from events.</td></tr>
+              <tr><td>CQRS</td><td>Separate write model from read model, useful when reads and writes need different shapes.</td></tr>
+              <tr><td>Distributed lock</td><td>Coordinates work across instances using Redis, Zookeeper, or DB locks. Use carefully with timeouts.</td></tr>
+              <tr><td>Paxos/Raft</td><td>Consensus algorithms used so distributed nodes agree on a value or leader despite failures.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa wide">
+          <summary>More production scenarios: logs missing, intermittent 500, alerts, no-downtime patch</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Scenario</th><th>What to check</th></tr>
+              <tr><td>Application starts but stops processing new requests after days</td><td>Thread pool exhaustion, deadlock, DB pool leak, blocked queue, memory pressure, pod health, load balancer target status.</td></tr>
+              <tr><td>Missing config property though present in config server</td><td>Wrong profile, wrong branch/label, bootstrap config issue, config server auth, refresh not triggered, property name typo.</td></tr>
+              <tr><td>Security patch without restart</td><td>Usually not fully safe for Java app dependencies. Use rolling deployment or blue-green release instead.</td></tr>
+              <tr><td>Alert before outage</td><td>Alert on error rate, latency percentiles, saturation, queue lag, disk, memory, GC pause, and dependency failures.</td></tr>
+              <tr><td>Logs missing in production</td><td>Log level, appender config, stdout collection, sidecar/agent issue, index pipeline, sampling, wrong environment.</td></tr>
+              <tr><td>Intermittent 500 errors</td><td>Correlate by trace id, inspect exception type, deployment timeline, downstream errors, DB locks, bad input pattern.</td></tr>
+              <tr><td>Downstream fails mid-transaction</td><td>Use Saga, compensation, outbox pattern, retries, idempotency, and reconciliation.</td></tr>
+              <tr><td>Ensure zero data loss</td><td>Durable queues, transactions, backups, replication, idempotent consumers, dead-letter queues, and reconciliation jobs.</td></tr>
+            </table>
+          </div>
+        </details>
+
+        <details class="qa">
+          <summary>JVM internal inspection: jcmd, jinfo, jstat, jconsole</summary>
+          <div class="answer">
+            <table>
+              <tr><th>Tool</th><th>Use</th></tr>
+              <tr><td>jcmd</td><td>Swiss-army JVM tool: thread dump, heap dump, VM flags, JFR commands.</td></tr>
+              <tr><td>jinfo</td><td>View JVM flags and system properties.</td></tr>
+              <tr><td>jstat</td><td>GC and class loading statistics.</td></tr>
+              <tr><td>jconsole</td><td>GUI monitoring for memory, threads, classes, and MBeans.</td></tr>
+            </table>
+            <pre><code class="language-text">jcmd &lt;pid&gt; Thread.print
+jcmd &lt;pid&gt; GC.heap_dump /tmp/app.hprof
+jstat -gc &lt;pid&gt; 1000</code></pre>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Prepared from the uploaded PDF: <b>Java developer interview questions.pdf</b>. Java version notes were cross-checked with official Oracle/OpenJDK documentation for Java SE 25.</p>
+    <p>Sources for version reference: <a href="https://docs.oracle.com/en/java/javase/25" target="_blank" rel="noreferrer">Oracle Java SE 25 docs</a> and <a href="https://openjdk.org/projects/jdk/25/jeps-since-jdk-21" target="_blank" rel="noreferrer">OpenJDK JDK 25 JEPs</a>.</p>
+  </footer>
+
+  <script>
+    const search = document.getElementById("search");
+    const cards = Array.from(document.querySelectorAll(".qa"));
+
+    search.addEventListener("input", () => {
+      const term = search.value.trim().toLowerCase();
+      cards.forEach((card) => {
+        const match = card.textContent.toLowerCase().includes(term);
+        card.classList.toggle("hidden", term && !match);
+        if (term && match) card.open = true;
+      });
+    });
+  </script>
+</body>
+</html>

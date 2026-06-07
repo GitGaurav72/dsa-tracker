@@ -1,150 +1,66 @@
-# Quick Notes - PDF Reader
+# Java Developer Interview Guide
 
-![Quick Notes Banner](https://via.placeholder.com/800x200/667eea/ffffff?text=Quick+Notes+-+Advanced+PDF+Reader)
+This project contains a self-contained HTML interview preparation guide built from the provided PDF:
 
-Quick Notes is a modern, feature-rich PDF reader built with HTML, CSS, and JavaScript. It offers a beautiful interface with both light and dark themes, advanced navigation features, and usage statistics.
+`Java developer interview questions.pdf`
 
-## 🌟 Features
+The guide gives clear, descriptive answers for Java developer interview questions, with simple explanations, comparison tables, and code examples.
 
-### 📚 PDF Management
-- **Square-shaped Book Grid**: Beautiful square layout for PDF thumbnails
-- **PDF View Counter**: Tracks views for each individual PDF
-- **Quick Access**: One-click access to your PDF collection
+## Main File
 
-### 🎨 Themes & Customization
-- **Light/Dark Mode**: Toggle between beautiful light and dark themes
-- **Night Sky Effect**: Enjoy a stunning night sky with twinkling stars in dark mode
-- **Smooth Animations**: Elegant transitions and hover effects
+Open this file in a browser:
 
-### 🧭 Navigation & Controls
-- **Page Slider**: Jump to any page quickly with the interactive slider
-- **Zoom Controls**: Zoom in and out of PDF pages
-- **Keyboard Navigation**: Previous/next page buttons
-- **Back to Library**: Easy navigation to return to your PDF collection
+`java-interview-guide.html`
 
-### 📊 Statistics & Analytics
-- **Access Counter**: Tracks unique IP addresses accessing the application
-- **Page View Counter**: Counts daily visits to the main page
-- **PDF View Tracking**: Records how many times each PDF has been viewed
+No server, build tool, or installation is required. It is a normal HTML file with embedded CSS and JavaScript.
 
-### 📱 Responsive Design
-- **Mobile-Friendly**: Fully responsive design that works on all devices
-- **Adaptive Layout**: Adjusts to different screen sizes seamlessly
+## What Is Included
 
-## 🖼️ Screenshots
+- Core Java
+- Collections and internal working
+- Java 8 streams and functional programming
+- Java version features
+- JVM, memory management, and garbage collection
+- Multithreading and concurrency
+- Exception handling
+- Design patterns and SOLID principles
+- Spring and Spring Boot
+- REST APIs, validation, security, transactions, caching, testing
+- Microservices and cloud concepts
+- Databases, SQL, JPA, Hibernate, and transactions
+- DevOps, CI/CD, Docker, Kubernetes, and monitoring
+- Data structures and algorithms
+- System design
+- Behavioral and project experience questions
+- Debugging and troubleshooting tools
+- Real-world production scenarios
+- Additional PDF questions added after gap checking
 
-### Light Theme
-<img width="1918" height="956" alt="image" src="https://github.com/user-attachments/assets/9861d786-3727-4437-a7d8-9f2a012fdc0d" />
+## Features
 
+- Responsive mobile-friendly design
+- Search box for quickly finding topics
+- Expandable question and answer cards
+- Comparison tables for interview-friendly answers
+- Java, SQL, Dockerfile, and text examples
+- Human-style explanations written for easy understanding
 
-### Dark Theme with Night Sky
-<img width="1915" height="957" alt="image" src="https://github.com/user-attachments/assets/a4932692-566b-45d4-8abb-6d1ef6979ee0" />
+## How To Use
 
+1. Open `java-interview-guide.html`.
+2. Use the top search box to search topics like `HashMap`, `JWT`, `Kafka`, `JVM`, or `streams`.
+3. Click any question card to expand the answer.
+4. Revise the comparison tables before interviews.
+5. Practice explaining the code examples in your own words.
 
-### PDF Viewer with Controls
-![PDF Viewer](https://via.placeholder.com/600x400/2d2d2d/ffffff?text=PDF+Viewer+with+Slider)
+## Project Files
 
-### Mobile View
-![Mobile View](https://via.placeholder.com/300x500/ffffff/000000?text=Mobile+View)
+| File | Purpose |
+| --- | --- |
+| `java-interview-guide.html` | Main interview guide page |
+| `Java developer interview questions.pdf` | Source PDF with the question list |
+| `README.md` | Project overview and usage instructions |
 
-## 🚀 Getting Started
+## Notes
 
-### Prerequisites
-- A modern web browser (Chrome, Firefox, Safari, Edge)
-- PDF files to view (sample PDFs are included in the demo)
-
-### Installation
-1. Download the `quickNote-V0.1.html` file
-2. Place it in your desired directory
-3. Add your PDF files to the same directory
-4. Open the HTML file in your web browser
-
-### Usage
-1. **Viewing PDFs**: Click on any PDF thumbnail to open it
-2. **Navigating Pages**: Use the slider, arrow buttons, or input field to navigate pages
-3. **Zooming**: Use the + and - buttons to zoom in and out
-4. **Changing Themes**: Click the moon/sun icon to toggle between light and dark modes
-5. **Returning to Library**: Click the "Back to Book List" button to return to the main screen
-
-## 🛠️ Customization
-
-### Adding New PDFs
-To add new PDFs to your library:
-1. Add the PDF file to the same directory as the HTML file
-2. Add a new book item in the HTML:
-
-```html
-<div class="book-item" onclick="loadBook('YourPDF.pdf')">
-  <div class="book-icon"><i class="fas fa-file-pdf"></i></div>
-  <h3 class="book-title">Your PDF Name</h3>
-  <div class="book-views"><i class="fas fa-eye"></i> <span id="views-yourpdf">0</span></div>
-</div>
-```
-
-3. Add the PDF to the viewCounts object in the JavaScript:
-
-```javascript
-viewCounts = {
-  // ... existing PDFs
-  'YourPDF.pdf': 0
-}
-```
-
-### Modifying Colors and Styles
-The application uses CSS variables for easy customization. Modify these variables in the `:root` section:
-
-```css
-:root {
-  --primary-bg: linear-gradient(135deg, #your-color 0%, #your-color 100%);
-  --dark-bg: #your-dark-color;
-  /* Add more customizations as needed */
-}
-```
-
-## 📊 Data Storage
-
-Quick Notes uses localStorage to persist:
-- User theme preference
-- PDF view counts
-- Access counter (simulated IP-based tracking)
-- Page view counts
-
-## 🌐 Browser Compatibility
-
-| Browser | Support |
-|---------|---------|
-| Chrome | ✅ Full support |
-| Firefox | ✅ Full support |
-| Safari | ✅ Full support |
-| Edge | ✅ Full support |
-| Internet Explorer | ⚠️ Limited support |
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check [issues page](#).
-
-## 🏆 Acknowledgments
-
-- PDF.js library for PDF rendering capabilities
-- Font Awesome for the beautiful icons
-- Modern CSS techniques for animations and effects
-
-## 📞 Support
-
-If you have any questions or need help with Quick Notes, please open an issue or contact us at support@quicknotes.com.
-
-## 🔄 Version History
-
-- **v0.1** (Current)
-  - Initial release
-  - Basic PDF viewing functionality
-  - Light/dark theme toggle
-  - View counters for PDFs
-
----
-
-**Quick Notes** - Making PDF reading beautiful and efficient.
+The HTML page is intentionally self-contained so it can be shared easily or opened offline. If new questions are added later, add them as new `<details class="qa">` cards inside the correct section.
